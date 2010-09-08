@@ -3,8 +3,6 @@ public:
     // Drive calculations needed to make this State consistent
     // with the given Environment.
     bool makeSelfConsistent();
-    // Set epislonMin to the appropriate value.
-    double fixEpsilonMin();
     // Return true is the errors in all self-consistent equations are within
     // their tolerances, false otherwise.
     bool checkSelfConsistent() const;
