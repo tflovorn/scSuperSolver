@@ -1,3 +1,8 @@
+#ifndef __MFTS_STATE_H
+#define __MFTS_STATE_H
+
+#include "Environment.h"
+
 class State {
 public:
     // Drive calculations needed to make this State consistent
@@ -39,3 +44,5 @@ private:
     double fixMu();
     double fixF0();
 };
+
+#endif

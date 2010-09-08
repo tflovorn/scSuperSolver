@@ -1,3 +1,8 @@
+#ifndef __MFTS_ENVIRONMENT_H
+#define __MFTS_ENVIRONMENT_H
+
+#include "ConfigData.h"
+
 class Environment {
 public:
     // Construct an Environment from configuration data.
@@ -16,3 +21,5 @@ public:
     // Tolerances.
     const double tolD1, tolMu, tolF0;
 };
+
+#endif

@@ -1,3 +1,9 @@
+#ifndef __MFTS_CONFIG_DATA_H
+#define __MFTS_CONFIG_DATA_H
+
+#include <string>
+#include <iostream>
+
 class ConfigData {
 public:
     // Constructor will trigger reading.
@@ -11,7 +17,9 @@ public:
            tolD1, tolMu, tolF0;
 private:
     // Input file stream, specified at construction.
-    std::ifstream myInput;
+    std::ifstream& myInput;
     // Read data from myInput and store it.
     void readInputFile();
 };
+
+#endif
