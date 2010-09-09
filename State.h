@@ -10,7 +10,7 @@ public:
     // Destructor.  Not responsible for destroying env.
     ~State();
     // Drive calculations needed to make this State consistent
-    // with the given Environment.
+    // with the given Environment.  Return false if unable to converge.
     bool makeSelfConsistent();
     // Return true is the errors in all self-consistent equations are within
     // their tolerances, false otherwise.
