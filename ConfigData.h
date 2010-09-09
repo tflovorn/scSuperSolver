@@ -7,7 +7,7 @@
 class ConfigData {
 public:
     // Constructor will trigger reading.
-    ConfigData(std::ifstream infs);
+    ConfigData(std::ifstream& infs);
     // Destructor needed to close file.
     ~ConfigData();
     // Parameters for Environment to scoop up (descriptions in Environment.h)

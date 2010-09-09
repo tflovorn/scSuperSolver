@@ -5,6 +5,10 @@
 
 class State {
 public:
+    // Constructor. Needs to examine envIn to set member variables.
+    State(const Environment& envIn);
+    // Destructor.  Not responsible for destroying env.
+    ~State();
     // Drive calculations needed to make this State consistent
     // with the given Environment.
     bool makeSelfConsistent();
@@ -25,9 +29,11 @@ public:
     double getMu() const;
     double getF0() const;
     double getEpsilonMin() const;
+    // Minimizer needs to be a friend to do its dirty work.
+    friend class Minimizer;
 private:
     // Our Environment, containing all the configuration info we need.
-    const Environment env;
+    const Environment& env;
     // Self-consistent variables.
     double d1, mu, f0;
     // Minimum of Spectrum::epsilonBar() on the BZone.
@@ -37,9 +43,9 @@ private:
     // -- Need to call this after changing D1! --
     double setEpsilonMin();
     // Set the variable to the value which minimizes the error in the
-    // associated self-consistent equation. The d1 and mu equations are
-    // coupled, so they must be iterated together to find a pair of values
-    // that satisfies both equations.
+    // associated self-consistent equation. Return value found.
+    // Note: d1 and mu equations are coupled, so they must be iterated 
+    // together to find a pair of values that satisfies both equations.
     double fixD1();
     double fixMu();
     double fixF0();
