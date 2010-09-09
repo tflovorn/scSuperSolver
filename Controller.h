@@ -16,7 +16,10 @@ class Controller {
     ~Controller();
     // Do the self-consistent calculation.  Return false if can't converge.
     bool selfConsistentCalc();
-    // 
+    // Output important data about current State.
+    void logResults();
+    // Output configuration data.
+    void logConfig();
 private:
     // Logs (for logging).
     Logger& errorLog;
