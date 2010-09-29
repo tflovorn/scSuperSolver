@@ -17,7 +17,7 @@ public:
     double gridLen, t0, tz, thp, x, th, alpha, initD1, initMu, initF0,
            tolD1, tolMu, tolF0;
 private:
-    std::ifstream *myInput;
+    std::ifstream myInput;
     bool fileOpen;
     // Constructor handles opening and (normally) closing file.
     ConfigData(const std::string& fname);

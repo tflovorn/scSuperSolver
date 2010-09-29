@@ -10,7 +10,7 @@ ConfigData::ConfigData(const std::string& fname) : fileOpen(false) {
     inFile.open(fname);
     if (inFile.is_open()) {
         fileOpen = true;
-        myInput = &inFile;
+        myInput = inFile;
         readInputFile();
         inFile.close();
         fileOpen = false;
