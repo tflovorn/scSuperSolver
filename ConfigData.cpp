@@ -5,24 +5,12 @@ const ConfigData& ConfigData::makeFromFile(const std::string& fname) {
     return (const ConfigData&)(*cfg);
 }
 
-ConfigData::ConfigData(const std::string& fname) : fileOpen(false) {
-    std::ifstream inFile;
-    inFile.open(fname);
-    if (inFile.is_open()) {
-        fileOpen = true;
-        myInput = inFile;
-        readInputFile();
-        inFile.close();
-        fileOpen = false;
-    }   
+ConfigData::ConfigData(const std::string& fname) {
+    std::ifstream cfgFile(fname.c_str());
+    readConfigData(&cfgFile); // need to handle case of readInputFile throwing exception
+    cfgFile.close();
 }
 
-void ConfigData::readInputFile() {
-
-}
-
-ConfigData::~ConfigData() {
-    if (fileOpen == true) {
-        myInput.close();
-    }
+void ConfigData::readConfigData(std::ifstream *cfgFile) {
+    
 }
