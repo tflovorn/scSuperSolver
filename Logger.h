@@ -13,7 +13,7 @@ public:
     // Destructor.
     ~Logger();
     // Client calls this to write to our open stream.
-    void write(const std::string& outData);
+    void write(const std::string& outData) const;
 private:
     // Stream we'll write to.
     std::ofstream *myLog;

@@ -9,6 +9,6 @@ Logger::~Logger() {
     delete myLog;
 }
 
-void Logger::write(const std::string& outData) {
+void Logger::write(const std::string& outData) const {
     (*myLog) << outData;
 }
