@@ -15,3 +15,7 @@ ConfigData::ConfigData(const std::string& cfgFileName) {
 void ConfigData::readConfigData(std::ifstream *cfgFile) {
     
 }
+
+std::string readNext(std::ifstream *cfgFile) {
+
+}

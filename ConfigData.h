@@ -10,15 +10,18 @@ public:
     // Create a ConfigData from file with given name, returning const ref
     static const ConfigData& makeFromFile(const std::string& cfgFileName);
     // Parameters for Environment to scoop up (descriptions in Environment.h)
-    std::string cfgFileName, outputLogName, errorLogName;
+    std::string outputLogName, errorLogName;
     double t0, tz, thp, x, th, alpha, initD1, initMu, initF0,
            tolD1, tolMu, tolF0;
     int gridLen;
 private:
     // Constructor handles opening and (normally) closing file.
     ConfigData(const std::string& cfgFileName);
-    // Read data from myInput and store it.
+    // Read data from cfgFile and store it.
     void readConfigData(std::ifstream *cfgFile);
+    // Helper for readConfigData, gives next valid token in stream
+    // (i.e. not in a comment)
+    std::string readNext(std::ifstream *cfgFile);
 };
 
 #endif
