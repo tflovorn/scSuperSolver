@@ -31,9 +31,9 @@ public:
     double getEpsilonMin() const;
     // Minimizer needs to be a friend to do its dirty work.
     friend class Minimizer;
-private:
     // Our Environment, containing all the configuration info we need.
     const Environment& env;
+private:
     // Self-consistent variables.
     double d1, mu, f0;
     // Minimum of Spectrum::epsilonBar() on the BZone.

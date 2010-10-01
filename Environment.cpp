@@ -1,7 +1,6 @@
 #include "Environment.h"
 
-// Boy is this ugly.  Considering removing ConfigData class and just doing
-// config file reading in Environment.
+// Grab all the data from cfg.  Is there a less ugly way to do this?
 Environment::Environment(const ConfigData& cfg) :
     gridLen(cfg.gridLen),
     t0(cfg.t0),
