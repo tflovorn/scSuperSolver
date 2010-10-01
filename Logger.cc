@@ -10,5 +10,5 @@ Logger::~Logger() {
 }
 
 void Logger::write(const std::string& outData) const {
-    (*myLog) << outData;
+    (*myLog) << outData << std::endl;
 }
