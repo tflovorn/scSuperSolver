@@ -5,10 +5,8 @@
 
 class State {
 public:
-    // Constructor. Needs to examine envIn to set member variables.
+    // Constructor needs to examine envIn to set member variables.
     State(const Environment& envIn);
-    // Destructor.  Not responsible for destroying env.
-    ~State();
     // Drive calculations needed to make this State consistent
     // with the given Environment.  Return false if unable to converge.
     bool makeSelfConsistent();
