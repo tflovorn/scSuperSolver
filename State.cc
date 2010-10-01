@@ -1,4 +1,4 @@
-#include "State.h"
+#include "State.hh"
 
 State::State(const Environment& envIn) : env(envIn) {
     d1 = env.initD1;

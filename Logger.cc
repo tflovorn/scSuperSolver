@@ -1,4 +1,4 @@
-#include "Logger.h"
+#include "Logger.hh"
 
 Logger::Logger(const std::string& fname) { 
     myLog = new std::ofstream(fname.c_str());

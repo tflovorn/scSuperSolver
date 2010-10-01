@@ -1,7 +1,7 @@
 #ifndef __MFTS_STATE_H
 #define __MFTS_STATE_H
 
-#include "Environment.h"
+#include "Environment.hh"
 
 class State {
 public:

@@ -1,8 +1,8 @@
 #ifndef __MFTS_ENVIRONMENT_H
 #define __MFTS_ENVIRONMENT_H
 
-#include "ConfigData.h"
-#include "Logger.h"
+#include "ConfigData.hh"
+#include "Logger.hh"
 
 class Environment {
 public:

@@ -1,4 +1,4 @@
-#include "ConfigData.h"
+#include "ConfigData.hh"
 
 const ConfigData& ConfigData::makeFromFile(const std::string& cfgFileName) {
     ConfigData const *cfg = new ConfigData(cfgFileName);
@@ -13,20 +13,22 @@ ConfigData::ConfigData(const std::string& cfgFileName) {
 }
 
 void ConfigData::readConfigData(std::ifstream *cfgFile) {
-    // log file names
+    // row 1: log file names
     outputLogName = nextToken();
     errorLogName = nextToken();
-    // integers
+    // row 2: integer parameters
     gridLen = nextInt();
     alpha = nextInt();
-    // doubles
+    // row 3: float parameters
     t0 = nextDouble();
     tz = nextDouble();
     thp = nextDouble();
     x = nextDouble();
+    // row 4: initialization values
     initD1 = nextDouble();
     initMu = nextDouble();
     initF0 = nextDouble();
+    // row 5: tolerances
     tolD1 = nextDouble();
     tolMu = nextDouble();
     tolF0 = nextDouble();
@@ -39,7 +41,8 @@ std::string ConfigData::nextToken(std::ifstream *cfgFile) {
     bool tokenDone = false;         // set to true when done building token
     while (cfgFile.good() && !tokenDone) {
         nextc = cfgFile.get();
-        // comment; skip the rest of line. if we had token data, we're done building it.
+        // comment: skip the rest of line.
+        // if we had token data, we're done building it.
         if (nextc == '#') { 
             if (bufferIndex > 0) {
                 tokenDone = true;
@@ -49,13 +52,25 @@ std::string ConfigData::nextToken(std::ifstream *cfgFile) {
             }
             continue;
         }
-        // newline. if we had token data, we're done.
-        if (nextc == '\n' && bufferIndex > 0) {
+        // newline or comma: token done.
+        if ((nextc == '\n' || nextc == ',') && bufferIndex > 0) {
             tokenDone = true;
+	        continue;
         }
+    	// whitespace: move along
+    	if (nextc == ' ' || nextc == '\t') {
+	        continue;
+    	}
+        // good character: save it
+        buffer[bufferIndex] = nextc;
+        bufferIndex++;
     }
+    buffer[bufferIndex] = '\0';
+    return std::string(buffer);
 }
 
+// going from C string to std::string and back is a little silly
+// but I would prefer to do that than have nextToken() return a C string
 int ConfigData::nextInt(std::ifstream *cfgFile) {
     return atoi(nextToken().c_str());
 }

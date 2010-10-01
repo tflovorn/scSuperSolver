@@ -1,5 +1,5 @@
 #include <cmath>
-#include "Spectrum.h"
+#include "Spectrum.hh"
 
 double Spectrum::epsilon(const State& st, double kx, double ky) {
     return epsilonBar(st, kx, ky) - st.getEpsilonMin();

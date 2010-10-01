@@ -1,7 +1,7 @@
 #ifndef __MFTS_SPECTRUM_H
 #define __MFTS_SPECTRUM_H
 
-#include "State.h"
+#include "State.hh"
 
 class Spectrum {
 public:

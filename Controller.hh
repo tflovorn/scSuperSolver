@@ -3,10 +3,10 @@
 
 #include <string>
 
-#include "Logger.h"
-#include "ConfigData.h"
-#include "Environment.h"
-#include "State.h"
+#include "Logger.hh"
+#include "ConfigData.hh"
+#include "Environment.hh"
+#include "State.hh"
 
 class Controller {
     // Factory for controller.  Make ConfigData from inFileName, Environment
