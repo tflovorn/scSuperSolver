@@ -12,7 +12,7 @@ public:
     const Logger& outputLog;
     const Logger& errorLog;
     // Brillouin zone length (number of points = grid length ^ 2).
-    const double gridLen;
+    const int gridLen;
     // Physical parameters.
     const double t0,    // Overall energy scale (default = 1.0).
                  tz,    // z-direction hopping energy.

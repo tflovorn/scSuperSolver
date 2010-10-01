@@ -11,8 +11,9 @@ public:
     static const ConfigData& makeFromFile(const std::string& cfgFileName);
     // Parameters for Environment to scoop up (descriptions in Environment.h)
     std::string cfgFileName, outputLogName, errorLogName;
-    double gridLen, t0, tz, thp, x, th, alpha, initD1, initMu, initF0,
+    double t0, tz, thp, x, th, alpha, initD1, initMu, initF0,
            tolD1, tolMu, tolF0;
+    int gridLen;
 private:
     // Constructor handles opening and (normally) closing file.
     ConfigData(const std::string& cfgFileName);
