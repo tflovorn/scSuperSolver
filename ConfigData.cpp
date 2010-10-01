@@ -1,13 +1,13 @@
 #include "ConfigData.h"
 
-const ConfigData& ConfigData::makeFromFile(const std::string& fname) {
-    ConfigData const *cfg = new ConfigData(fname);
+const ConfigData& ConfigData::makeFromFile(const std::string& cfgFileName) {
+    ConfigData const *cfg = new ConfigData(cfgFileName);
     return (const ConfigData&)(*cfg);
 }
 
-ConfigData::ConfigData(const std::string& fname) {
+ConfigData::ConfigData(const std::string& cfgFileName) {
     // todo: need to handle case of readInputFile throwing exception
-    std::ifstream cfgFile(fname.c_str());
+    std::ifstream cfgFile(cfgFileName.c_str());
     readConfigData(&cfgFile);
     cfgFile.close();
 }

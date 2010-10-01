@@ -8,14 +8,14 @@
 class ConfigData {
 public:
     // Create a ConfigData from file with given name, returning const ref
-    static const ConfigData& makeFromFile(const std::string& fname);
+    static const ConfigData& makeFromFile(const std::string& cfgFileName);
     // Parameters for Environment to scoop up (descriptions in Environment.h)
     std::string label;
     double gridLen, t0, tz, thp, x, th, alpha, initD1, initMu, initF0,
            tolD1, tolMu, tolF0;
 private:
     // Constructor handles opening and (normally) closing file.
-    ConfigData(const std::string& fname);
+    ConfigData(const std::string& cfgFileName);
     // Read data from myInput and store it.
     void readConfigData(std::ifstream *cfgFile);
 };
