@@ -1,0 +1,14 @@
+# output log, error log
+test_ConfigData_out, test_ConfigData_err
+
+# gridLen, alpha
+64, -1
+
+# t0, tz, thp, x
+1.0, 0.1, 0.1, 0.05
+
+# initD1, initMu, initF0
+0.05, 0.1, 0.1
+
+# tolD1, tolMu, tolF0
+1e-6, 1e-6, 1e-6
