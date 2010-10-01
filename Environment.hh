@@ -18,7 +18,7 @@ public:
                  tz,    // z-direction hopping energy.
                  thp,   // Diagonal (next-nearest-neighbor) hopping energy.
                  x,     // Doping / holon excess.
-                 th,    // One-holon hopping energy: th = t0 * (1 - x).
+                 th;    // One-holon hopping energy: th = t0 * (1 - x).
     // Initial conditions.
     const double initD1, initMu, initF0;
     // Tolerances.

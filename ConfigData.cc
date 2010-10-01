@@ -14,24 +14,24 @@ ConfigData::ConfigData(const std::string& cfgFileName) {
 
 void ConfigData::readConfigData(std::ifstream *cfgFile) {
     // row 1: log file names
-    outputLogName = nextToken();
-    errorLogName = nextToken();
+    outputLogName = nextToken(cfgFile);
+    errorLogName = nextToken(cfgFile);
     // row 2: integer parameters
-    gridLen = nextInt();
-    alpha = nextInt();
+    gridLen = nextInt(cfgFile);
+    alpha = nextInt(cfgFile);
     // row 3: float parameters
-    t0 = nextDouble();
-    tz = nextDouble();
-    thp = nextDouble();
-    x = nextDouble();
+    t0 = nextDouble(cfgFile);
+    tz = nextDouble(cfgFile);
+    thp = nextDouble(cfgFile);
+    x = nextDouble(cfgFile);
     // row 4: initialization values
-    initD1 = nextDouble();
-    initMu = nextDouble();
-    initF0 = nextDouble();
+    initD1 = nextDouble(cfgFile);
+    initMu = nextDouble(cfgFile);
+    initF0 = nextDouble(cfgFile);
     // row 5: tolerances
-    tolD1 = nextDouble();
-    tolMu = nextDouble();
-    tolF0 = nextDouble();
+    tolD1 = nextDouble(cfgFile);
+    tolMu = nextDouble(cfgFile);
+    tolF0 = nextDouble(cfgFile);
 }
 
 std::string ConfigData::nextToken(std::ifstream *cfgFile) {
@@ -39,16 +39,16 @@ std::string ConfigData::nextToken(std::ifstream *cfgFile) {
     char buffer[MAX_TOKEN_SIZE];    // holds the token
     int bufferIndex = 0;            // index to write to in buffer
     bool tokenDone = false;         // set to true when done building token
-    while (cfgFile.good() && !tokenDone) {
-        nextc = cfgFile.get();
+    while (cfgFile->good() && !tokenDone) {
+        nextc = cfgFile->get();
         // comment: skip the rest of line.
         // if we had token data, we're done building it.
         if (nextc == '#') { 
             if (bufferIndex > 0) {
                 tokenDone = true;
             }
-            while (cfgFile.good() && nextc != '\n') {
-                nextc = cfgFile.get()
+            while (cfgFile->good() && nextc != '\n') {
+                nextc = cfgFile->get();
             }
             continue;
         }
@@ -72,9 +72,9 @@ std::string ConfigData::nextToken(std::ifstream *cfgFile) {
 // going from C string to std::string and back is a little silly
 // but I would prefer to do that than have nextToken() return a C string
 int ConfigData::nextInt(std::ifstream *cfgFile) {
-    return atoi(nextToken().c_str());
+    return atoi(nextToken(cfgFile).c_str());
 }
 
 double ConfigData::nextDouble(std::ifstream *cfgFile) {
-    return atof(nextToken().c_str());
+    return atof(nextToken(cfgFile).c_str());
 }
