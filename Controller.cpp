@@ -9,8 +9,6 @@ Controller::Controller(const ConfigData& config, const Environment& env, State& 
 */
 
 Controller::~Controller() {
-    delete &errorLog;
-    delete &outputLog;
     delete &myState;
     delete &myEnv;
     delete &myConfig;

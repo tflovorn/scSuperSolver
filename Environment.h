@@ -2,11 +2,15 @@
 #define __MFTS_ENVIRONMENT_H
 
 #include "ConfigData.h"
+#include "Logger.h"
 
 class Environment {
 public:
     // Construct an Environment from configuration data.
     Environment(const ConfigData& cfg);
+    // Log stuff with these.
+    const Logger& outputLog;
+    const Logger& errorLog;
     // Brillouin zone length (number of points = grid length ^ 2).
     const double gridLen;
     // Physical parameters.

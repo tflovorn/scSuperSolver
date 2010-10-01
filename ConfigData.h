@@ -10,7 +10,7 @@ public:
     // Create a ConfigData from file with given name, returning const ref
     static const ConfigData& makeFromFile(const std::string& cfgFileName);
     // Parameters for Environment to scoop up (descriptions in Environment.h)
-    std::string label;
+    std::string cfgFileName, outputLogName, errorLogName;
     double gridLen, t0, tz, thp, x, th, alpha, initD1, initMu, initF0,
            tolD1, tolMu, tolF0;
 private:
