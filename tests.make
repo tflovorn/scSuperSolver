@@ -1,5 +1,8 @@
 all: test_Logger.out test_ConfigData.out test_Environment.out test_State.out
 
+clean:
+	\rm *.o *.gch *.out test_ConfigData_out test_ConfigData_err test_Logger_log
+
 test_Logger.out: test_Logger.o Logger.o
 	g++ -o test_Logger.out test_Logger.o Logger.o
 
