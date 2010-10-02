@@ -6,15 +6,13 @@ class RootFinder {
 public:
     // Constructor.  Only saves parameters.
     RootFinder(double (*function)(), double* variable, const double tolerance);
-    // Destructor.  Doesn't delete anything.
-    ~RootFinder();
     // Encapsulates the heavy lifting of root-finding.
     // If a root is found, returns true.  Otherwise returns false.
     bool findRoot();
     // Returns value of myVar.
     double getVar();
     // Returns result of calling myFn().
-    double getAccuracy();
+    double getFnValue();
 private:
     // Function to find root of.
     double (*myFn)();
