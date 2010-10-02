@@ -1,0 +1,10 @@
+Top-level usage:
+    - build Controller from config file; this triggers buiding instances of 
+        ConfigData, Environment, Logger, and State.
+    - call selfConsistentCalc() on Controller, if it returns true it worked
+    - logResults() and examine output
+
+Spectrum is a big ball of static functions which take a State and some 
+additional data, do some math, and emit results.
+
+Tests for individual classes are built to test_(Class).out by make.
