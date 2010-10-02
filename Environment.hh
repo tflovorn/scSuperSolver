@@ -11,9 +11,9 @@ public:
     // Log stuff with these.  (default destructor calls their destructors)
     Logger outputLog;
     Logger errorLog;
+    // Physical parameters.
     const int gridLen,  // Brillouin zone side length 
               alpha;    // alpha = {-1, 1} -> {d-wave, s-wave} symmetry
-    // Physical parameters.
     const double t0,    // Overall energy scale (default = 1.0).
                  tz,    // z-direction hopping energy.
                  thp,   // Diagonal (next-nearest-neighbor) hopping energy.

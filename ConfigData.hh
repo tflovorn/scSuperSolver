@@ -6,7 +6,7 @@
 #include <fstream>
 #include <cstdlib>
 
-// tokens OR lines in config file can be this long at most (minus one character for \0)
+// tokens in config file can be this long at most (minus one character for \0)
 #define MAX_TOKEN_SIZE 1000
 
 class ConfigData {

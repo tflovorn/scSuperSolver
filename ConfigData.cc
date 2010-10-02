@@ -6,7 +6,7 @@ const ConfigData& ConfigData::makeFromFile(const std::string& cfgFileName) {
 }
 
 ConfigData::ConfigData(const std::string& cfgFileName) {
-    // todo: need to handle case of readInputFile throwing exception
+    // TODO: need to handle case of readConfigData throwing exception
     std::ifstream cfgFile(cfgFileName.c_str());
     readConfigData(&cfgFile);
     cfgFile.close();
