@@ -6,11 +6,11 @@
 
 class Environment {
 public:
-    // Construct an Environment from configuration data.
+    // Construct an Environment from configuration data. Build loggers.
     Environment(const ConfigData& cfg);
-    // Log stuff with these.
-    const Logger& outputLog;
-    const Logger& errorLog;
+    // Log stuff with these.  Pretty sure default destructor will delete them...
+    Logger outputLog;
+    Logger errorLog;
     const int gridLen,  // Brillouin zone side length 
               alpha;    // alpha = {-1, 1} -> {d-wave, s-wave} symmetry
     // Physical parameters.
