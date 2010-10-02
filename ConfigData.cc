@@ -67,7 +67,6 @@ std::string ConfigData::nextToken(std::ifstream *cfgFile) {
         bufferIndex++;
     }
     buffer[bufferIndex] = '\0';
-    std::cout << std::string(buffer) << std::endl;
     return std::string(buffer);
 }
 
