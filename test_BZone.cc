@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <cassert>
 
 #include "Environment.hh"
 #include "ConfigData.hh"
@@ -24,11 +25,25 @@ double test_step(const State& st, double kx, double ky) {
 }
 
 int main(int argc, char *argv[]) {
+    std::cout << "Starting BZone test." << std::endl;
     const std::string& cfgFileName = "test_cfg";
     const ConfigData& cfg = ConfigData::makeFromFile(cfgFileName);
     const Environment& env(cfg);
     State st(env);
-    std::cout << BZone::average(st, test_1) << std::endl;
-    std::cout << BZone::average(st, test_sin) << std::endl;
-    std::cout << BZone::minimum(st, test_step) << std::endl;
+
+    double avg_1 = BZone::average(st, test_1);
+    assert(avg_1 == 1);
+    std::cout << "avg_1 = " << avg_1 << std::endl;
+
+    double sin_tol = 1e-17;
+    double avg_sin = BZone::average(st, test_sin);
+    assert(avg_sin < sin_tol);
+    std::cout << "avg_sin = " << avg_sin << std::endl;
+
+    double min_step = BZone::minimum(st, test_step);
+    assert(min_step == -1);
+    std::cout << "min_step = " << min_step << std::endl;
+
+    std::cout << "BZone passed all tests!" << std::endl;
+    return 0;
 }
