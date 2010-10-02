@@ -1,7 +1,8 @@
 #include <iostream>
 
-#include "Environment.hh"
+#include "Logger.hh"
 #include "ConfigData.hh"
+#include "Environment.hh"
 
 int main(int argc, char *argv[]) {
     const std::string& cfgFileName = "test_ConfigData_cfg";
