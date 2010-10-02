@@ -10,4 +10,8 @@ int main(int argc, char *argv[]) {
     const Environment& env(cfg);
     State st(env);
     std::cout << st.getD1() << std::endl;
+    std::cout << st.getEpsilonMin() << std::endl;
+    std::cout << st.errorD1() << std::endl;
+    std::cout << st.errorMu() << std::endl;
+    std::cout << st.errorF0() << std::endl;
 }

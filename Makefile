@@ -4,7 +4,7 @@ test_BZone.out
 clean:
 	\rm -f *.gch *.o *.out test_out test_err test_Logger_log
 
-OBJS = Logger.o ConfigData.o Environment.o State.o BZone.o
+OBJS = Logger.o ConfigData.o Environment.o State.o BZone.o Spectrum.o
 
 test_Logger.out: test_Logger.o $(OBJS)
 	g++ -o test_Logger.out test_Logger.o $(OBJS)
@@ -50,6 +50,9 @@ State.o: State.cc State.hh
 
 BZone.o: BZone.cc BZone.hh State.hh
 	g++ -c BZone.cc
+
+Spectrum.o: Spectrum.cc Spectrum.hh State.hh
+	g++ -c Spectrum.cc
 
 Environment.hh: ConfigData.hh Logger.hh
 

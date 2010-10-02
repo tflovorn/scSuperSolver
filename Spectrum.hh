@@ -17,6 +17,10 @@ public:
     static double pairEnergy(const State& st, double kx, double ky);
     // Fermi distribution function (for T=0)
     static double fermi(const State& st, double energy);
+    // term to be summed to calculate rhs of associated S-C equation
+    static double innerD1(const State& st, double kx, double ky);
+    static double innerMu(const State& st, double kx, double ky);
+    static double innerF0(const State& st, double kx, double ky);
 };
 
 #endif
