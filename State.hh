@@ -18,10 +18,14 @@ public:
     bool checkD1() const;
     bool checkMu() const;
     bool checkF0() const;
-    // Return fractional error in the associated S-C equation.
-    double errorD1() const;
-    double errorMu() const;
-    double errorF0() const;
+    // Return absolute error in the associated S-C equation.
+    double absErrorD1() const;
+    double absErrorMu() const;
+    double absErrorF0() const;
+    // Relative error
+    double relErrorD1() const;
+    double relErrorMu() const;
+    double relErrorF0() const;
     // Simple getters.
     double getD1() const;
     double getMu() const;

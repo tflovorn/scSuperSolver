@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
     State st(env);
     std::cout << st.getD1() << std::endl;
     std::cout << st.getEpsilonMin() << std::endl;
-    std::cout << st.errorD1() << std::endl;
-    std::cout << st.errorMu() << std::endl;
-    std::cout << st.errorF0() << std::endl;
+    std::cout << st.absErrorD1() << std::endl;
+    std::cout << st.absErrorMu() << std::endl;
+    std::cout << st.absErrorF0() << std::endl;
 }

@@ -21,34 +21,46 @@ bool State::checkSelfConsistent() const {
 }
 
 bool State::checkD1() const {
-    return errorD1() < env.tolD1;
+    return relErrorD1() < env.tolD1;
 }
 
 bool State::checkMu() const {
-    return errorMu() < env.tolMu;
+    return relErrorMu() < env.tolMu;
 }
 
 bool State::checkF0() const {
-    return errorF0() < env.tolF0;
+    return relErrorF0() < env.tolF0;
 }
 
 // error calculators
-double State::errorD1() const {
+double State::absErrorD1() const {
     double lhs = d1;
     double rhs = BZone::average((const State&)(*this), Spectrum::innerD1);
-    return fabs(lhs - rhs) / lhs;
+    return lhs - rhs;
 }
 
-double State::errorMu() const {
+double State::absErrorMu() const {
     double lhs = env.x;
     double rhs = BZone::average((const State&)(*this), Spectrum::innerMu);
-    return fabs(lhs - rhs) / lhs;
+    return lhs - rhs;
 }
 
-double State::errorF0() const {
+double State::absErrorF0() const {
     double lhs = 1.0 / (env.t0 + env.tz);
     double rhs = BZone::average((const State&)(*this), Spectrum::innerF0);
-    return fabs(lhs - rhs) / lhs;
+    return lhs - rhs;
+}
+
+double State::relErrorD1() const {
+    return fabs(absErrorD1()) / fabs(d1);
+}
+
+double State::relErrorMu() const {
+    return fabs(absErrorMu()) / env.x;
+}
+
+double State::relErrorF0() const {
+    return fabs(absErrorF0()) * (env.t0 + env.tz);
 }
 
 // getters
