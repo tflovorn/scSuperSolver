@@ -1,19 +1,25 @@
-all: test_Logger.out test_ConfigData.out test_Environment.out test_State.out
+all: test_Logger.out test_ConfigData.out test_Environment.out test_State.out \
+test_BZone.out
 
 clean:
 	\rm -f *.gch *.o *.out test_ConfigData_out test_ConfigData_err test_Logger_log
 
-test_Logger.out: test_Logger.o Logger.o
-	g++ -o test_Logger.out test_Logger.o Logger.o
+OBJS = Logger.o ConfigData.o Environment.o State.o BZone.o
 
-test_ConfigData.out: test_ConfigData.o ConfigData.o
-	g++ -o test_ConfigData.out test_ConfigData.o ConfigData.o
+test_Logger.out: test_Logger.o $(OBJS)
+	g++ -o test_Logger.out test_Logger.o $(OBJS)
 
-test_Environment.out: test_Environment.o Environment.o ConfigData.o Logger.o
-	g++ -o test_Environment.out test_Environment.o Environment.o ConfigData.o Logger.o
+test_ConfigData.out: test_ConfigData.o $(OBJS)
+	g++ -o test_ConfigData.out test_ConfigData.o $(OBJS)
 
-test_State.out: test_State.o State.o Environment.o ConfigData.o Logger.o
-	g++ -o test_State.out test_State.o State.o Environment.o ConfigData.o Logger.o
+test_Environment.out: test_Environment.o $(OBJS)
+	g++ -o test_Environment.out test_Environment.o $(OBJS)
+
+test_State.out: test_State.o $(OBJS)
+	g++ -o test_State.out test_State.o $(OBJS)
+
+test_BZone.out: test_BZone.o $(OBJS)
+	g++ -o test_BZone.out test_BZone.o $(OBJS)
 
 test_Logger.o: test_Logger.cc Logger.hh
 	g++ -c test_Logger.cc
@@ -27,6 +33,9 @@ test_Environment.o: test_Environment.cc Environment.hh
 test_State.o: test_State.cc State.hh
 	g++ -c test_State.cc
 
+test_BZone.o: test_BZone.cc BZone.hh State.hh
+	g++ -c test_BZone.cc
+
 Logger.o: Logger.cc Logger.hh
 	g++ -c Logger.cc
 
@@ -38,6 +47,9 @@ Environment.o: Environment.cc Environment.hh
 
 State.o: State.cc State.hh
 	g++ -c State.cc
+
+BZone.o: BZone.cc BZone.hh State.hh
+	g++ -c BZone.cc
 
 Environment.hh: ConfigData.hh Logger.hh
 

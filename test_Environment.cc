@@ -5,7 +5,7 @@
 #include "Environment.hh"
 
 int main(int argc, char *argv[]) {
-    const std::string& cfgFileName = "test_ConfigData_cfg";
+    const std::string& cfgFileName = "test_cfg";
     const ConfigData& cfg = ConfigData::makeFromFile(cfgFileName);
     const Environment& env(cfg);
     env.outputLog.write("Output log is running!");
