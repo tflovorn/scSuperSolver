@@ -1,5 +1,5 @@
 # output log, error log
-test_ConfigData_out, test_ConfigData_err
+test_out, test_err
 
 # gridLen, alpha
 64, -1

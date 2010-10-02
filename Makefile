@@ -2,7 +2,7 @@ all: test_Logger.out test_ConfigData.out test_Environment.out test_State.out \
 test_BZone.out
 
 clean:
-	\rm -f *.gch *.o *.out test_ConfigData_out test_ConfigData_err test_Logger_log
+	\rm -f *.gch *.o *.out test_out test_err test_Logger_log
 
 OBJS = Logger.o ConfigData.o Environment.o State.o BZone.o
 
