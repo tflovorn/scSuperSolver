@@ -98,7 +98,7 @@ double State::helperMu(double x, void *params) {
 }
 
 double State::helperF0(double x, void *params) {
-    F0 = x;
+    f0 = x;
     return absErrorF0();
 }
 
