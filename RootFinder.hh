@@ -1,5 +1,5 @@
-#ifndef __MFTS_MINIMIZER_H
-#define __MFTS_MINIMIZER_H
+#ifndef __MFTS_ROOT_FINDER_H
+#define __MFTS_ROOT_FINDER_H
 
 // -- one-dimensional --
 class RootFinder {
