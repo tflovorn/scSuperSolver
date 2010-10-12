@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_roots.h>
@@ -37,6 +39,7 @@ bool RootFinder::findRoot() {
         x_lo = gsl_root_fsolver_x_lower(s);
         x_hi = gsl_root_fsolver_x_upper(s);
         status = gsl_root_test_interval(x_lo, x_hi, myTolerance, 0.0);
+        std::cout << r << std::endl;
     } while (status == GSL_CONTINUE && iter < max_iter);
 
     gsl_root_fsolver_free(s);    
