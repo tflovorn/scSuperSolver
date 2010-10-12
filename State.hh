@@ -31,8 +31,8 @@ public:
     double getMu() const;
     double getF0() const;
     double getEpsilonMin() const;
-    // Minimizer needs to be a friend to do its dirty work.
-    friend class Minimizer;
+    // RootFinder needs to be a friend to do its dirty work.
+    friend class RootFinder;
     // Our Environment, containing all the configuration info we need.
     const Environment& env;
 private:
@@ -51,6 +51,10 @@ private:
     double fixD1();
     double fixMu();
     double fixF0();
+    // Functions to be passed into RootFinder
+    double helperD1(double x, void *params);
+    double helperMu(double x, void *params);
+    double helperF0(double x, void *params);
 };
 
 #endif

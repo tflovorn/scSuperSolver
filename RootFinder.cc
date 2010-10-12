@@ -1,13 +1,8 @@
 #include "RootFinder.hh"
 
-RootFinder::RootFinder(double (*function)(), double* variable, 
-    const double tolerance) : myFn(function), myVar(variable), myTol(tolerance)
-{ }
+RootFinder::RootFinder(double (* const helper)(double, void *), 
+    const double tolerance) : myHelper(helper), myTolerance(tolerance) {}
 
-double RootFinder::getVar() {
+double RootFinder::findRoot() {
     return *myVar;
-}
-
-double RootFinder::getFnValue() {
-    return myFn();
 }

@@ -85,7 +85,23 @@ double State::setEpsilonMin() {
     epsilonMin = BZone::minimum((const State&)(*this), Spectrum::epsilonBar);
     return epsilonMin;
 }
-// STUBS
+
+double State::helperD1(double x, void *params) {
+    d1 = x;
+    setEpsilonMin();    // D1 changed so epsilonMin might change
+    return absErrorD1();
+}
+
+double State::helperMu(double x, void *params) {
+    mu = x;
+    return absErrorMu();
+}
+
+double State::helperF0(double x, void *params) {
+    F0 = x;
+    return absErrorF0();
+}
+
 double State::fixD1() {
     return 0.0;
 }
