@@ -8,3 +8,10 @@ Spectrum is a big ball of static functions which take a State and some
 additional data, do some math, and emit results.
 
 Tests for individual classes are built to test_(Class).out by make.
+
+Built on Ubuntu 10.10.  Required packages:
+build-essential
+libgsl0ldbl
+libgsl0-dev
+gsl-bin
+libblas-dev
