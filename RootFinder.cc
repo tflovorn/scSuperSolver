@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_roots.h>
@@ -23,6 +21,7 @@ RootFinder::RootFinder(double (* const helper)(double, void *),
 const RootData& RootFinder::findRoot() {
     int status;
     int iter = 0, max_iter = RF_MAX_ITER;
+    bool converged = true;
     const gsl_root_fsolver_type *T;
     gsl_root_fsolver *s;
     double r = myGuess;
@@ -43,12 +42,15 @@ const RootData& RootFinder::findRoot() {
         x_lo = gsl_root_fsolver_x_lower(s);
         x_hi = gsl_root_fsolver_x_upper(s);
         status = gsl_root_test_interval(x_lo, x_hi, myTolerance, 0.0);
-        std::cout << r << std::endl;
     } while (status == GSL_CONTINUE && iter < max_iter);
 
     gsl_root_fsolver_free(s);    
+    
+    if (iter > max_iter || status != GSL_SUCCESS) {
+        converged = false;
+    }
 
-    RootData thisData(true, r, myHelper(r, myParams));
+    RootData thisData(converged, r, myHelper(r, myParams));
 
     return (const RootData&)thisData;
 }
