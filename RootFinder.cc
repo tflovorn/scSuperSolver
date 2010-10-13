@@ -6,6 +6,10 @@
 
 #include "RootFinder.hh"
 
+RootData::RootData(bool cvg, double rt, double fnv) :
+    converged(cvg), root(rt), fnvalue(fnv) 
+{ }
+
 RootFinder::RootFinder(double (* const helper)(double, void *), 
     void * const params, const double guess, const double min, 
     const double max, const double tolerance) : 
@@ -16,7 +20,7 @@ RootFinder::RootFinder(double (* const helper)(double, void *),
 // Lots of code cribbed from GSL documentation
 // http://www.gnu.org/software/gsl/manual/html_node/Root-Finding-Examples.html
 
-bool RootFinder::findRoot() {
+const RootData& RootFinder::findRoot() {
     int status;
     int iter = 0, max_iter = RF_MAX_ITER;
     const gsl_root_fsolver_type *T;
@@ -44,5 +48,7 @@ bool RootFinder::findRoot() {
 
     gsl_root_fsolver_free(s);    
 
-    return true;
+    RootData thisData(true, r, myHelper(r, myParams));
+
+    return (const RootData&)thisData;
 }
