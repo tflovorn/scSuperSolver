@@ -3,6 +3,7 @@
 #include "State.hh"
 #include "Spectrum.hh"
 #include "BZone.hh"
+#include "RootFinder.hh"
 
 State::State(const Environment& envIn) : env(envIn), 
     d1(envIn.initD1), mu(envIn.initMu), f0(envIn.initF0)
@@ -12,7 +13,10 @@ State::State(const Environment& envIn) : env(envIn),
 
 // driver STUB
 bool State::makeSelfConsistent() {
-    return false;
+    fixD1();
+    fixMu();
+    fixF0();
+    return checkSelfConsistent();
 }
 
 // checkers
@@ -87,29 +91,38 @@ double State::setEpsilonMin() {
 }
 
 double State::helperD1(double x, void *params) {
-    d1 = x;
-    setEpsilonMin();    // D1 changed so epsilonMin might change
-    return absErrorD1();
+    State *st = (State*)params;
+    st->d1 = x;
+    st->setEpsilonMin();    // D1 changed so epsilonMin might change
+    return st->absErrorD1();
 }
 
 double State::helperMu(double x, void *params) {
-    mu = x;
-    return absErrorMu();
+    State *st = (State*)params;
+    st->mu = x;
+    return st->absErrorMu();
 }
 
 double State::helperF0(double x, void *params) {
-    f0 = x;
-    return absErrorF0();
+    State *st = (State*)params;
+    st->f0 = x;
+    return st->absErrorF0();
 }
 
 double State::fixD1() {
-    return 0.0;
+    RootFinder rf(&State::helperD1, this, d1, 0.0, 10.0, 1e-6);
+    const RootData& rd = rf.findRoot();
+    return d1;
 }
 
 double State::fixMu() {
-    return 0.0;
+    RootFinder rf(&State::helperMu, this, mu, -10.0, 10.0, 1e-6);
+    const RootData& rd = rf.findRoot();
+    return mu;
 }
 
 double State::fixF0() {
-    return 0.0;
+    RootFinder rf(&State::helperF0, this, f0, 0.0, 10.0, 1e-6);
+    const RootData& rd = rf.findRoot();
+    return f0;
 }

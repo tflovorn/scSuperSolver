@@ -54,7 +54,7 @@ ConfigData.o: ConfigData.cc ConfigData.hh
 Environment.o: Environment.cc Environment.hh
 	g++ -c Environment.cc
 
-State.o: State.cc State.hh
+State.o: State.cc State.hh RootFinder.hh
 	g++ -c State.cc
 
 BZone.o: BZone.cc BZone.hh State.hh

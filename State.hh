@@ -52,9 +52,9 @@ private:
     double fixMu();
     double fixF0();
     // Functions to be passed into RootFinder
-    double helperD1(double x, void *params);
-    double helperMu(double x, void *params);
-    double helperF0(double x, void *params);
+    static double helperD1(double x, void *params);
+    static double helperMu(double x, void *params);
+    static double helperF0(double x, void *params);
 };
 
 #endif

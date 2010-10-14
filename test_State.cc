@@ -9,7 +9,10 @@ int main(int argc, char *argv[]) {
     const ConfigData& cfg = ConfigData::makeFromFile(cfgFileName);
     const Environment& env(cfg);
     State st(env);
+    st.makeSelfConsistent();
     std::cout << st.getD1() << std::endl;
+    std::cout << st.getMu() << std::endl;
+    std::cout << st.getF0() << std::endl;
     std::cout << st.getEpsilonMin() << std::endl;
     std::cout << st.absErrorD1() << std::endl;
     std::cout << st.absErrorMu() << std::endl;
