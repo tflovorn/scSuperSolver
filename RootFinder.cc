@@ -41,7 +41,7 @@ const RootData& RootFinder::findRoot() {
         r = gsl_root_fsolver_root(s);
         x_lo = gsl_root_fsolver_x_lower(s);
         x_hi = gsl_root_fsolver_x_upper(s);
-        status = gsl_root_test_interval(x_lo, x_hi, myTolerance, 0.0);
+        status = gsl_root_test_interval(x_lo, x_hi, 0.0, myTolerance);
     } while (status == GSL_CONTINUE && iter < max_iter);
 
     gsl_root_fsolver_free(s);    

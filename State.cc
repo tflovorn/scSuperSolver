@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iostream>
 
 #include "State.hh"
 #include "Spectrum.hh"
@@ -11,10 +12,14 @@ State::State(const Environment& envIn) : env(envIn),
     setEpsilonMin();
 }
 
-// driver STUB
+// driver
 bool State::makeSelfConsistent() {
-    fixD1();
-    fixMu();
+    do {
+        fixD1();
+        std::cout << d1 << ' ' << relErrorD1() << std::endl;
+        fixMu();
+        std::cout << mu << ' ' << relErrorMu() << std::endl;
+    } while (!checkD1());
     fixF0();
     return checkSelfConsistent();
 }
@@ -118,6 +123,7 @@ double State::fixD1() {
 double State::fixMu() {
     RootFinder rf(&State::helperMu, this, mu, -10.0, 10.0, 1e-6);
     const RootData& rd = rf.findRoot();
+    std::cout << rd.converged << std::endl;
     return mu;
 }
 
