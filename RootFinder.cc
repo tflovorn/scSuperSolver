@@ -50,7 +50,6 @@ const RootData& RootFinder::findRoot() {
         converged = false;
     }
 
-    RootData thisData(converged, r, myHelper(r, myParams));
-
-    return (const RootData&)thisData;
+    RootData const *rdata = new RootData(converged, r, myHelper(r, myParams));
+    return (const RootData&)(*rdata);
 }

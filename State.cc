@@ -15,9 +15,11 @@ State::State(const Environment& envIn) : env(envIn),
 // driver
 bool State::makeSelfConsistent() {
     do {
+        std::cout << "starting fixing" << std::endl;
         fixD1();
         fixMu();
         fixF0();
+        std::cout << "done with one iteration" << std::endl;
     } while (!checkSelfConsistent());
     return checkSelfConsistent();
 }

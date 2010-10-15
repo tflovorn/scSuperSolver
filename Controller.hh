@@ -9,9 +9,12 @@
 #include "State.hh"
 
 class Controller {
+public:
     // Factory for controller.  Make ConfigData from inFileName, Environment
     // from ConfigData, and State from Environment.  Then make a Controller.
     static Controller& makeController(const std::string& cfgFileName);
+    // Build controller from given important bits.
+    Controller(const ConfigData& config, const Environment& env, State& st);
     // Delete config, env (which deletes loggers), and state.
     ~Controller();
     // Do the self-consistent calculation.  Return false if can't converge.
@@ -25,8 +28,6 @@ private:
     const ConfigData& myConfig;
     const Environment& myEnv; 
     State& myState;
-    // Build controller from given important bits.
-    Controller(const ConfigData& config, const Environment& env, State& st);
 };
 
 #endif

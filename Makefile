@@ -1,11 +1,11 @@
 all: test_Logger.out test_ConfigData.out test_Environment.out test_State.out \
-test_BZone.out test_RootFinder.out
+test_BZone.out test_RootFinder.out test_Controller.out
 
 clean:
 	\rm -f *.gch *.o *.out test_out test_err test_Logger_log
 
 OBJS = Logger.o ConfigData.o Environment.o State.o BZone.o Spectrum.o \
-RootFinder.o
+RootFinder.o Controller.o
 
 FLAGS = -lgsl -lblas -I/usr/local/include/gsl/
 
@@ -27,6 +27,9 @@ test_BZone.out: test_BZone.o $(OBJS)
 test_RootFinder.out: test_RootFinder.o $(OBJS)
 	g++ -o test_RootFinder.out test_RootFinder.o $(FLAGS) $(OBJS)
 
+test_Controller.out: test_Controller.o $(OBJS)
+	g++ -o test_Controller.out test_Controller.o $(FLAGS) $(OBJS)
+
 test_Logger.o: test_Logger.cc Logger.hh
 	g++ -c test_Logger.cc
 
@@ -44,6 +47,9 @@ test_BZone.o: test_BZone.cc BZone.hh State.hh
 
 test_RootFinder.o: test_RootFinder.cc RootFinder.hh
 	g++ -c test_RootFinder.cc
+
+test_Controller.o: test_Controller.cc Controller.hh
+	g++ -c test_Controller.cc
 
 Logger.o: Logger.cc Logger.hh
 	g++ -c Logger.cc
@@ -66,6 +72,11 @@ Spectrum.o: Spectrum.cc Spectrum.hh State.hh
 RootFinder.o: RootFinder.cc RootFinder.hh
 	g++ -c RootFinder.cc $(FLAGS)
 
+Controller.o: Controller.cc Controller.hh
+	g++ -c Controller.cc
+
 Environment.hh: ConfigData.hh Logger.hh
 
 State.hh: Environment.hh
+
+Controller.hh: State.hh

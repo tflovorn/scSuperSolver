@@ -9,19 +9,30 @@ Controller::~Controller() {
     delete &myConfig;
 }
 
+Controller& Controller::makeController(const std::string& cfgFileName) {
+    const ConfigData& cfg = ConfigData::makeFromFile(cfgFileName);
+    Environment *env = new Environment(cfg);
+    State *st = new State((const Environment&)(*env));
+    Controller *control = new Controller(cfg, (const Environment&)(*env),
+                                               (State&)(*st));
+    return (Controller&)(*control);
+}
+
 bool Controller::selfConsistentCalc() {
     return myState.makeSelfConsistent();
 }
 
 void Controller::logResults() {
-    string sc = st.checkSelfConsistent ? "true" : "false";
-    env.outputLog.writeln("self-consistent: " << sc);
-    env.outputLog.writeln("D1: " << st.getD1() << 
-                          " error: " << st.absErrorD1());
-    env.outputLog.writeln("mu: " << st.getMu() << 
-                          " error: " << st.absErrorMu());
-    env.outputLog.writeln("F0: " << st.getF0() << 
-                          " error: " << st.absErrorF0());
+/*
+    std::string sc = myState.checkSelfConsistent ? "true" : "false";
+    env.outputLog.writeln(std::string("self-consistent: ") << sc);
+    env.outputLog.writeln(std::string("D1: ") << myState.getD1() << 
+                          " error: " << myState.absErrorD1());
+    env.outputLog.writeln(std::string("mu: ") << myState.getMu() << 
+                          " error: " << myState.absErrorMu());
+    env.outputLog.writeln(std::string("F0: ") << myState.getF0() << 
+                          " error: " << myState.absErrorF0());
+*/
 }
 
 void Controller::logConfig() {
