@@ -57,8 +57,8 @@ std::string ConfigData::nextToken(std::ifstream *cfgFile) {
             tokenDone = true;
 	        continue;
         }
-    	// whitespace: move along. can check '\n' here only after checking it for token
-        // completion above.
+    	// whitespace: move along. 
+        // can check '\n' here only after checking it for token completion
     	if (nextc == ' ' || nextc == '\t' || nextc == '\n') {
 	        continue;
     	}

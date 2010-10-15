@@ -16,11 +16,9 @@ State::State(const Environment& envIn) : env(envIn),
 bool State::makeSelfConsistent() {
     do {
         fixD1();
-        std::cout << d1 << ' ' << absErrorD1() << std::endl;
         fixMu();
-        std::cout << mu << ' ' << absErrorMu() << std::endl;
-    } while (!checkD1());
-    fixF0();
+        fixF0();
+    } while (!checkSelfConsistent());
     return checkSelfConsistent();
 }
 
@@ -123,7 +121,6 @@ double State::fixD1() {
 double State::fixMu() {
     RootFinder rf(&State::helperMu, this, mu, -10.0, 10.0, 1e-6);
     const RootData& rd = rf.findRoot();
-    std::cout << rd.converged << std::endl;
     return mu;
 }
 

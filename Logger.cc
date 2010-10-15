@@ -10,6 +10,10 @@ Logger::~Logger() {
 }
 
 void Logger::write(const std::string& outData) const {
+    (*myLog) << outData;
+    (*myLog).flush();
+}
+void Logger::writeln(const std::string& outData) const {
     (*myLog) << outData << std::endl;
     (*myLog).flush();
 }

@@ -10,11 +10,11 @@ int main(int argc, char *argv[]) {
     const Environment& env(cfg);
     State st(env);
     st.makeSelfConsistent();
-    std::cout << st.getD1() << std::endl;
-    std::cout << st.getMu() << std::endl;
-    std::cout << st.getF0() << std::endl;
+    std::cout << "D1: " << st.getD1() << " error: " 
+        << st.absErrorD1() << std::endl;
+    std::cout << "mu: " << st.getMu() << " error: " 
+        << st.absErrorMu() << std::endl;
+    std::cout << "F0: " << st.getF0() << " error: " 
+         <<st.absErrorF0() << std::endl;
     std::cout << st.getEpsilonMin() << std::endl;
-    std::cout << st.absErrorD1() << std::endl;
-    std::cout << st.absErrorMu() << std::endl;
-    std::cout << st.absErrorF0() << std::endl;
 }
