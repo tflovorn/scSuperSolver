@@ -16,9 +16,9 @@ State::State(const Environment& envIn) : env(envIn),
 bool State::makeSelfConsistent() {
     do {
         fixD1();
-        std::cout << d1 << ' ' << relErrorD1() << std::endl;
+        std::cout << d1 << ' ' << absErrorD1() << std::endl;
         fixMu();
-        std::cout << mu << ' ' << relErrorMu() << std::endl;
+        std::cout << mu << ' ' << absErrorMu() << std::endl;
     } while (!checkD1());
     fixF0();
     return checkSelfConsistent();
@@ -30,15 +30,15 @@ bool State::checkSelfConsistent() const {
 }
 
 bool State::checkD1() const {
-    return relErrorD1() < env.tolD1;
+    return absErrorD1() < env.tolD1;
 }
 
 bool State::checkMu() const {
-    return relErrorMu() < env.tolMu;
+    return absErrorMu() < env.tolMu;
 }
 
 bool State::checkF0() const {
-    return relErrorF0() < env.tolF0;
+    return absErrorF0() < env.tolF0;
 }
 
 // error calculators

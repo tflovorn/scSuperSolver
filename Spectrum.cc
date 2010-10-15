@@ -42,7 +42,7 @@ double Spectrum::innerD1(const State& st, double kx, double ky) {
 }
 
 double Spectrum::innerMu(const State& st, double kx, double ky) {
-    return fermi(st, xi(st, kx, ky));
+    return 0.5 * (1 - xi(st, kx, ky)/pairEnergy(st, kx, ky));
 }
 
 double Spectrum::innerF0(const State& st, double kx, double ky) {

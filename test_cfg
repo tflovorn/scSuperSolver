@@ -11,4 +11,4 @@ test_out, test_err
 0.05, 0.1, 0.1
 
 # tolD1, tolMu, tolF0
-1e-4, 1e-4, 1e-4
+1e-6, 1e-6, 1e-6
