@@ -1,7 +1,7 @@
 #include "Controller.hh"
 
-Controller::Controller(const ConfigData& config, const Environment& env, State& st) :
-    myConfig(config), myEnv(env), myState(st) { }
+Controller::Controller(const ConfigData& config, const Environment& env, 
+    State& st) : myConfig(config), myEnv(env), myState(st) { }
 
 Controller::~Controller() {
     delete &myState;
@@ -22,17 +22,15 @@ bool Controller::selfConsistentCalc() {
     return myState.makeSelfConsistent();
 }
 
-void Controller::logResults() {
-/*
-    std::string sc = myState.checkSelfConsistent ? "true" : "false";
-    env.outputLog.writeln(std::string("self-consistent: ") << sc);
-    env.outputLog.writeln(std::string("D1: ") << myState.getD1() << 
-                          " error: " << myState.absErrorD1());
-    env.outputLog.writeln(std::string("mu: ") << myState.getMu() << 
-                          " error: " << myState.absErrorMu());
-    env.outputLog.writeln(std::string("F0: ") << myState.getF0() << 
-                          " error: " << myState.absErrorF0());
-*/
+void Controller::logState() {
+    std::string sc = myState.checkSelfConsistent() ? "true" : "false";
+    myEnv.outputLog.printf("self-consistent: %s\n", sc.c_str());
+    myEnv.outputLog.printf("D1: %e; error: %e\n", myState.getD1(), 
+                                                  myState.absErrorD1());
+    myEnv.outputLog.printf("mu: %e; error: %e\n", myState.getMu(),
+                                                  myState.absErrorMu());
+    myEnv.outputLog.printf("F0: %e; error: %e\n", myState.getF0(),
+                                                  myState.absErrorF0());
 }
 
 void Controller::logConfig() {

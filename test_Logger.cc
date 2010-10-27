@@ -2,6 +2,6 @@
 
 int main(int argc, char *argv[]) {
     Logger myLog = Logger("test_Logger_log");
-    myLog.write("I love the power glove");
-    myLog.write("It's so bad...");
+    myLog.printf("I love the power glove\n");
+    myLog.printf("It's so bad...\n");
 }

@@ -20,7 +20,7 @@ public:
     // Do the self-consistent calculation.  Return false if can't converge.
     bool selfConsistentCalc();
     // Output important data about current State.
-    void logResults();
+    void logState();
     // Output configuration data.
     void logConfig();
 private:

@@ -1,9 +1,9 @@
 #ifndef __MFTS_LOGGER_H
 #define __MFTS_LOGGER_H
 
-#include <iostream>
-#include <fstream>
 #include <string>
+#include <cstdarg>
+#include <cstdio>
 
 class Logger {
 public:
@@ -13,11 +13,10 @@ public:
     // Destructor.
     ~Logger();
     // Client calls this to write to our open stream.
-    void write(const std::string& outData) const;
-    void writeln(const std::string& outData) const;
+    void printf(const std::string& format, ...) const;
 private:
     // Stream we'll write to.
-    std::ofstream *myLog;
+    FILE *myLog;
 };
 
 #endif

@@ -1,19 +1,16 @@
 #include "Logger.hh"
 
 Logger::Logger(const std::string& fname) { 
-    myLog = new std::ofstream(fname.c_str());
+    myLog = fopen(fname.c_str(), "r");
 }
 
 Logger::~Logger() {
-    myLog->close();
-    delete myLog;
+    fclose(myLog);
 }
 
-void Logger::write(const std::string& outData) const {
-    (*myLog) << outData;
-    (*myLog).flush();
-}
-void Logger::writeln(const std::string& outData) const {
-    (*myLog) << outData << std::endl;
-    (*myLog).flush();
+void Logger::printf(const std::string& fmt, ...) const {
+    va_list args;
+    va_start(args, fmt);
+    vfprintf(myLog, fmt.c_str(), args);
+    va_end(args);
 }
