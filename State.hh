@@ -50,9 +50,9 @@ private:
     // associated self-consistent equation. Return value found.
     // Note: d1 and mu equations are coupled, so they must be iterated 
     // together to find a pair of values that satisfies both equations.
-    double fixD1();
-    double fixMu();
-    double fixF0();
+    bool fixD1();
+    bool fixMu();
+    bool fixF0();
     // Functions to be passed into RootFinder
     static double helperD1(double x, void *params);
     static double helperMu(double x, void *params);

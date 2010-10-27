@@ -15,13 +15,11 @@ State::State(const Environment& envIn) : env(envIn),
 // driver
 bool State::makeSelfConsistent() {
     do {
-        std::cout << "starting fixing" << std::endl;
         fixD1();
         fixMu();
         fixF0();
-        std::cout << "done with one iteration" << std::endl;
+        logState();
     } while (!checkSelfConsistent());
-    std::cout << "Done iterating!" << std::endl;
     return checkSelfConsistent();
 }
 
@@ -124,20 +122,39 @@ double State::helperF0(double x, void *params) {
     return st->absErrorF0();
 }
 
-double State::fixD1() {
-    RootFinder rf(&State::helperD1, this, d1, 0.0, 10.0, 1e-6);
+bool State::fixD1() {
+    double old_d1 = d1;
+    RootFinder rf(&State::helperD1, this, d1, 0.0, 10.0, env.tolD1 / 100);
     const RootData& rd = rf.findRoot();
-    return d1;
+    if (!rd.converged) {
+        env.errorLog.printf("D1 failed to converge!\n");
+        d1 = old_d1;
+        return false;
+    }
+    return true;
 }
 
-double State::fixMu() {
-    RootFinder rf(&State::helperMu, this, mu, -10.0, 10.0, 1e-6);
+bool State::fixMu() {
+    double old_mu = mu;
+    RootFinder rf(&State::helperMu, this, mu, -10.0, 10.0, env.tolMu / 100);
     const RootData& rd = rf.findRoot();
-    return mu;
+    if (!rd.converged) {
+        env.errorLog.printf("Mu failed to converge!\n");
+        mu = old_mu;
+        return false;
+    }
+    return true;
 }
 
-double State::fixF0() {
-    RootFinder rf(&State::helperF0, this, f0, 0.0, 10.0, 1e-6);
+bool State::fixF0() {
+    double old_f0 = f0;
+    RootFinder rf(&State::helperF0, this, f0, 0.0, 10.0, env.tolF0 / 100);
     const RootData& rd = rf.findRoot();
+    if (!rd.converged) {
+        env.errorLog.printf("F0 failed to converge!\n");
+        f0 = old_f0;
+        return false;
+    }
+    return true;
     return f0;
 }
