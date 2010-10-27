@@ -31,6 +31,8 @@ public:
     double getMu() const;
     double getF0() const;
     double getEpsilonMin() const;
+    // Output what state is now.
+    void logState() const;
     // RootFinder needs to be a friend to do its dirty work.
     friend class RootFinder;
     // Our Environment, containing all the configuration info we need.

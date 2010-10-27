@@ -21,6 +21,7 @@ bool State::makeSelfConsistent() {
         fixF0();
         std::cout << "done with one iteration" << std::endl;
     } while (!checkSelfConsistent());
+    std::cout << "Done iterating!" << std::endl;
     return checkSelfConsistent();
 }
 
@@ -30,15 +31,15 @@ bool State::checkSelfConsistent() const {
 }
 
 bool State::checkD1() const {
-    return absErrorD1() < env.tolD1;
+    return fabs(absErrorD1()) < env.tolD1;
 }
 
 bool State::checkMu() const {
-    return absErrorMu() < env.tolMu;
+    return fabs(absErrorMu()) < env.tolMu;
 }
 
 bool State::checkF0() const {
-    return absErrorF0() < env.tolF0;
+    return fabs(absErrorF0()) < env.tolF0;
 }
 
 // error calculators
@@ -87,6 +88,15 @@ double State::getF0() const {
 
 double State::getEpsilonMin() const {
     return epsilonMin;
+}
+
+// logging
+void State::logState() const {
+    std::string sc = checkSelfConsistent() ? "true" : "false";
+    env.outputLog.printf("self-consistent: %s\n", sc.c_str());
+    env.outputLog.printf("D1: %e; error: %e\n", getD1(), absErrorD1());
+    env.outputLog.printf("mu: %e; error: %e\n", getMu(), absErrorMu());
+    env.outputLog.printf("F0: %e; error: %e\n", getF0(), absErrorF0());
 }
 
 // variable manipulators

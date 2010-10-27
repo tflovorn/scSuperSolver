@@ -1,7 +1,7 @@
 #include "Logger.hh"
 
 Logger::Logger(const std::string& fname) { 
-    myLog = fopen(fname.c_str(), "r");
+    myLog = fopen(fname.c_str(), "w");
 }
 
 Logger::~Logger() {

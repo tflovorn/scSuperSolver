@@ -23,14 +23,7 @@ bool Controller::selfConsistentCalc() {
 }
 
 void Controller::logState() {
-    std::string sc = myState.checkSelfConsistent() ? "true" : "false";
-    myEnv.outputLog.printf("self-consistent: %s\n", sc.c_str());
-    myEnv.outputLog.printf("D1: %e; error: %e\n", myState.getD1(), 
-                                                  myState.absErrorD1());
-    myEnv.outputLog.printf("mu: %e; error: %e\n", myState.getMu(),
-                                                  myState.absErrorMu());
-    myEnv.outputLog.printf("F0: %e; error: %e\n", myState.getF0(),
-                                                  myState.absErrorF0());
+    myState.logState();
 }
 
 void Controller::logConfig() {
