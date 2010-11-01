@@ -14,10 +14,14 @@ State::State(const Environment& envIn) : env(envIn),
 
 // driver
 bool State::makeSelfConsistent() {
+    logState();
     do {
         fixD1();
+        std::cout << "got d1 = " << d1 << std::endl;
         fixMu();
+        std::cout << "got mu = " << mu << std::endl;
         fixF0();
+        std::cout << "got f0\n";
         logState();
     } while (!checkSelfConsistent());
     return checkSelfConsistent();
@@ -113,18 +117,24 @@ double State::helperD1(double x, void *params) {
 double State::helperMu(double x, void *params) {
     State *st = (State*)params;
     st->mu = x;
+    std::cout << "trying mu = " << st->mu << ", about to fix D1\n";
+    st->fixD1();
+    std::cout << "D1 fixed at " << st->d1 << std::endl;
     return st->absErrorMu();
 }
 
 double State::helperF0(double x, void *params) {
     State *st = (State*)params;
     st->f0 = x;
+    std::cout << "trying f0 = " << st->f0 << ", about to fix mu\n";
+    st->fixMu();
+    std::cout << "mu fixed at " << st->mu << std::endl;
     return st->absErrorF0();
 }
 
 bool State::fixD1() {
     double old_d1 = d1;
-    RootFinder rf(&State::helperD1, this, d1, 0.0, 10.0, env.tolD1 / 100);
+    RootFinder rf(&State::helperD1, this, d1, -1.0, 1.0, env.tolD1 / 10);
     const RootData& rd = rf.findRoot();
     if (!rd.converged) {
         env.errorLog.printf("D1 failed to converge!\n");
@@ -136,7 +146,7 @@ bool State::fixD1() {
 
 bool State::fixMu() {
     double old_mu = mu;
-    RootFinder rf(&State::helperMu, this, mu, -10.0, 10.0, env.tolMu / 100);
+    RootFinder rf(&State::helperMu, this, mu, -1.0, 1.0, env.tolMu / 10);
     const RootData& rd = rf.findRoot();
     if (!rd.converged) {
         env.errorLog.printf("Mu failed to converge!\n");
@@ -148,7 +158,7 @@ bool State::fixMu() {
 
 bool State::fixF0() {
     double old_f0 = f0;
-    RootFinder rf(&State::helperF0, this, f0, 0.0, 10.0, env.tolF0 / 100);
+    RootFinder rf(&State::helperF0, this, f0, 0.0, 1.0, env.tolF0 / 10);
     const RootData& rd = rf.findRoot();
     if (!rd.converged) {
         env.errorLog.printf("F0 failed to converge!\n");
@@ -156,5 +166,4 @@ bool State::fixF0() {
         return false;
     }
     return true;
-    return f0;
 }
