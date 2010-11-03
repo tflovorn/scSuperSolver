@@ -121,7 +121,7 @@ double State::helperD1(double x, void *params) {
     State *st = (State*)params;
     st->d1 = x;
     st->setEpsilonMin();    // D1 changed so epsilonMin might change
-    return st->relErrorD1();
+    return st->absErrorD1();
 }
 
 double State::helperMu(double x, void *params) {
@@ -130,7 +130,7 @@ double State::helperMu(double x, void *params) {
     std::cout << "trying mu = " << st->mu << ", about to fix D1\n";
     st->fixD1();
     std::cout << "D1 fixed at " << st->d1 << std::endl;
-    return st->relErrorMu();
+    return st->absErrorMu();
 }
 
 double State::helperF0(double x, void *params) {
@@ -139,14 +139,14 @@ double State::helperF0(double x, void *params) {
     std::cout << "trying f0 = " << st->f0 << ", about to fix mu\n";
     st->fixMu();
     std::cout << "mu fixed at " << st->mu << std::endl;
-    return st->relErrorF0();
+    return st->absErrorF0();
 }
 
 bool State::fixD1() {
     double old_d1 = d1;
-    Minimizer minFinder(&State::helperD1, this, d1, -1.0, 1.0, env.tolD1 / 10);
-    const MinimumData& minData = minFinder.findMinimum();
-    if (!minData.converged) {
+    RootFinder rootFinder(&State::helperD1, this, d1, 0.0, 1.0, env.tolD1 / 10);
+    const RootData& rootData = rootFinder.findRoot();
+    if (!rootData.converged) {
         env.errorLog.printf("D1 failed to converge!\n");
         d1 = old_d1;
         return false;
@@ -156,9 +156,10 @@ bool State::fixD1() {
 
 bool State::fixMu() {
     double old_mu = mu;
-    Minimizer minFinder(&State::helperMu, this, mu, -1.0, 1.0, env.tolMu / 10);
-    const MinimumData& minData = minFinder.findMinimum();
-    if (!minData.converged) {
+    RootFinder rootFinder(&State::helperMu, this, mu, -1.0, 1.0, 
+                          env.tolMu / 10);
+    const RootData& rootData = rootFinder.findRoot();
+    if (!rootData.converged) {
         env.errorLog.printf("Mu failed to converge!\n");
         mu = old_mu;
         return false;
@@ -168,9 +169,9 @@ bool State::fixMu() {
 
 bool State::fixF0() {
     double old_f0 = f0;
-    Minimizer minFinder(&State::helperF0, this, f0, 0.0, 1.0, env.tolF0 / 10);
-    const MinimumData& minData = minFinder.findMinimum();
-    if (!minData.converged) {
+    RootFinder rootFinder(&State::helperF0, this, f0, 0.0, 1.0, env.tolF0 / 10);
+    const RootData& rootData = rootFinder.findRoot();
+    if (!rootData.converged) {
         env.errorLog.printf("F0 failed to converge!\n");
         f0 = old_f0;
         return false;

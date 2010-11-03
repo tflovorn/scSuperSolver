@@ -3,13 +3,22 @@
 
 // -- one-dimensional --
 
-#define RF_MAX_ITER 1000
+#define RF_MAX_ITER 1024
+#define RF_BRACKET_STEPS 32
 
 class RootData {
 public:
     RootData(bool cvg, double rt, double fnv);
     bool converged;
     double root, fnvalue;
+};
+
+class BracketData {
+public:
+    BracketData(bool _success, double _left, double _right, 
+                double _fnleft, double _fnright);
+    bool success;
+    double left, right, fnleft, fnright;
 };
 
 class RootFinder {
@@ -21,6 +30,7 @@ public:
     // Encapsulates the heavy lifting of root-finding.
     // If a root is found, returns true.  Otherwise returns false.
     const RootData& findRoot();
+    const BracketData& bracket();
 private:
     // Function to find root of.
     double (* const myHelper)(double, void *);
