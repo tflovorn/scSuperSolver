@@ -5,7 +5,7 @@ clean:
 	\rm -f *.gch *.o *.out test_out test_err test_Logger_log
 
 OBJS = Logger.o ConfigData.o Environment.o State.o BZone.o Spectrum.o \
-RootFinder.o Controller.o Minimizer.o
+RootFinder.o Controller.o
 
 FLAGS = -lgsl -lblas -I/usr/local/include/gsl/
 
@@ -74,9 +74,6 @@ RootFinder.o: RootFinder.cc RootFinder.hh
 
 Controller.o: Controller.cc Controller.hh
 	g++ -c Controller.cc
-
-Minimizer.o: Minimizer.cc Minimizer.hh
-	g++ -c Minimizer.cc $(FLAGS)
 
 Environment.hh: ConfigData.hh Logger.hh
 

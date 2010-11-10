@@ -5,7 +5,6 @@
 #include "Spectrum.hh"
 #include "BZone.hh"
 #include "RootFinder.hh"
-#include "Minimizer.hh"
 
 State::State(const Environment& envIn) : env(envIn), 
     d1(envIn.initD1), mu(envIn.initMu), f0(envIn.initF0)
