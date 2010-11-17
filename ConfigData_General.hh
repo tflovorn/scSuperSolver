@@ -3,21 +3,23 @@
 
 #include <string>
 #include <map>
+#include <exception>
+#include "boost/lexical_cast.hpp"
+
+typedef std::map<std::string, std::string> StringMap;
 
 class ConfigData {
 public:
     // build empty ConfigData
     ConfigData();
-    // initialize ConfigData with information from file
-    ConfigData(const std::string& cfgFileName);
     // need to destroy the map
     ~ConfigData();
     // copy/assignment constructors should probably be written
 
     // read data from given file
-    readFromFile(const std::string& cfgFileName);
+    void readFromFile(const std::string& cfgFileName);
     // write current data out to file
-    writeToFile(const std::string& cfgFileName);
+    void writeToFile(const std::string& cfgFileName);
     // get named value from the map
     template <class DataType>
     DataType getValue(const std::string& key);
@@ -26,7 +28,14 @@ public:
     void setValue(const std::string& key, DataType value);
 private:
     // holds key/value pairs this ConfigData has seen
-    std::map<std::string, std::string> cfgMap;
+    StringMap *cfgMap;
+};
+
+// thrown by getValue
+class KeyNotFoundException : public std::exception {
+    virtual const char* what() const throw() {
+        return "Key not found in map.";
+    }
 };
 
 #endif
