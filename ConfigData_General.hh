@@ -1,12 +1,15 @@
 #ifndef __MFTS_CONFIG_DATA_H
 #define __MFTS_CONFIG_DATA_H
 
+#include <cstddef>
 #include <string>
 #include <map>
 #include <exception>
+#include <fstream>
 #include "boost/lexical_cast.hpp"
 
 typedef std::map<std::string, std::string> StringMap;
+typedef std::vector<std::string> StringVector;
 
 class ConfigData {
 public:
@@ -29,6 +32,8 @@ public:
 private:
     // holds key/value pairs this ConfigData has seen
     StringMap *cfgMap;
+    // get lines from config file, ignoring comments
+    StringVector* readLines(const std::string& cfgFileName);
 };
 
 // thrown by getValue
