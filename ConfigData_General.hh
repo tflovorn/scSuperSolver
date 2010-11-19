@@ -3,10 +3,11 @@
 
 #include <cstddef>
 #include <string>
+#include <vector>
 #include <map>
 #include <exception>
 #include <fstream>
-#include "boost/lexical_cast.hpp"
+#include <boost/lexical_cast.hpp>
 
 typedef std::map<std::string, std::string> StringMap;
 typedef std::vector<std::string> StringVector;
@@ -34,6 +35,8 @@ private:
     StringMap *cfgMap;
     // get lines from config file, ignoring comments
     StringVector* readLines(const std::string& cfgFileName);
+    // return true if line starts with '#', false otherwise
+    bool isComment(const std::string& line);
 };
 
 // thrown by getValue
