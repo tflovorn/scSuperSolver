@@ -1,35 +1,64 @@
 #ifndef __MFTS_CONFIG_DATA_H
 #define __MFTS_CONFIG_DATA_H
 
+#include <cstddef>
 #include <string>
-#include <iostream>
+#include <vector>
+#include <map>
+#include <exception>
 #include <fstream>
-#include <cstdlib>
+#include <boost/lexical_cast.hpp>
 
-// tokens in config file can be this long at most (minus one character for \0)
-#define MAX_TOKEN_SIZE 1000
+typedef std::map<std::string, std::string> StringMap;
+typedef std::vector<std::string> StringVector;
 
 class ConfigData {
 public:
-    // Create a ConfigData from file with given name, returning const ref
-    static const ConfigData& makeFromFile(const std::string& cfgFileName);
-    // Parameters for Environment to scoop up (descriptions in Environment.h)
-    std::string outputLogName, errorLogName;
-    int gridLen, alpha;
-    double t0, tz, thp, x, th, initD1, initMu, initF0,
-           tolD1, tolMu, tolF0;
+    // build empty ConfigData
+    ConfigData();
+    // need to destroy the map
+    ~ConfigData();
+    // copy/assignment constructors should probably be written
+
+    // read data from given file
+    void readFromFile(const std::string& cfgFileName);
+    // write current data out to file
+    void writeToFile(const std::string& cfgFileName);
+    // get named value from the map
+    template <class DataType>
+    DataType getValue(const std::string& key) const;
+    // put a value into the map
+    template <class DataType>
+    void setValue(const std::string& key, DataType value);
 private:
-    // Constructor handles opening and (normally) closing file.
-    ConfigData(const std::string& cfgFileName);
-    // Read data from cfgFile and store it.
-    void readConfigData(std::ifstream *cfgFile);
-    // Helper for readConfigData, gives next valid token in stream
-    // (i.e. not in a comment). does not convert to correct type!
-    std::string nextToken(std::ifstream *cfgFile);
-    // If token should be an integer
-    int nextInt(std::ifstream *cfgFile);
-    // If token should be a double
-    double nextDouble(std::ifstream *cfgFile);
+    // holds key/value pairs this ConfigData has seen
+    StringMap *cfgMap;
+    // get lines from config file, ignoring comments
+    StringVector* readLines(const std::string& cfgFileName);
+    // return true if line starts with '#', false otherwise
+    bool isComment(const std::string& line);
 };
+
+// thrown by getValue
+class KeyNotFoundException : public std::exception {
+    virtual const char* what() const throw() {
+        return "Key not found in map.";
+    }
+};
+
+template <class DataType>
+DataType ConfigData::getValue(const std::string& key) const {
+    StringMap::iterator it = cfgMap->find(key);
+    if (it == cfgMap->end()) {
+        throw new KeyNotFoundException();
+    }
+    return boost::lexical_cast<DataType>(it->second);
+}
+
+template <class DataType>
+void ConfigData::setValue(const std::string& key, DataType value) {
+    const std::string& strValue = boost::lexical_cast<std::string>(value);
+    (*cfgMap)[strValue] = key;
+}
 
 #endif

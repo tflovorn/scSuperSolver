@@ -6,8 +6,9 @@
 
 int main(int argc, char *argv[]) {
     const std::string& cfgFileName = "test_cfg";
-    const ConfigData& cfg = ConfigData::makeFromFile(cfgFileName);
-    const Environment& env(cfg);
+    ConfigData *cfg = new ConfigData();
+    cfg->readFromFile(cfgFileName);
+    const Environment& env((const ConfigData&)cfg);
     State st(env);
     st.makeSelfConsistent();
     std::cout << "D1: " << st.getD1() << " error: " 

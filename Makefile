@@ -7,7 +7,7 @@ clean:
 OBJS = Logger.o ConfigData.o Environment.o State.o BZone.o Spectrum.o \
 RootFinder.o Controller.o
 
-FLAGS = -lgsl -lblas -I/usr/local/include/gsl/
+FLAGS = -Wall -lgsl -lblas -I/usr/local/include/gsl/
 
 test_Logger.out: test_Logger.o $(OBJS)
 	g++ -o test_Logger.out test_Logger.o $(FLAGS) $(OBJS)

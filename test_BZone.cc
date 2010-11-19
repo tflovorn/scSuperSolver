@@ -27,8 +27,9 @@ double test_step(const State& st, double kx, double ky) {
 int main(int argc, char *argv[]) {
     std::cout << "Starting BZone test." << std::endl;
     const std::string& cfgFileName = "test_cfg";
-    const ConfigData& cfg = ConfigData::makeFromFile(cfgFileName);
-    const Environment& env(cfg);
+    ConfigData *cfg = new ConfigData();
+    cfg->readFromFile(cfgFileName);
+    const Environment& env((const ConfigData&)cfg);
     State st(env);
 
     double avg_1 = BZone::average(st, test_1);
