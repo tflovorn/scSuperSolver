@@ -1,3 +1,8 @@
+Current implementation follows zero-temperature mean field theory results.
+
+Plan on incorporating results at T = Tc (strong hole binding)
+    and T = Tp (weak hole binding) also.
+
 Top-level usage:
     - build Controller from config file; this triggers buiding instances of 
         ConfigData, Environment, Logger, and State.
