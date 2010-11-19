@@ -19,6 +19,8 @@ void ConfigData::readFromFile(const std::string& cfgFileName) {
             key = line.substr(0, split);
             value = line.substr(split + 1, line.length() - split - 1);
             setValue(key, value);
+            std::cout << "adding key = " << key 
+                << ", value = " << value << std::endl;
         }
     }
     delete lines;

@@ -1,6 +1,7 @@
 #ifndef __MFTS_CONFIG_DATA_H
 #define __MFTS_CONFIG_DATA_H
 
+#include <iostream>
 #include <cstddef>
 #include <string>
 #include <vector>
@@ -46,6 +47,8 @@ class KeyNotFoundException : public std::exception {
     }
 };
 
+// getValue/setValue are implemented here because linking fails if they're
+// implemented in the .cc file
 template <class DataType>
 DataType ConfigData::getValue(const std::string& key) const {
     StringMap::iterator it = cfgMap->find(key);
@@ -58,7 +61,7 @@ DataType ConfigData::getValue(const std::string& key) const {
 template <class DataType>
 void ConfigData::setValue(const std::string& key, DataType value) {
     const std::string& strValue = boost::lexical_cast<std::string>(value);
-    (*cfgMap)[strValue] = key;
+    (*cfgMap)[key] = strValue;
 }
 
 #endif
