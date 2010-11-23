@@ -20,6 +20,7 @@ libgsl0ldbl
 libgsl0-dev
 gsl-bin
 libblas-dev
+libboost-dev
 
 For building on Fedora 14 need the following:
 make
@@ -29,3 +30,4 @@ gsl
 gsl-devel
 blas
 blas-devel
+(--boost?--)

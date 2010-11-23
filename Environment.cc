@@ -17,5 +17,6 @@ Environment::Environment(const ConfigData& cfg) :
     tolMu(cfg.getValue<double>("tolMu")),
     tolF0(cfg.getValue<double>("tolF0")),
     outputLog(cfg.getValue<std::string>("outputLogName")),
-    errorLog(cfg.getValue<std::string>("errorLogName"))
+    errorLog(cfg.getValue<std::string>("errorLogName")),
+    debugLog(cfg.getValue<std::string>("debugLogName"))
 { }

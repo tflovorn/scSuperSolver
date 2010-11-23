@@ -17,11 +17,11 @@ bool State::makeSelfConsistent() {
     logState();
     do {
         fixD1();
-        std::cout << "got d1 = " << d1 << std::endl;
+        env.debugLog.printf("got d1 = %e\n", d1);
         fixMu();
-        std::cout << "got mu = " << mu << std::endl;
+        env.debugLog.printf("got mu = %e\n", mu);
         fixF0();
-        std::cout << "got f0\n";
+        env.debugLog.printf("got f0 = %e\n", f0);
         logState();
     } while (!checkSelfConsistent());
     return checkSelfConsistent();
@@ -126,18 +126,18 @@ double State::helperD1(double x, void *params) {
 double State::helperMu(double x, void *params) {
     State *st = (State*)params;
     st->mu = x;
-    std::cout << "trying mu = " << st->mu << ", about to fix D1\n";
+//    st->env.debugLog.printf("trying mu = %e, about to fix D1\n", x);
     st->fixD1();
-    std::cout << "D1 fixed at " << st->d1 << std::endl;
+//    st->env.debugLog.printf("D1 fixed at %e\n", st->d1);
     return st->absErrorMu();
 }
 
 double State::helperF0(double x, void *params) {
     State *st = (State*)params;
     st->f0 = x;
-    std::cout << "trying f0 = " << st->f0 << ", about to fix mu\n";
+//    st->env.debugLog.printf("trying f0 = %e, about to fix mu\n", x);
     st->fixMu();
-    std::cout << "mu fixed at " << st->mu << std::endl;
+//    st->env.debugLog.printf("mu fixed at %e\n", st->mu);
     return st->absErrorF0();
 }
 

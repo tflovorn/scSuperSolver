@@ -9,8 +9,7 @@ public:
     // Construct an Environment from configuration data. Build loggers.
     Environment(const ConfigData& cfg);
     // Log stuff with these.  (default destructor calls their destructors)
-    Logger outputLog;
-    Logger errorLog;
+    Logger outputLog, errorLog, debugLog;
     // Physical parameters.
     const int gridLen,  // Brillouin zone side length 
               alpha;    // alpha = {-1, 1} -> {d-wave, s-wave} symmetry
