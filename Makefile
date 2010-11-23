@@ -1,4 +1,6 @@
-all: test_Logger.out test_ConfigData.out test_Environment.out test_State.out \
+all: mainController.out
+
+tests: test_Logger.out test_ConfigData.out test_Environment.out test_State.out \
 test_BZone.out test_RootFinder.out test_Controller.out
 
 clean:
@@ -8,6 +10,9 @@ OBJS = Logger.o ConfigData.o Environment.o State.o BZone.o Spectrum.o \
 RootFinder.o Controller.o
 
 FLAGS = -Wall -lgsl -lblas -I/usr/local/include/gsl/
+
+mainController.out: mainController.o $(OBJS)
+	g++ -o mainController.out mainController.o $(FLAGS) $(OBJS)
 
 test_Logger.out: test_Logger.o $(OBJS)
 	g++ -o test_Logger.out test_Logger.o $(FLAGS) $(OBJS)
@@ -29,6 +34,9 @@ test_RootFinder.out: test_RootFinder.o $(OBJS)
 
 test_Controller.out: test_Controller.o $(OBJS)
 	g++ -o test_Controller.out test_Controller.o $(FLAGS) $(OBJS)
+
+mainController.o: mainController.cc Controller.hh
+	g++ -c mainController.cc
 
 test_Logger.o: test_Logger.cc Logger.hh
 	g++ -c test_Logger.cc

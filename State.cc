@@ -14,7 +14,6 @@ State::State(const Environment& envIn) : env(envIn),
 
 // driver
 bool State::makeSelfConsistent() {
-    logState();
     do {
         fixD1();
         env.debugLog.printf("got d1 = %e\n", d1);
@@ -22,7 +21,6 @@ bool State::makeSelfConsistent() {
         env.debugLog.printf("got mu = %e\n", mu);
         fixF0();
         env.debugLog.printf("got f0 = %e\n", f0);
-        logState();
     } while (!checkSelfConsistent());
     return checkSelfConsistent();
 }
