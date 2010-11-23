@@ -12,5 +12,6 @@ void Logger::printf(const std::string& fmt, ...) const {
     va_list args;
     va_start(args, fmt);
     vfprintf(myLog, fmt.c_str(), args);
+    fflush(myLog);
     va_end(args);
 }

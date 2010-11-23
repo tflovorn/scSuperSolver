@@ -2,7 +2,7 @@ all: test_Logger.out test_ConfigData.out test_Environment.out test_State.out \
 test_BZone.out test_RootFinder.out test_Controller.out
 
 clean:
-	\rm -f *.gch *.o *.out test_out test_err test_Logger_log
+	\rm -f *.gch *.o *.out test_out test_err test_Logger_log test_debug
 
 OBJS = Logger.o ConfigData.o Environment.o State.o BZone.o Spectrum.o \
 RootFinder.o Controller.o

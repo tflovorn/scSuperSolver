@@ -126,18 +126,20 @@ double State::helperD1(double x, void *params) {
 double State::helperMu(double x, void *params) {
     State *st = (State*)params;
     st->mu = x;
-//    st->env.debugLog.printf("trying mu = %e, about to fix D1\n", x);
+//    std::cout << "helperMu, about to echo mu\n";
+    st->env.debugLog.printf("trying mu = %e, about to fix D1\n", x);
     st->fixD1();
-//    st->env.debugLog.printf("D1 fixed at %e\n", st->d1);
+    st->env.debugLog.printf("D1 fixed at %e\n", st->d1);
     return st->absErrorMu();
 }
 
 double State::helperF0(double x, void *params) {
     State *st = (State*)params;
     st->f0 = x;
-//    st->env.debugLog.printf("trying f0 = %e, about to fix mu\n", x);
+//    std::cout << "helperF0, about to echo f0\n";
+    st->env.debugLog.printf("trying f0 = %e, about to fix mu\n", x);
     st->fixMu();
-//    st->env.debugLog.printf("mu fixed at %e\n", st->mu);
+    st->env.debugLog.printf("mu fixed at %e\n", st->mu);
     return st->absErrorF0();
 }
 
