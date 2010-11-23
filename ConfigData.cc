@@ -4,6 +4,11 @@ ConfigData::ConfigData() {
     cfgMap = new StringMap();
 }
 
+ConfigData::ConfigData(const std::string& cfgFileName) {
+    cfgMap = new StringMap();
+    readFromFile(cfgFileName);
+}
+
 ConfigData::~ConfigData() {
     delete cfgMap;
 }

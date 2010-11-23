@@ -15,9 +15,11 @@ typedef std::vector<std::string> StringVector;
 
 class ConfigData {
 public:
-    // build empty ConfigData
+    // build empty cfgMap
     ConfigData();
-    // need to destroy the map
+    // build cfgMap, using given file
+    ConfigData(const std::string& cfgFileName);
+    // destroy cfgMap
     ~ConfigData();
     // copy/assignment constructors should probably be written
 
@@ -30,7 +32,7 @@ public:
     DataType getValue(const std::string& key) const;
     // put a value into the map
     template <class DataType>
-    void setValue(const std::string& key, DataType value);
+    void setValue(const std::string& key, const DataType& value);
 private:
     // holds key/value pairs this ConfigData has seen
     StringMap *cfgMap;
@@ -59,7 +61,7 @@ DataType ConfigData::getValue(const std::string& key) const {
 }
 
 template <class DataType>
-void ConfigData::setValue(const std::string& key, DataType value) {
+void ConfigData::setValue(const std::string& key, const DataType& value) {
     const std::string& strValue = boost::lexical_cast<std::string>(value);
     (*cfgMap)[key] = strValue;
 }

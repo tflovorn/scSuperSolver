@@ -10,8 +10,7 @@ Controller::~Controller() {
 }
 
 Controller& Controller::makeController(const std::string& cfgFileName) {
-    ConfigData *cfg = new ConfigData();
-    cfg->readFromFile(cfgFileName);
+    ConfigData *cfg = new ConfigData(cfgFileName);
     Environment *env = new Environment((const ConfigData&)(*cfg));
     State *st = new State((const Environment&)(*env));
     Controller *control = new Controller((const ConfigData&)cfg, 
