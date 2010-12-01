@@ -55,15 +55,23 @@ void ConfigData::readFromFile(const std::string& cfgFileName) {
     delete lines;
 }
 
-void ConfigData::writeToFile(const std::string& cfgFileName) {
+void ConfigData::writeToFile(const std::string& cfgFileName) const {
     StringMap::iterator it;
     std::ofstream ofs(cfgFileName.c_str());
-    std::string line;
     for (it = cfgMap->begin(); it != cfgMap->end(); it++) {
-        line = (*it).first + "," + (*it).second + "\n";
+        std::string line = (*it).first + "," + (*it).second + "\n";
         ofs.write(line.c_str(), line.length());
     }
     ofs.close();
+}
+
+void ConfigData::writeToLog(const Logger& log) const {
+    StringMap::iterator it;
+    log.printf("<start>,config\n");
+    for (it = cfgMap->begin(); it != cfgMap->end(); it++) {
+        log.printf("%s,%s\n", (*it).first.c_str(), (*it).second.c_str());
+    }
+    log.printf("<end>,config\n");
 }
 
 StringVector* ConfigData::readLines(const std::string& cfgFileName) {

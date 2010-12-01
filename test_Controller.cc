@@ -16,6 +16,7 @@
  ****************************************************************************/
 
 #include <cassert>
+#include <iostream>
 
 #include "Controller.hh"
 
@@ -25,5 +26,6 @@ int main(int argc, char *argv[]) {
     bool success = myControl.selfConsistentCalc();
     myControl.logState();
     assert(success);
+    std::cout << "self-consistent calculation successful!" << std::endl;
     return 0;
 }

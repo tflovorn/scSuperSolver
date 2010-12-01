@@ -27,6 +27,8 @@
 #include <fstream>
 #include <boost/lexical_cast.hpp>
 
+#include "Logger.hh"
+
 typedef std::map<std::string, std::string> StringMap;
 typedef std::vector<std::string> StringVector;
 
@@ -45,7 +47,9 @@ public:
     // read data from given file
     void readFromFile(const std::string& cfgFileName);
     // write current data out to file
-    void writeToFile(const std::string& cfgFileName);
+    void writeToFile(const std::string& cfgFileName) const;
+    // write to Logger using FileDict protocol
+    void writeToLog(const Logger& log) const;
     // get named value from the map
     template <class DataType>
     DataType getValue(const std::string& key) const;

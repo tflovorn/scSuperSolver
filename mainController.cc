@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
     const std::string& cfgFileName = argv[1];
     Controller& myControl = Controller::makeController(cfgFileName);
     myControl.selfConsistentCalc();
+    myControl.logConfig();
     myControl.logState();
     return 0;
 }
