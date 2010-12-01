@@ -30,6 +30,15 @@ ConfigData::~ConfigData() {
     delete cfgMap;
 }
 
+ConfigData::ConfigData(const ConfigData& conf) {
+    cfgMap = conf.cfgMap;
+}
+
+ConfigData& ConfigData::operator=(const ConfigData& conf) {
+    delete cfgMap;
+    cfgMap = conf.cfgMap;
+}
+
 void ConfigData::readFromFile(const std::string& cfgFileName) {
     StringVector *lines = readLines(cfgFileName);
     StringVector::iterator it;

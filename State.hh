@@ -21,8 +21,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "Spectrum.hh"
-#include "BZone.hh"
+
 #include "RootFinder.hh"
 #include "Environment.hh"
 
@@ -81,5 +80,10 @@ private:
     static double helperMu(double x, void *params);
     static double helperF0(double x, void *params);
 };
+
+// these are #included down here because they refer to State; should have it
+// declared before including them
+#include "Spectrum.hh"
+#include "BZone.hh"
 
 #endif

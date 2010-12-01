@@ -28,10 +28,9 @@ Controller::~Controller() {
 
 Controller& Controller::makeController(const std::string& cfgFileName) {
     ConfigData *cfg = new ConfigData(cfgFileName);
-    Environment *env = new Environment((const ConfigData&)(*cfg));
-    State *st = new State((const Environment&)(*env));
-    Controller *control = new Controller((const ConfigData&)cfg, 
-        (const Environment&)(*env), (State&)(*st));
+    Environment *env = new Environment(*cfg);
+    State *st = new State(*env);
+    Controller *control = new Controller(*cfg, *env, *st);
     return (Controller&)(*control);
 }
 

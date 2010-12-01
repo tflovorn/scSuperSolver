@@ -38,7 +38,9 @@ public:
     ConfigData(const std::string& cfgFileName);
     // destroy cfgMap
     ~ConfigData();
-    // copy/assignment constructors should probably be written
+    // copy/assignment constructors required to transfer map to new copy
+    ConfigData(const ConfigData& conf);
+    ConfigData& operator=(const ConfigData& conf);
 
     // read data from given file
     void readFromFile(const std::string& cfgFileName);
