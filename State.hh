@@ -1,6 +1,12 @@
 #ifndef __MFTS_STATE_H
 #define __MFTS_STATE_H
 
+#include <cmath>
+#include <iostream>
+
+#include "Spectrum.hh"
+#include "BZone.hh"
+#include "RootFinder.hh"
 #include "Environment.hh"
 
 class State {
