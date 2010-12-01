@@ -18,6 +18,9 @@
 #ifndef __MFTS__BZONE_H
 #define __MFTS__BZONE_H
 
+#include <cmath>
+#include <cfloat>
+
 #include "State.hh"
 
 typedef double (*bzFunction)(const State&, double, double);

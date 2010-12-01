@@ -18,6 +18,8 @@
 #ifndef __MFTS_SPECTRUM_H
 #define __MFTS_SPECTRUM_H
 
+#include <cmath>
+
 #include "State.hh"
 
 class Spectrum {

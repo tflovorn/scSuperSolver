@@ -18,6 +18,10 @@
 #ifndef __MFTS_ROOT_FINDER_H
 #define __MFTS_ROOT_FINDER_H
 
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_roots.h>
+
 // -- one-dimensional --
 
 #define RF_MAX_ITER 1024
