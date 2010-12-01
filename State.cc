@@ -113,10 +113,12 @@ double State::getEpsilonMin() const {
 // logging
 void State::logState() const {
     std::string sc = checkSelfConsistent() ? "true" : "false";
-    env.outputLog.printf("self-consistent: %s\n", sc.c_str());
-    env.outputLog.printf("D1: %e; error: %e\n", getD1(), relErrorD1());
-    env.outputLog.printf("mu: %e; error: %e\n", getMu(), relErrorMu());
-    env.outputLog.printf("F0: %e; error: %e\n", getF0(), relErrorF0());
+    env.outputLog.printf("<begin>,state\n");
+    env.outputLog.printf("self-consistent,%s\n", sc.c_str());
+    env.outputLog.printf("d1,%e\nd1RelError,%e\n", getD1(), relErrorD1());
+    env.outputLog.printf("mu,%e\nmuRelError,%e\n", getMu(), relErrorMu());
+    env.outputLog.printf("f0,%e\nf0RelError,%e\n", getF0(), relErrorF0());
+    env.outputLog.printf("<end>,state\n");
 }
 
 // variable manipulators

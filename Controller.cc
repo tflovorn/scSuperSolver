@@ -43,6 +43,7 @@ void Controller::logState() {
     myState.logState();
 }
 
+// should push config data to output log
 void Controller::logConfig() {
 
 }
