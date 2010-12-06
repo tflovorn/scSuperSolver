@@ -20,7 +20,7 @@ import os
 CQ_MAX_PROCESSES = 2
 
 class ControllerQueue(object):
-    def __init__(self, initialQueue=None, maxProcesses=CQ_MAX_PROCESS):
+    def __init__(self, initialQueue=None, maxProcesses=CQ_MAX_PROCESSES):
         self.maxProcesses = maxProcesses
         if initialQueue == None:
             self.queue = []
@@ -36,7 +36,8 @@ class ControllerQueue(object):
     def runAll(self):
         pids = []
         while len(self.queue) > 0:
-            pid = os.spawnl(os.P_NOWAIT, "mainController.out", self.queue[0])
+            pid = os.spawnl(os.P_NOWAIT, "mainController.out", 
+                            "mainController.out", self.queue[0])
             pids.append(pid)
             self.queue = self.queue[1:]
             while len(pids) >= self.maxProcesses:
