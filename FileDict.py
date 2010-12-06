@@ -51,7 +51,10 @@ class FileDict(object):
         self.topDict = {None: [{}]}
         if fileName != None:
             self.readFromFile(str(fileName))
-
+    
+    def setGlobal(self, key, value):
+        self.topDict[None][0][key] = value
+    
     def readFromFile(self, fileName):
         fp = open(fileName, 'r')
         lines = fp.readlines()

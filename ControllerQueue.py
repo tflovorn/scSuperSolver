@@ -17,27 +17,31 @@
 
 import os
 
-CQ_MAX_PROCESSES = 2
+DEFAULT_MAX_PROCESSES = 2
+DEFAULT_CONTROLLER_NAME = "mainController.out"
 
 class ControllerQueue(object):
-    def __init__(self, initialQueue=None, maxProcesses=CQ_MAX_PROCESSES):
+    def __init__(self, initialQueue=None, 
+                 controllerName=DEFAULT_CONTROLLER_NAME,
+                 maxProcesses=DEFAULT_MAX_PROCESSES):
         self.maxProcesses = maxProcesses
+        self.controllerName = controllerName
         if initialQueue == None:
             self.queue = []
         else:
             self.queue = initialQueue
 
-    def enqueue(self, newItem):
-        self.queue.append(newItem)
+    def enqueue(self, newConfig):
+        self.queue.append(newConfig)
 
-    def enqueueList(self, newItemList):
-        self.queue.extend(newItemList)
+    def enqueueList(self, newConfigList):
+        self.queue.extend(newConfigList)
 
     def runAll(self):
         pids = []
         while len(self.queue) > 0:
-            pid = os.spawnl(os.P_NOWAIT, "mainController.out", 
-                            "mainController.out", self.queue[0])
+            pid = os.spawnl(os.P_NOWAIT, self.controllerName, 
+                            self.controllerName, self.queue[0])
             pids.append(pid)
             self.queue = self.queue[1:]
             while len(pids) >= self.maxProcesses:
