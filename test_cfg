@@ -1,4 +1,4 @@
-outputLogName,test_out
+outputLogName,test_out.fd
 errorLogName,test_err
 debugLogName,test_debug
 gridLen,64

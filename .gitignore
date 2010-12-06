@@ -1,2 +1,11 @@
 # python compiled/object file
 *.py[co]
+
+# C/C++ object file
+*.o
+
+# compiled header
+*.gch
+
+# compiled executable
+*.out

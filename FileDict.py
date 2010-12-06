@@ -50,11 +50,12 @@ class FileDict(object):
     def __init__(self, fileName=None):
         self.topDict = {None: [{}]}
         if fileName != None:
-            self.readFile(str(fileName))
+            self.readFromFile(str(fileName))
 
-    def readFile(self, fileName):
+    def readFromFile(self, fileName):
         fp = open(fileName, 'r')
         lines = fp.readlines()
+        fp.close()
         sectionName = None
         for line in lines:
             # ignore leading/trailing whitespace
@@ -91,3 +92,15 @@ class FileDict(object):
 
             # line isn't special, add it to dict
             self.topDict[sectionName][-1][key] = value
+
+    def writeToFile(self, fileName):
+        fp = open(fileName, 'w')
+        for sectionName, section in self.topDict.items():
+            for iteration in section:
+                if sectionName != None:
+                    fp.write("<begin>," + sectionName + "\n")
+                for key, value in iteration.items():
+                    fp.write(key + ',' + value + "\n")
+                if sectionName != None:
+                    fp.write("<end>," + sectionName + "\n")
+        fp.close()
