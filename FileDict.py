@@ -48,7 +48,7 @@ class FileDict(object):
     """
     
     def __init__(self, fileName=None):
-        topDict = {None: [{}]}
+        self.topDict = {None: [{}]}
         if fileName != None:
             self.readFile(str(fileName))
 
@@ -65,7 +65,7 @@ class FileDict(object):
                 continue
 
             # assume there is only one comma in the line
-            parts = ','.split(line)
+            parts = line.split(',')
             key, value = parts[0], parts[1]
 
             # if line is a section change, handle it
@@ -76,10 +76,10 @@ class FileDict(object):
                                      "<begin> outside global section.")
                 # make entry for new dict
                 sectionName = value
-                if sectionName in topDict:
-                    topDict[sectionName].append({})
+                if sectionName in self.topDict:
+                    self.topDict[sectionName].append({})
                 else:
-                    topDict[sectionName] = [{}]
+                    self.topDict[sectionName] = [{}]
                 continue
             if key == "<end>":
                 # must be inside a section to leave it
@@ -90,4 +90,4 @@ class FileDict(object):
                 continue
 
             # line isn't special, add it to dict
-            topDict[sectionName][-1][key] = value
+            self.topDict[sectionName][-1][key] = value
