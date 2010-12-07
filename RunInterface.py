@@ -26,7 +26,7 @@ class RunInterface(object):
         queue = ControllerQueue(configFiles)
         queue.runAll()
 
-    def makeRun(self, runsData):
+    def makeRun(self, runData):
         """Make a new run of config files from the base config and runData.
 
         runDict is a dict of dicts.  keys in runDict are label for each run;
@@ -35,7 +35,7 @@ class RunInterface(object):
 
         """
         configNames = []
-        for label, labelData in runsData.items():
+        for label, labelData in runData.items():
             newConfig = FileDict(baseConfigName)
             labelData.update({"outputLogName" : label + "_out.fd",
                               "errorLogName" : label + "_error",
@@ -46,3 +46,13 @@ class RunInterface(object):
             configNames.append(newConfigName)
             newConfig.writeToFile(newConfigName)
         return configNames
+
+    def oneDimRun(self, label, varName, minimum, maximum, step):
+        """One-dimensional run with varName from [minimum, maximum)."""
+        index = 0
+        varValue = minimum
+        runData = {}
+        while varValue < maximum:
+            runData[label + str(index)] = {varName : varValue}
+            varValue += step
+        return makeRun(runData)
