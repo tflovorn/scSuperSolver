@@ -47,6 +47,7 @@ class ControllerQueue(object):
         """Spawn a controller for all configs in queue.
 
         Number of simultaneous processes is no more than maxProcesses.
+        This uses Unix-specific functionality! (os.wait)
 
         """
         pids = []
@@ -55,6 +56,11 @@ class ControllerQueue(object):
                             self.controllerName, self.queue[0])
             pids.append(pid)
             self.queue = self.queue[1:]
+            # if we have enough processes now, we need to wait
             while len(pids) >= self.maxProcesses:
-                os.waitpid(pids[0], 0)
-                pids = pids[1:]
+                donePid, status = os.wait()
+                pids.remove(donePid)
+        # wait for any remaining processes to finish
+        while len(pids) > 0:
+            donePid, status = os.wait()
+            pids.remove(donePid)

@@ -37,12 +37,12 @@ class RunInterface(object):
         """
         configNames = []
         for label, labelData in runData.items():
-            newConfig = FileDict(baseConfigName)
+            newConfig = FileDict(self.baseConfigName)
             labelData.update({"outputLogName" : label + "_out.fd",
                               "errorLogName" : label + "_error",
                               "debugLogName" : label + "_debug"})
             for key, value in labelData.items():
-                newConfig.setGlobal(key, value)
+                newConfig.setGlobal(str(key), str(value))
             newConfigName = label + "_config"
             configNames.append(newConfigName)
             newConfig.writeToFile(newConfigName)
@@ -60,4 +60,5 @@ class RunInterface(object):
         while varValue < maximum:
             runData[label + str(index)] = {varName : varValue}
             varValue += step
-        return makeRun(runData)
+            index += 1
+        return self.makeRun(runData)
