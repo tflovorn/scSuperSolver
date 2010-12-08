@@ -18,32 +18,35 @@
 from FileDict import FileDict
 from ControllerQueue import ControllerQueue
 
+DEFAULT_MAX_PROCESSES = 2
+
 class RunInterface(object):
     def __init__(self, baseConfigName):
         self.baseConfigName = baseConfigName
 
-    def doRun(self, configFiles):
+    def doRun(self, configFiles, maxProcesses=DEFAULT_MAX_PROCESSES):
         """Run a controller for each config in configFiles."""
-        queue = ControllerQueue(configFiles)
+        queue = ControllerQueue(configFiles, maxProcesses)
         queue.runAll()
 
     def makeRun(self, runData):
         """Make a new run of config files from the base config and runData.
 
-        runDict is a dict of dicts.  keys in runDict are label for each run;
-        the associated dicts are key-value pairs for data to modify in the
-        base config.  Return names of config files.
+        runData is a list of tuples which contain a label and a dict.
+        Labels are used to name generated configs and their specified output 
+        files.  The dicts are key-value pairs for data to modify in the
+        base config.  Return a list of the names of config files generated.
 
         """
         configNames = []
-        for label, labelData in runData.items():
+        for label, labelData in runData:
             newConfig = FileDict(self.baseConfigName)
+            newConfigName = label + "_config"
             labelData.update({"outputLogName" : label + "_out.fd",
                               "errorLogName" : label + "_error",
                               "debugLogName" : label + "_debug"})
             for key, value in labelData.items():
                 newConfig.setGlobal(str(key), str(value))
-            newConfigName = label + "_config"
             configNames.append(newConfigName)
             newConfig.writeToFile(newConfigName)
         return configNames
@@ -56,9 +59,9 @@ class RunInterface(object):
         """
         index = 0
         varValue = minimum
-        runData = {}
+        runData = []
         while varValue < maximum:
-            runData[label + str(index)] = {varName : varValue}
+            runData.append((label + str(index), {varName : varValue}))
             varValue += step
             index += 1
         return self.makeRun(runData)

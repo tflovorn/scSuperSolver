@@ -17,7 +17,6 @@
 
 import os
 
-DEFAULT_MAX_PROCESSES = 2
 DEFAULT_CONTROLLER_NAME = "mainController.out"
 
 class ControllerQueue(object):
@@ -27,9 +26,8 @@ class ControllerQueue(object):
     Call runAll when ready to run controllers.
 
     """
-    def __init__(self, initialQueue=None, 
-                 controllerName=DEFAULT_CONTROLLER_NAME,
-                 maxProcesses=DEFAULT_MAX_PROCESSES):
+    def __init__(self, initialQueue, maxProcesses,
+                 controllerName=DEFAULT_CONTROLLER_NAME):
         self.maxProcesses = maxProcesses
         self.controllerName = controllerName
         if initialQueue == None:

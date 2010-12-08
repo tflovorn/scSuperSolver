@@ -18,5 +18,5 @@
 from RunInterface import RunInterface
 
 testRunInterface = RunInterface("test_cfg")
-testConfigs = testRunInterface.oneDimRun("test_xrun", "x", 0.01, 0.2, 0.04)
-testRunInterface.doRun(testConfigs)
+testConfigs = testRunInterface.oneDimRun("test_xrun", "x", 0.04, 0.18, 0.04)
+testRunInterface.doRun(testConfigs, maxProcesses=4)
