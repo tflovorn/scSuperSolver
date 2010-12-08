@@ -56,6 +56,7 @@ class FileDict(object):
         self.topDict[None][0][key] = value
     
     def readFromFile(self, fileName):
+        """Read data from specified file into topDict."""
         fp = open(fileName, 'r')
         lines = fp.readlines()
         fp.close()
@@ -97,10 +98,12 @@ class FileDict(object):
             self.topDict[sectionName][-1][key] = value
 
     def writeToFile(self, fileName):
+        """Write out topDict in proper format to specified file."""
         fp = open(fileName, 'w')
         for sectionName, section in self.topDict.items():
+            # section = list of dicts
             for iteration in section:
-                if sectionName != None:
+                if sectionName != None: # global section has no name
                     fp.write("<begin>," + sectionName + "\n")
                 for key, value in iteration.items():
                     fp.write(key + ',' + value + "\n")

@@ -23,6 +23,7 @@ class RunInterface(object):
         self.baseConfigName = baseConfigName
 
     def doRun(self, configFiles):
+        """Run a controller for each config in configFiles."""
         queue = ControllerQueue(configFiles)
         queue.runAll()
 
@@ -48,7 +49,11 @@ class RunInterface(object):
         return configNames
 
     def oneDimRun(self, label, varName, minimum, maximum, step):
-        """One-dimensional run with varName from [minimum, maximum)."""
+        """One-dimensional run with varName from [minimum, maximum).
+
+        Returns names of config files.
+
+        """
         index = 0
         varValue = minimum
         runData = {}

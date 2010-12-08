@@ -21,6 +21,12 @@ DEFAULT_MAX_PROCESSES = 2
 DEFAULT_CONTROLLER_NAME = "mainController.out"
 
 class ControllerQueue(object):
+    """Queue which handles spawning of new controllers.
+
+    Input one more more configs through __init__/enqueue/enqueueList.
+    Call runAll when ready to run controllers.
+
+    """
     def __init__(self, initialQueue=None, 
                  controllerName=DEFAULT_CONTROLLER_NAME,
                  maxProcesses=DEFAULT_MAX_PROCESSES):
@@ -38,6 +44,11 @@ class ControllerQueue(object):
         self.queue.extend(newConfigList)
 
     def runAll(self):
+        """Spawn a controller for all configs in queue.
+
+        Number of simultaneous processes is no more than maxProcesses.
+
+        """
         pids = []
         while len(self.queue) > 0:
             pid = os.spawnl(os.P_NOWAIT, self.controllerName, 
