@@ -15,13 +15,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
+import os
+
 from FileDict import FileDict
 from ControllerQueue import ControllerQueue
 
 DEFAULT_MAX_PROCESSES = 2
 
 class RunInterface(object):
-    def __init__(self, baseConfigName):
+    def __init__(self, path, baseConfigName):
+        self.path = path
         self.baseConfigName = baseConfigName
 
     def doRun(self, configFiles, maxProcesses=DEFAULT_MAX_PROCESSES):
@@ -39,16 +42,17 @@ class RunInterface(object):
 
         """
         configNames = []
+        baseConfigFullPath = os.path.join(self.path, self.baseConfigName)
         for label, labelData in runData:
-            newConfig = FileDict(self.baseConfigName)
-            newConfigName = label + "_config"
+            newConfig = FileDict(baseConfigFullPath)
+            newConfigFullPath = os.path.join(self.path, label + "_config")
             labelData.update({"outputLogName" : label + "_out.fd",
                               "errorLogName" : label + "_error",
                               "debugLogName" : label + "_debug"})
             for key, value in labelData.items():
                 newConfig.setGlobal(str(key), str(value))
-            configNames.append(newConfigName)
-            newConfig.writeToFile(newConfigName)
+            configNames.append(newConfigFullPath)
+            newConfig.writeToFile(newConfigFullPath)
         return configNames
 
     def oneDimRun(self, label, varName, minimum, maximum, step):

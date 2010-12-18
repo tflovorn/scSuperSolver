@@ -48,10 +48,14 @@ class ControllerQueue(object):
         This uses Unix-specific functionality! (os.wait)
 
         """
+        if not os.path.exists(self.controllerName):
+            raise Exception("Controller doesn't exist!")
+
         pids = []
         while len(self.queue) > 0:
+            path, configName = os.path.split(self.queue[0])
             pid = os.spawnl(os.P_NOWAIT, self.controllerName, 
-                            self.controllerName, self.queue[0])
+                            self.controllerName, path, configName)
             pids.append(pid)
             self.queue = self.queue[1:]
             # if we have enough processes now, we need to wait

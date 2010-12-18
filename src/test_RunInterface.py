@@ -15,8 +15,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
+import sys
+
 from RunInterface import RunInterface
 
-testRunInterface = RunInterface("test_cfg")
+if len(sys.argv) < 2:
+    print "usage: python test_RunInterface.py path"
+    sys.exit(1)
+path = sys.argv[1]
+
+testRunInterface = RunInterface(path, "test_cfg")
 testConfigs = testRunInterface.oneDimRun("test_xrun", "x", 0.04, 0.18, 0.04)
 testRunInterface.doRun(testConfigs, maxProcesses=4)

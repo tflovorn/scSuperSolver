@@ -15,8 +15,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
+import sys, os
+
 import ControllerQueue
 
+if len(sys.argv) < 2:
+    print "usage: python test_ControllerQueue.py path"
+    sys.exit(1)
+path = sys.argv[1]
+
 configList = ["test_cfg", "test_cfg2", "test_cfg3", "test_cfg4"]
-testQueue = ControllerQueue.ControllerQueue(initialQueue=configList)
+configListPaths = [os.path.join(path, configName) for configName in configList]
+testQueue = ControllerQueue.ControllerQueue(initialQueue=configListPaths,
+                                            maxProcesses=2)
 testQueue.runAll()

@@ -15,8 +15,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
+import sys, os
+
 import FileDict
 
-myDict = FileDict.FileDict("test_FileDict.fd")
+if len(sys.argv) < 2:
+    print "usage: python test_FileDict.py path"
+    sys.exit(1)
+path = sys.argv[1]
+
+myDict = FileDict.FileDict(os.path.join(path, "test_FileDict.fd"))
 print myDict.topDict
-myDict.writeToFile("test_FileDict_rewrite.fd")
+myDict.writeToFile(os.path.join(path, "test_FileDict_rewrite.fd"))

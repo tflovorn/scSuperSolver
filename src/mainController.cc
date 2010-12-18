@@ -21,12 +21,12 @@
 #include "Controller.hh"
 
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        std::cout << "usage: mainController.out cfgFileName" << std::endl;
+    if (argc < 3) {
+        std::cout << "usage: mainController.out path cfgFileName" << std::endl;
         return 1;
     }
-    const std::string& cfgFileName = argv[1];
-    Controller& myControl = Controller::makeController(cfgFileName);
+    const std::string& path = argv[1], cfgFileName = argv[2];
+    Controller& myControl = Controller::makeController(path, cfgFileName);
     myControl.selfConsistentCalc();
     myControl.logConfig();
     myControl.logState();

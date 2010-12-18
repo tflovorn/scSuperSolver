@@ -55,10 +55,10 @@ class FileDict(object):
     def setGlobal(self, key, value):
         self.topDict[None][0][key] = value
     
-    def readFromFile(self, path, fileName):
+    def readFromFile(self, filePath):
         """Read data from specified file into topDict."""
         
-        fp = open(fileName, 'r')
+        fp = open(filePath, 'r')
         lines = fp.readlines()
         fp.close()
         sectionName = None
@@ -98,9 +98,9 @@ class FileDict(object):
             # line isn't special, add it to dict
             self.topDict[sectionName][-1][key] = value
 
-    def writeToFile(self, fileName):
+    def writeToFile(self, filePath):
         """Write out topDict in proper format to specified file."""
-        fp = open(fileName, 'w')
+        fp = open(filePath, 'w')
         for sectionName, section in self.topDict.items():
             # section = list of dicts
             for iteration in section:
