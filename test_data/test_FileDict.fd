@@ -1,0 +1,16 @@
+globalKey1,globalValue1
+<begin>,section1
+section1Key1,section1Value1
+section1Key2,section1Value2
+<end>,section1
+globalKey2,globalValue2
+globalKey3,globalValue3
+<begin>,section2
+section2Key1,section2Value1
+section2Key2,section2Value2
+section2Key3,section2Value3
+<end>,section2
+globalKey4,globalValue4
+<begin>,section3
+section3Key3,section3Value1
+<end>,section3
