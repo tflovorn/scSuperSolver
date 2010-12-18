@@ -21,7 +21,7 @@ ConfigData::ConfigData(const std::string& _path) : path(_path) {
     cfgMap = new StringMap();
 }
 
-ConfigData::ConfigData(const std::string& path, 
+ConfigData::ConfigData(const std::string& _path, 
                        const std::string& cfgFileName) : path(_path) {
     cfgMap = new StringMap();
     readFromFile(cfgFileName);
@@ -33,11 +33,13 @@ ConfigData::~ConfigData() {
 
 ConfigData::ConfigData(const ConfigData& conf) {
     cfgMap = conf.cfgMap;
+    path = conf.path;
 }
 
 ConfigData& ConfigData::operator=(const ConfigData& conf) {
     delete cfgMap;
     cfgMap = conf.cfgMap;
+    path = conf.path;
 }
 
 void ConfigData::readFromFile(const std::string& cfgFileName) {
@@ -89,8 +91,8 @@ StringVector* ConfigData::readLines(const std::string& fullPath) {
     return lines;
 }
 
-const std::string& ConfigData::getPath() {
-    return path;
+const std::string& ConfigData::getPath() const {
+    return (const std::string&)path;
 }
 
 bool ConfigData::isComment(const std::string& line) {

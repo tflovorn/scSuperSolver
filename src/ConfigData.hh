@@ -58,10 +58,10 @@ public:
     template <class DataType>
     void setValue(const std::string& key, const DataType& value);
     // accessor for path
-    const std::string& getPath();
+    const std::string& getPath() const;
 private:
     // where the files live
-    const std::string& path;
+    std::string path;
     // holds key/value pairs this ConfigData has seen
     StringMap *cfgMap;
     // get lines from config file, ignoring comments

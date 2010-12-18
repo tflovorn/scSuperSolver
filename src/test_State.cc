@@ -28,8 +28,8 @@ int main(int argc, char *argv[]) {
     const std::string& cfgFileName = "test_cfg",
                        path = argv[1];
     ConfigData *cfg = new ConfigData(path, cfgFileName);
-    const Environment& env((const ConfigData&)cfg);
-    State st(env);
+    Environment *env = new Environment(*cfg);
+    State st(*env);
     st.makeSelfConsistent();
     std::cout << "D1: " << st.getD1() << " error: " 
         << st.absErrorD1() << std::endl;

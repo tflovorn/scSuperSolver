@@ -19,6 +19,7 @@
 
 #include "RootFinder.hh"
 
+// should converge to a value of x = 1
 double test_root_linear(double x, void *params) {
     return 1 - x;
 }
