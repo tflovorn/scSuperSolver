@@ -20,6 +20,8 @@
 
 import os
 
+import matplotlib.pyplot as plt
+
 import FileDict
 
 class Grapher(object):
@@ -33,6 +35,21 @@ class Grapher(object):
         return [FileDict.readReferencedDict(filePath, "outputLogName") for
                 filePath in self.configPaths]
 
-    def simple2D(self, xSection, xVar, ySection, yVar, 
-                 xLabel=None, yLabel=None):
-        outputData = self.readOutputs()
+    def simple2D(self, xSection, xVar, ySection, yVar, fig=None, axes=None):
+        # if either axes or figure is passed in as None, we ignore both
+        if (fig is None) or (axes is None):
+            fig = plt.figure()
+            axes = fig.add_subplot(1,1,1)
+
+        outputDataList = self.readOutputs()
+        xData = [outputData.getLatestVar(xSection, xVar) 
+                 for outputData in outputDataList]
+        yData = [outputData.getLatestVar(ySection, yVar) 
+                 for outputData in outputDataList]
+
+        axes.plot(xData, yData, "k-")
+        return fig, axes
+
+    def saveFigure(self, fig, figurePath):
+        fig.savefig(figurePath + ".png")
+        fig.savefig(figurePath + ".eps")

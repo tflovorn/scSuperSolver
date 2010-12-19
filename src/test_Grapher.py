@@ -34,3 +34,7 @@ outputs = graph.readOutputs()
 for dataSet in outputs:
     print (dataSet.getLatestVar("config", "x") + " : " +
            dataSet.getLatestVar("test_section", "y"))
+
+fig, axes = graph.simple2D("config", "x", "test_section", "y")
+figurePath = os.path.join(path, "testFig")
+graph.saveFigure(fig, figurePath)
