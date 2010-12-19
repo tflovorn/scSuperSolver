@@ -54,7 +54,13 @@ class FileDict(object):
     
     def setGlobal(self, key, value):
         self.topDict[None][0][key] = value
+
+    def getGlobal(self, key):
+        return self.topDict[None][0][key]
     
+    def getLatestVar(self, section, key):
+        return self.topDict[section][-1][key]
+
     def readFromFile(self, filePath):
         """Read data from specified file into topDict."""
         
@@ -111,3 +117,13 @@ class FileDict(object):
                 if sectionName != None:
                     fp.write("<end>," + sectionName + "\n")
         fp.close()
+
+def readReferencedDict(initialFilePath, nameKey, section=None):
+    config = FileDict(initialFilePath)
+    configDirectory = os.path.split(initialFilePath)[0]
+    if section == None:
+        outputName = config.getGlobal(nameKey)
+    else:
+        outputName = config.getLatestVar(section, nameKey)
+    outputPath = os.path.join(configDirectory, outputName)
+    return FileDict(outputPath)
