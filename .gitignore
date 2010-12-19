@@ -9,3 +9,6 @@
 
 # compiled executable
 *.out
+
+# vim swap file
+*.swp
