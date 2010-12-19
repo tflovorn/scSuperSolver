@@ -29,13 +29,13 @@ path = sys.argv[1]
 
 configNames = ["test_grapher0", "test_grapher1", "test_grapher2"]
 fullConfigPaths = [os.path.join(path, config) for config in configNames]
-graph = Grapher(fullConfigPaths)
-outputs = graph.readOutputs()
+grapher = Grapher(fullConfigPaths)
+outputs = grapher.readOutputs()
 for dataSet in outputs:
     print (dataSet.getLatestVar("config", "x") + " : " +
            dataSet.getLatestVar("test_section", "y"))
 
-fig, axes = graph.simple2D("config", "x", "test_section", "y")
-graph.setAxisLabels(axes, "x", "y")
+fig, axes = grapher.simple2D("config", "x", "test_section", "y")
+grapher.setAxisLabels(axes, "x", "y")
 figurePath = os.path.join(path, "testFig")
-graph.saveFigure(fig, figurePath)
+grapher.saveFigure(fig, figurePath)

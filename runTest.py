@@ -32,11 +32,14 @@ testPath = os.path.join(sourcePath, testName)
 
 extension = testName.split(".")[-1]
 if extension == "py":
+    os.chdir("src")
     status = os.spawnlp(os.P_WAIT, "python", "python", testPath, testDataPath)
 elif extension == "out":
+    os.chdir("src")
     status = os.spawnl(os.P_WAIT, testPath, testPath, testDataPath)
 else:
     print "File type not recognized."
     sys.exit(1)
+os.chdir("..")
 
 print "Test exit status: " + str(status)

@@ -18,9 +18,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import sys
+import os, sys
+
+# -- Grapher stuff doesn't really belong here, new object to combine these? --
 
 from RunInterface import RunInterface
+from Grapher import Grapher
 
 if len(sys.argv) < 2:
     print "usage: python test_RunInterface.py path"
@@ -30,3 +33,9 @@ path = sys.argv[1]
 testRunInterface = RunInterface(path, "test_cfg")
 testConfigs = testRunInterface.oneDimRun("test_xrun", "x", 0.04, 0.18, 0.04)
 testRunInterface.doRun(testConfigs, maxProcesses=4)
+
+grapher = Grapher(testConfigs)
+fig, axes = grapher.simple2D("config", "x", "state", "f0")
+grapher.setAxisLabels(axes, "x", "F0")
+figurePath = os.path.join(path, "test_F0")
+grapher.saveFigure(fig, figurePath)

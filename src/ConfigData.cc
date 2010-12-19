@@ -76,7 +76,7 @@ void ConfigData::writeToFile(const std::string& cfgFileName) const {
 
 void ConfigData::writeToLog(const Logger& log) const {
     StringMap::iterator it;
-    log.printf("<start>,config\n");
+    log.printf("<begin>,config\n");
     for (it = cfgMap->begin(); it != cfgMap->end(); it++) {
         log.printf("%s,%s\n", (*it).first.c_str(), (*it).second.c_str());
     }

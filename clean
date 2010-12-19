@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cd src
+make clean
+cd ../test_data
+make clean
+cd ..
