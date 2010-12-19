@@ -25,7 +25,6 @@
 
 #include <string>
 
-#include "Logger.hh"
 #include "ConfigData.hh"
 #include "Environment.hh"
 #include "State.hh"
