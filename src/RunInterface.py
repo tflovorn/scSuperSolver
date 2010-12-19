@@ -22,6 +22,7 @@ import os
 
 from FileDict import FileDict
 from ControllerQueue import ControllerQueue
+from Grapher import Grapher
 
 DEFAULT_MAX_PROCESSES = 2
 
@@ -34,6 +35,14 @@ class RunInterface(object):
         """Run a controller for each config in configFiles."""
         queue = ControllerQueue(configFiles, maxProcesses)
         queue.runAll()
+
+    def graphData(self, configFiles, xVar, yVar, outputName):
+        grapher = Grapher(configFiles)
+        fig, axes = grapher.simple2D("config", xVar, "state", yVar)
+        grapher.setAxisLabels(axes, xVar, yVar)
+        figurePath = os.path.join(self.path, outputName)
+        grapher.saveFigure(fig, figurePath)
+        return fig, axes
 
     def makeRun(self, runData):
         """Make a new run of config files from the base config and runData.
