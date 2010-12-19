@@ -21,6 +21,7 @@ libgsl0-dev
 gsl-bin
 libblas-dev
 libboost-dev
+python-matplotlib
 
 For building on Fedora 14 need the following:
 make
@@ -31,3 +32,4 @@ gsl-devel
 blas
 blas-devel
 (--boost?--)
+(--matplotlib?--)

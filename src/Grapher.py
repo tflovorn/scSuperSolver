@@ -50,6 +50,10 @@ class Grapher(object):
         axes.plot(xData, yData, "k-")
         return fig, axes
 
+    def setAxisLabels(self, axes, xLabel, yLabel):
+        axes.set_xlabel(xLabel)
+        axes.set_ylabel(yLabel)
+
     def saveFigure(self, fig, figurePath):
         fig.savefig(figurePath + ".png")
         fig.savefig(figurePath + ".eps")

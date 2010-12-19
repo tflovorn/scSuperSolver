@@ -36,5 +36,6 @@ for dataSet in outputs:
            dataSet.getLatestVar("test_section", "y"))
 
 fig, axes = graph.simple2D("config", "x", "test_section", "y")
+graph.setAxisLabels(axes, "x", "y")
 figurePath = os.path.join(path, "testFig")
 graph.saveFigure(fig, figurePath)
