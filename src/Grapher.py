@@ -33,5 +33,6 @@ class Grapher(object):
         return [FileDict.readReferencedDict(filePath, "outputLogName") for
                 filePath in self.configPaths]
 
-    def simple2D(self, xSection, xVar, xLabel, ySection, yVar, yLabel):
+    def simple2D(self, xSection, xVar, ySection, yVar, 
+                 xLabel=None, yLabel=None):
         outputData = self.readOutputs()

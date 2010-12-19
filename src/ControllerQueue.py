@@ -33,7 +33,7 @@ class ControllerQueue(object):
                  controllerName=DEFAULT_CONTROLLER_NAME):
         self.maxProcesses = maxProcesses
         self.controllerName = controllerName
-        if initialQueue == None:
+        if initialQueue is None:
             self.queue = []
         else:
             self.queue = initialQueue

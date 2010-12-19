@@ -54,7 +54,7 @@ class FileDict(object):
     
     def __init__(self, fileName=None):
         self.topDict = {None: [{}]}
-        if fileName != None:
+        if fileName is not None:
             self.readFromFile(str(fileName))
     
     def setGlobal(self, key, value):
@@ -88,7 +88,7 @@ class FileDict(object):
             # if line is a section change, handle it
             if key == "<begin>":
                 # must be outside a section to start a new one
-                if sectionName != None:
+                if sectionName is not None:
                     raise ValueError("File in improper format:"
                                      "<begin> outside global section.")
                 # make entry for new dict
@@ -100,7 +100,7 @@ class FileDict(object):
                 continue
             if key == "<end>":
                 # must be inside a section to leave it
-                if sectionName == None:
+                if sectionName is None:
                     raise ValueError("File in improper format:"
                                      "<end> in global section.")
                 sectionName = None
@@ -115,18 +115,18 @@ class FileDict(object):
         for sectionName, section in self.topDict.items():
             # section = list of dicts
             for iteration in section:
-                if sectionName != None: # global section has no name
+                if sectionName is not None: # global section has no name
                     fp.write("<begin>," + sectionName + "\n")
                 for key, value in iteration.items():
                     fp.write(key + ',' + value + "\n")
-                if sectionName != None:
+                if sectionName is not None:
                     fp.write("<end>," + sectionName + "\n")
         fp.close()
 
 def readReferencedDict(initialFilePath, nameKey, section=None):
     config = FileDict(initialFilePath)
     configDirectory = os.path.split(initialFilePath)[0]
-    if section == None:
+    if section is None:
         outputName = config.getGlobal(nameKey)
     else:
         outputName = config.getLatestVar(section, nameKey)
