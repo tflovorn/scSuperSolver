@@ -71,6 +71,5 @@ int main(int argc, char *argv[]) {
     assert(min_step == -1);
     std::cout << "min_step = " << min_step << std::endl;
 
-    std::cout << "BZone passed all tests!" << std::endl;
     return 0;
 }
