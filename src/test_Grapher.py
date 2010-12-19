@@ -18,6 +18,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import Grapher
+import sys, os
 
+from Grapher import Grapher
 
+if len(sys.argv) < 2:
+    print "usage: python test_Grapher.py path"
+    sys.exit(1)
+path = sys.argv[1]
+
+configNames = ["test_grapher0", "test_grapher1", "test_grapher2"]
+fullConfigPaths = [os.path.join(path, config) for config in configNames]
+graph = Grapher(fullConfigPaths)
+outputs = graph.readOutputs()
+for dataSet in outputs:
+    print (dataSet.getLatestVar("config", "x") + " : " +
+           dataSet.getLatestVar("test_section", "y"))

@@ -20,7 +20,7 @@
 
 import os
 
-from FileDict import FileDict
+import FileDict
 
 class Grapher(object):
     def __init__(self, configPaths):
@@ -30,13 +30,8 @@ class Grapher(object):
         self.configPaths.extend(configPaths)
 
     def readOutputs(self):
-        configs = [FileDict(filePath) for filePath in self.configPaths]
-        configDirectories = [os.path.split(filePath)[0] for 
-                             filePath in self.configPaths]
-        outputNames = [cfg.getGlobal("outputLogName") for cfg in configs]
-        outputPaths = [os.path.join(front, back) for
-                       front, back in zip(configDirectories, outputNames)]
-        return [FileDict(outputFile) for outputFile in outputPaths]
+        return [FileDict.readReferencedDict(filePath, "outputLogName") for
+                filePath in self.configPaths]
 
     def simple2D(self, xSection, xVar, xLabel, ySection, yVar, yLabel):
         outputData = self.readOutputs()

@@ -1,7 +1,7 @@
-<start>,config
+<begin>,config
 outputLogName,test_grapher1_out.fd
 x,1
 <end>,config
-<start>,test_section
+<begin>,test_section
 y,1
 <end>,test_section
