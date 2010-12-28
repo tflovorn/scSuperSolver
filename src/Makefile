@@ -1,7 +1,8 @@
 all: mainController.out
 
-tests: test_Logger.out test_ConfigData.out test_Environment.out test_State.out \
-test_BZone.out test_RootFinder.out test_Controller.out test_Utility.out
+tests: test_Logger.out test_ConfigData.out test_ZeroTempEnvironment.out \
+test_ZeroTempState.out test_BZone.out test_RootFinder.out test_Controller.out \
+test_Utility.out
 
 clean:
 	\rm -f *.gch *.o *.out *.pyc *.pyo
@@ -21,11 +22,11 @@ test_Logger.out: test_Logger.o $(OBJS)
 test_ConfigData.out: test_ConfigData.o $(OBJS)
 	g++ -o test_ConfigData.out test_ConfigData.o $(FLAGS) $(OBJS)
 
-test_Environment.out: test_Environment.o $(OBJS)
-	g++ -o test_Environment.out test_Environment.o $(FLAGS) $(OBJS)
+test_ZeroTempEnvironment.out: test_ZeroTempEnvironment.o $(OBJS)
+	g++ -o test_ZeroTempEnvironment.out test_ZeroTempEnvironment.o $(FLAGS) $(OBJS)
 
-test_State.out: test_State.o $(OBJS)
-	g++ -o test_State.out test_State.o $(FLAGS) $(OBJS)
+test_ZeroTempState.out: test_ZeroTempState.o $(OBJS)
+	g++ -o test_ZeroTempState.out test_ZeroTempState.o $(FLAGS) $(OBJS)
 
 test_BZone.out: test_BZone.o $(OBJS)
 	g++ -o test_BZone.out test_BZone.o $(FLAGS) $(OBJS)
@@ -48,13 +49,13 @@ test_Logger.o: test_Logger.cc Logger.hh
 test_ConfigData.o: test_ConfigData.cc ConfigData.hh
 	g++ -c test_ConfigData.cc
 
-test_Environment.o: test_Environment.cc Environment.hh
-	g++ -c test_Environment.cc
+test_ZeroTempEnvironment.o: test_ZeroTempEnvironment.cc ZeroTempEnvironment.hh
+	g++ -c test_ZeroTempEnvironment.cc
 
-test_State.o: test_State.cc State.hh
-	g++ -c test_State.cc
+test_ZeroTempState.o: test_ZeroTempState.cc ZeroTempState.hh
+	g++ -c test_ZeroTempState.cc
 
-test_BZone.o: test_BZone.cc BZone.hh State.hh
+test_BZone.o: test_BZone.cc BZone.hh ZeroTempState.hh
 	g++ -c test_BZone.cc
 
 test_RootFinder.o: test_RootFinder.cc RootFinder.hh
@@ -96,7 +97,11 @@ Controller.o: Controller.cc Controller.hh
 Utility.o: Utility.cc Utility.hh
 	g++ -c Utility.cc
 
-Environment.hh: ConfigData.hh Logger.hh
+ConfigData.hh: Logger.hh Utility.hh
+
+BaseEnvironment.hh: ConfigData.hh Logger.hh
+
+ZeroTempEnvironment.hh: BaseEnvironment.hh
 
 BaseState.hh: BaseEnvironment.hh
 

@@ -22,19 +22,25 @@
 
 #include <iostream>
 
-#include "Logger.hh"
 #include "ConfigData.hh"
-#include "Environment.hh"
+#include "ZeroTempEnvironment.hh"
+#include "ZeroTempState.hh"
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
-        std::cout << "usage: test_Environment.out path" << std::endl;
+        std::cout << "usage: test_State.out path" << std::endl;
     }
     const std::string& cfgFileName = "test_cfg",
                        path = argv[1];
     ConfigData *cfg = new ConfigData(path, cfgFileName);
-    const Environment& env((const ConfigData&)(*cfg));
-    env.outputLog.printf("Output log is running!\n");
-    env.errorLog.printf("Error log is running!  Hooray!\n");
-    std::cout << env.x << std::endl;
+    ZeroTempEnvironment *env = new ZeroTempEnvironment(*cfg);
+    ZeroTempState st(*env);
+    st.makeSelfConsistent();
+    std::cout << "D1: " << st.getD1() << " error: " 
+        << st.absErrorD1() << std::endl;
+    std::cout << "mu: " << st.getMu() << " error: " 
+        << st.absErrorMu() << std::endl;
+    std::cout << "F0: " << st.getF0() << " error: " 
+         <<st.absErrorF0() << std::endl;
+    std::cout << st.getEpsilonMin() << std::endl;
 }
