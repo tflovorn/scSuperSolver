@@ -26,14 +26,62 @@
 #include <cmath>
 #include <cfloat>
 
-#include "State.hh"
-
-typedef double (*bzFunction)(const State&, double, double);
+#include "BaseState.hh"
+#include "ZeroTempState.hh"
 
 class BZone {
 public:
-    static double average(const State& st, bzFunction func);
-    static double minimum(const State& st, bzFunction func);
+    template <class SpecializedState>
+    static double average(const BaseState& stBase, 
+        const SpecializedState& stSpec, 
+        double (*innerFunc)(const SpecializedState&, double, double));
+
+    template <class SpecializedState>
+    static double minimum(const BaseState& stBase, 
+        const SpecializedState& stSpec, 
+        double (*innerFunc)(const SpecializedState&, double, double));
 };
+
+// Would be nice to have a single function handle transforming one BZone point
+// into another instead of duplicating the traversal
+// OR just specify accumulator function (val = accum(val, thisPointVal))
+template <class SpecializedState>
+double BZone::minimum(const BaseState& stBase, 
+        const SpecializedState& stSpec, 
+        double (*innerFunc)(const SpecializedState&, double, double)) {
+    double kx = -M_PI, ky = -M_PI, min = DBL_MAX, val;
+    int N = stBase.env.gridLen;
+    double step = 2 * M_PI / N;
+    while (ky < M_PI) {
+        while (kx < M_PI) {
+            val = innerFunc(stSpec, kx, ky);
+            if (val < min) {
+                min = val;
+            }      
+            kx += step;      
+        }
+        ky += step;
+        kx = -M_PI;
+    }
+    return min;
+}
+
+template <class SpecializedState>
+double BZone::average(const BaseState& stBase, 
+        const SpecializedState& stSpec, 
+        double (*innerFunc)(const SpecializedState&, double, double)) {
+    double kx = -M_PI, ky = -M_PI, min = DBL_MAX, sum = 0.0;
+    int N = stBase.env.gridLen;
+    double step = 2 * M_PI / N;
+    while (ky < M_PI) {
+        while (kx < M_PI) {
+            sum += innerFunc(stSpec, kx, ky);
+            kx += step;      
+        }
+        ky += step;
+        kx = -M_PI;
+    }
+    return sum / (N * N);
+}
 
 #endif

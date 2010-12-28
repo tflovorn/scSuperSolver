@@ -20,30 +20,29 @@
   THE SOFTWARE.
 */
 
-#ifndef __SCSS_ENVIRONMENT_H
-#define __SCSS_ENVIRONMENT_H
+#ifndef __SCSS_BASE_ENVIRONMENT_H
+#define __SCSS_BASE_ENVIRONMENT_H
 
 #include "ConfigData.hh"
 #include "Logger.hh"
 
-class Environment {
+class BaseEnvironment {
 public:
-    // Construct an Environment from configuration data. Build loggers.
-    Environment(const ConfigData& cfg);
+    // Construct a BaseEnvironment from configuration data. Build loggers.
+    BaseEnvironment(const ConfigData& cfg);
     // Log stuff with these.  (default destructor calls their destructors)
     Logger outputLog, errorLog, debugLog;
     // Physical parameters.
-    const int gridLen,  // Brillouin zone side length 
-              alpha;    // alpha = {-1, 1} -> {d-wave, s-wave} symmetry
+    const int gridLen;  // Brillouin zone side length 
     const double t0,    // Overall energy scale (default = 1.0).
                  tz,    // z-direction hopping energy.
                  thp,   // Diagonal (next-nearest-neighbor) hopping energy.
                  x,     // Doping / holon excess.
                  th;    // One-holon hopping energy: th = t0 * (1 - x).
     // Initial conditions.
-    const double initD1, initMu, initF0;
+    const double initD1, initMu;
     // Tolerances.
-    const double tolD1, tolMu, tolF0;
+    const double tolD1, tolMu;
 };
 
 #endif

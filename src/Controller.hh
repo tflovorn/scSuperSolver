@@ -26,8 +26,10 @@
 #include <string>
 
 #include "ConfigData.hh"
-#include "Environment.hh"
-#include "State.hh"
+#include "BaseState.hh"
+#include "BaseEnvironment.hh"
+#include "ZeroTempEnvironment.hh"
+#include "ZeroTempState.hh"
 
 class Controller {
 public:
@@ -36,7 +38,8 @@ public:
     static Controller& makeController(const std::string& path,
                                       const std::string& cfgFileName);
     // Build controller from given important bits.
-    Controller(const ConfigData& config, const Environment& env, State& st);
+    Controller(const ConfigData& config, const ZeroTempEnvironment& env, 
+               ZeroTempState& st);
     // Delete config, env (which deletes loggers), and state.
     ~Controller();
     // Do the self-consistent calculation.  Return false if can't converge.
@@ -48,8 +51,8 @@ public:
 private:
     // The important bits of data.
     const ConfigData& myConfig;
-    const Environment& myEnv; 
-    State& myState;
+    const BaseEnvironment& myEnv; 
+    BaseState& myState;
 };
 
 #endif

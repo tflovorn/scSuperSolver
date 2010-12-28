@@ -20,36 +20,23 @@
   THE SOFTWARE.
 */
 
-#include "Controller.hh"
+#ifndef __SCSS_ZERO_TEMP_ENVIRONMENT_H
+#define __SCSS_ZERO_TEMP_ENVIRONMENT_H
 
-Controller::Controller(const ConfigData& config, 
-                       const ZeroTempEnvironment& env, ZeroTempState& st) : 
-    myConfig(config), myEnv(env), myState(st) 
-{ }
+#include "BaseEnvironment.hh"
+#include "ConfigData.hh"
 
-Controller::~Controller() {
-    delete &myState;
-    delete &myEnv;
-    delete &myConfig;
-}
+class ZeroTempEnvironment : public BaseEnvironment {
+public:
+    // Construct a ZeroTempEnvironment from configuration data.
+    // Use BaseEnvironment constructor to set base data.
+    ZeroTempEnvironment(const ConfigData& cfg);
+    // alpha = {-1, 1} -> {d-wave, s-wave} symmetry
+    const int alpha;
+    // Initial conditions.
+    const double initF0;
+    // Tolerances.
+    const double tolF0;
+};
 
-Controller& Controller::makeController(const std::string& path,
-                                       const std::string& cfgFileName) {
-    ConfigData *cfg = new ConfigData(path, cfgFileName);
-    ZeroTempEnvironment *env = new ZeroTempEnvironment(*cfg);
-    ZeroTempState *st = new ZeroTempState(*env);
-    Controller *control = new Controller(*cfg, *env, *st);
-    return (Controller&)(*control);
-}
-
-bool Controller::selfConsistentCalc() {
-    return myState.makeSelfConsistent();
-}
-
-void Controller::logState() {
-    myState.logState();
-}
-
-void Controller::logConfig() {
-    myConfig.writeToLog(myEnv.outputLog);
-}
+#endif

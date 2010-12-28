@@ -6,8 +6,9 @@ test_BZone.out test_RootFinder.out test_Controller.out test_Utility.out
 clean:
 	\rm -f *.gch *.o *.out *.pyc *.pyo
 
-OBJS = Logger.o ConfigData.o Environment.o State.o BZone.o Spectrum.o \
-RootFinder.o Controller.o Utility.o
+OBJS = Logger.o ConfigData.o BaseEnvironment.o ZeroTempEnvironment.o \
+BaseState.o ZeroTempState.o Spectrum.o RootFinder.o Controller.o \
+Utility.o
 
 FLAGS = -Wall -lgsl -lblas -I/usr/local/include/gsl/
 
@@ -71,16 +72,19 @@ Logger.o: Logger.cc Logger.hh
 ConfigData.o: ConfigData.cc ConfigData.hh
 	g++ -c ConfigData.cc
 
-Environment.o: Environment.cc Environment.hh
-	g++ -c Environment.cc
+BaseEnvironment.o: BaseEnvironment.cc BaseEnvironment.hh
+	g++ -c BaseEnvironment.cc
 
-State.o: State.cc State.hh RootFinder.hh
-	g++ -c State.cc
+ZeroTempEnvironment.o: ZeroTempEnvironment.cc ZeroTempEnvironment.hh
+	g++ -c ZeroTempEnvironment.cc
 
-BZone.o: BZone.cc BZone.hh State.hh
-	g++ -c BZone.cc
+BaseState.o: BaseState.cc BaseState.hh
+	g++ -c BaseState.cc
 
-Spectrum.o: Spectrum.cc Spectrum.hh State.hh
+ZeroTempState.o: ZeroTempState.cc ZeroTempState.hh RootFinder.hh
+	g++ -c ZeroTempState.cc
+
+Spectrum.o: Spectrum.cc Spectrum.hh ZeroTempState.hh
 	g++ -c Spectrum.cc
 
 RootFinder.o: RootFinder.cc RootFinder.hh
@@ -94,6 +98,8 @@ Utility.o: Utility.cc Utility.hh
 
 Environment.hh: ConfigData.hh Logger.hh
 
-State.hh: Environment.hh
+BaseState.hh: BaseEnvironment.hh
 
-Controller.hh: State.hh
+ZeroTempState.hh: BaseState.hh ZeroTempEnvironment.hh
+
+Controller.hh: BaseState.hh ZeroTempState.hh

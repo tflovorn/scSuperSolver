@@ -20,36 +20,21 @@
   THE SOFTWARE.
 */
 
-#include "Controller.hh"
+#include "BaseEnvironment.hh"
 
-Controller::Controller(const ConfigData& config, 
-                       const ZeroTempEnvironment& env, ZeroTempState& st) : 
-    myConfig(config), myEnv(env), myState(st) 
+// Grab general data from cfg and build loggers.
+BaseEnvironment::BaseEnvironment(const ConfigData& cfg) :
+    gridLen(cfg.getValue<int>("gridLen")),
+    t0(cfg.getValue<double>("t0")), 
+    tz(cfg.getValue<double>("tz")),
+    thp(cfg.getValue<double>("thp")),
+    x(cfg.getValue<double>("x")),
+    th(t0 * (1 - x)),  
+    initD1(cfg.getValue<double>("initD1")),
+    initMu(cfg.getValue<double>("initMu")),
+    tolD1(cfg.getValue<double>("tolD1")),
+    tolMu(cfg.getValue<double>("tolMu")),
+    outputLog(cfg.getPath(), cfg.getValue<std::string>("outputLogName")),
+    errorLog(cfg.getPath(), cfg.getValue<std::string>("errorLogName")),
+    debugLog(cfg.getPath(), cfg.getValue<std::string>("debugLogName"))
 { }
-
-Controller::~Controller() {
-    delete &myState;
-    delete &myEnv;
-    delete &myConfig;
-}
-
-Controller& Controller::makeController(const std::string& path,
-                                       const std::string& cfgFileName) {
-    ConfigData *cfg = new ConfigData(path, cfgFileName);
-    ZeroTempEnvironment *env = new ZeroTempEnvironment(*cfg);
-    ZeroTempState *st = new ZeroTempState(*env);
-    Controller *control = new Controller(*cfg, *env, *st);
-    return (Controller&)(*control);
-}
-
-bool Controller::selfConsistentCalc() {
-    return myState.makeSelfConsistent();
-}
-
-void Controller::logState() {
-    myState.logState();
-}
-
-void Controller::logConfig() {
-    myConfig.writeToLog(myEnv.outputLog);
-}
