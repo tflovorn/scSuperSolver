@@ -58,19 +58,16 @@ int main(int argc, char *argv[]) {
     ZeroTempState* st_pt = new ZeroTempState(*env);
     ZeroTempState st = *st_pt;
 
-    double avg_1 = BZone::average<ZeroTempState>((const BaseState&)st, 
-        (const ZeroTempState&)st, test_1);
+    double avg_1 = BZone::average<ZeroTempState>(st, st, test_1);
     assert(avg_1 == 1);
     std::cout << "avg_1 = " << avg_1 << std::endl;
 
     double sin_tol = 1e-17;
-    double avg_sin = BZone::average<ZeroTempState>((const BaseState&)st, 
-        (const ZeroTempState&)st, test_sin);
+    double avg_sin = BZone::average<ZeroTempState>(st, st, test_sin);
     assert(avg_sin < sin_tol);
     std::cout << "avg_sin = " << avg_sin << std::endl;
 
-    double min_step = BZone::minimum<ZeroTempState>((const BaseState&)st, 
-        (const ZeroTempState&)st, test_step);
+    double min_step = BZone::minimum<ZeroTempState>(st, st, test_step);
     assert(min_step == -1);
     std::cout << "min_step = " << min_step << std::endl;
 

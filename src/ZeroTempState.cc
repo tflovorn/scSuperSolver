@@ -53,22 +53,19 @@ bool ZeroTempState::checkF0() const {
 // error calculators
 double ZeroTempState::absErrorD1() const {
     double lhs = d1;
-    double rhs = BZone::average<ZeroTempState>((const BaseState&)(*this),
-        (const ZeroTempState&)(*this), Spectrum::innerD1);
+    double rhs = BZone::average<ZeroTempState>(*this, *this, Spectrum::innerD1);
     return lhs - rhs;
 }
 
 double ZeroTempState::absErrorMu() const {
     double lhs = env.x;
-    double rhs = BZone::average<ZeroTempState>((const BaseState&)(*this),
-        (const ZeroTempState&)(*this), Spectrum::innerMu);
+    double rhs = BZone::average<ZeroTempState>(*this, *this, Spectrum::innerMu);
     return lhs - rhs;
 }
 
 double ZeroTempState::absErrorF0() const {
     double lhs = 1.0 / (env.t0 + env.tz);
-    double rhs = BZone::average<ZeroTempState>((const BaseState&)(*this),
-        (const ZeroTempState&)(*this), Spectrum::innerF0);
+    double rhs = BZone::average<ZeroTempState>(*this, *this, Spectrum::innerF0);
     return lhs - rhs;
 }
 
@@ -111,8 +108,8 @@ void ZeroTempState::logState() const {
 
 // variable manipulators
 double ZeroTempState::setEpsilonMin() {
-    epsilonMin = BZone::minimum<ZeroTempState>((const BaseState&)(*this),
-        (const ZeroTempState&)(*this), Spectrum::epsilonBar);
+    epsilonMin = BZone::minimum<ZeroTempState>(*this, *this, 
+                                               Spectrum::epsilonBar);
     return epsilonMin;
 }
 
