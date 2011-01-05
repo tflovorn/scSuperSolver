@@ -157,7 +157,7 @@ bool PairTempState::fixD1() {
 bool PairTempState::fixMu() {
     double old_mu = mu;
     RootFinder rootFinder(&PairTempState::helperMu, this, mu, 
-                          -1.0, 1.0, env.tolMu / 10);
+                          -1.0, 0.0, env.tolMu / 10);
     const RootData& rootData = rootFinder.findRoot();
     if (!rootData.converged) {
         env.errorLog.printf("Mu failed to converge!\n");
