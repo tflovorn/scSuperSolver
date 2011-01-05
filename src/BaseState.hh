@@ -59,6 +59,8 @@ public:
     // Our Environment, containing all the configuration info we need.
     const BaseEnvironment& env;
 protected:
+    // helper functions
+    const BaseSpectrum& spectrum;
     // Self-consistent variables.
     double d1, mu;
     // Minimum of Spectrum::epsilonBar() on the BZone.
@@ -66,7 +68,7 @@ protected:
     double epsilonMin;
     // Set epsilonMin to the appropriate value.
     // -- Need to call this after changing D1! --
-    virtual double setEpsilonMin() = 0;
+    virtual double setEpsilonMin();
     // Set the variable to the value which minimizes the error in the
     // associated self-consistent equation. Return value found.
     // Note: d1 and mu equations are coupled, so they must be iterated 

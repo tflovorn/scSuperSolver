@@ -57,6 +57,8 @@ public:
     // Our Environment, containing all the configuration info we need.
     const ZeroTempEnvironment& env;
 protected:
+    // helper functions
+    const ZeroTempSpectrum& spectrum;
     // Self-consistent variables.
     double f0;
     // Set epsilonMin to the appropriate value.

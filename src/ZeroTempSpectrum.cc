@@ -22,37 +22,21 @@
 
 #include "ZeroTempSpectrum.hh"
 
-double ZeroTempSpectrum::epsilon(const ZeroTempState& st, double kx, 
-                                 double ky) {
-    return epsilonBar(st, kx, ky) - st.getEpsilonMin();
-}
+double ZeroTempSpectrum::ZeroTempSpectrum(const ZeroTempState& _st) :
+    BaseSpectrum(_st), st(_st) { }
 
-double ZeroTempSpectrum::epsilonBar(const ZeroTempState& st, double kx, 
-                                    double ky) {
-    const ZeroTempEnvironment& env = st.env;
-    const double sx = sin(kx);
-    const double sy = sin(ky);
-    return 2.0 * env.th * ((sx + sy) * (sx + sy) - 1.0)
-         + 4.0 * (st.getD1() * env.t0 - env.thp) * sx * sy;
-}
-
-double ZeroTempSpectrum::xi(const ZeroTempState& st, double kx, double ky) {
-    return epsilon(st, kx, ky) - st.getMu();
-}
-
-double ZeroTempSpectrum::delta(const ZeroTempState& st, double kx, double ky) {
+double ZeroTempSpectrum::delta(double kx, double ky) {
     return 4.0 * st.getF0() * (st.env.t0 + st.env.tz)
                * (sin(kx) + st.env.alpha * sin(ky));
 }
 
-double ZeroTempSpectrum::pairEnergy(const ZeroTempState& st, double kx, 
-                                    double ky) {
+double ZeroTempSpectrum::pairEnergy(double kx, double ky) {
     const double xi_k = xi(st, kx, ky);
     const double delta_k = delta(st, kx, ky);
     return sqrt(xi_k * xi_k + delta_k * delta_k);
 }
 
-double ZeroTempSpectrum::fermi(const ZeroTempState& st, double energy) {
+double ZeroTempSpectrum::fermi(double energy) {
     if (energy <= 0.0) {
         return 1.0;
     }
@@ -61,18 +45,15 @@ double ZeroTempSpectrum::fermi(const ZeroTempState& st, double energy) {
     }
 }
 
-double ZeroTempSpectrum::innerD1(const ZeroTempState& st, double kx, 
-                                 double ky) {
+double ZeroTempSpectrum::innerD1(double kx, double ky) {
     return -0.5*(1 - xi(st, kx, ky)/pairEnergy(st, kx, ky)) * sin(kx)*sin(ky);
 }
 
-double ZeroTempSpectrum::innerMu(const ZeroTempState& st, double kx, 
-                                 double ky) {
+double ZeroTempSpectrum::innerMu(double kx, double ky) {
     return 0.5 * (1 - xi(st, kx, ky)/pairEnergy(st, kx, ky));
 }
 
-double ZeroTempSpectrum::innerF0(const ZeroTempState& st, double kx, 
-                                 double ky) {
+double ZeroTempSpectrum::innerF0(double kx, double ky) {
     const double sin_part = sin(kx) + st.env.alpha * sin(ky);
     return sin_part * sin_part / pairEnergy(st, kx, ky);
 }

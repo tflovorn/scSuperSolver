@@ -22,40 +22,22 @@
 
 #include "PairTempSpectrum.hh"
 
-double PairTempSpectrum::epsilon(const PairTempState& st, double kx, 
-                                 double ky) {
-    return epsilonBar(st, kx, ky) - st.getEpsilonMin();
-}
+double PairTempSpectrum::PairTempSpectrum(const PairTempState& _st) :
+    BaseSpectrum(_st), st(_st) { }
 
-double PairTempSpectrum::epsilonBar(const PairTempState& st, double kx, 
-                                    double ky) {
-    const PairTempEnvironment& env = st.env;
-    const double sx = sin(kx);
-    const double sy = sin(ky);
-    return 2.0 * env.th * ((sx + sy) * (sx + sy) - 1.0)
-         + 4.0 * (st.getD1() * env.t0 - env.thp) * sx * sy;
-}
-
-double PairTempSpectrum::xi(const PairTempState& st, double kx, double ky) {
-    return epsilon(st, kx, ky) - st.getMu();
-}
-
-double PairTempSpectrum::fermi(const PairTempState& st, double energy) {
+double PairTempSpectrum::fermi(double energy) {
     return 1.0 / (exp(st.getBp() * energy) + 1.0);
 }
 
-double PairTempSpectrum::innerD1(const PairTempState& st, double kx, 
-                                 double ky) {
+double PairTempSpectrum::innerD1(double kx, double ky) {
     return -sin(kx) * sin(ky) * fermi(st, xi(st, kx, ky));
 }
 
-double PairTempSpectrum::innerMu(const PairTempState& st, double kx, 
-                                 double ky) {
+double PairTempSpectrum::innerMu(double kx, double ky) {
     return fermi(st, xi(st, kx, ky));
 }
 
-double PairTempSpectrum::innerBp(const PairTempState& st, double kx, 
-                                 double ky) {
+double PairTempSpectrum::innerBp(double kx, double ky) {
     const double sin_part = sin(kx) - sin(ky);
     return sin_part * sin_part * tanh(st.getBp() * xi(st, kx, ky) / 2.0) / 
            xi(st, kx, ky);

@@ -20,37 +20,22 @@
   THE SOFTWARE.
 */
 
-#ifndef __SCSS_CRIT_TEMP_SPECTRUM_H
-#define __SCSS_CRIT_TEMP_SPECTRUM_H
+#include "BaseSpectrum.hh"
 
-#include <cmath>
+double BaseSpectrum::BaseSpectrum(const BaseState& _st) : st(_st) { } 
 
-#include "CritTempState.hh"
+double BaseSpectrum::epsilon(double kx, double ky) {
+    return epsilonBar(kx, ky) - st.getEpsilonMin();
+}
 
-struct PiOutput {
-    double xx, xy, yy;
-};
+double BaseSpectrum::epsilonBar(double kx, double ky) {
+    const BaseEnvironment& env = st.env;
+    const double sx = sin(kx);
+    const double sy = sin(ky);
+    return 2.0 * env.th * ((sx + sy) * (sx + sy) - 1.0)
+         + 4.0 * (st.getD1() * env.t0 - env.thp) * sx * sy;
+}
 
-class CritTempSpectrum {
-public:
-    CritTempSpectrum(const CritTempState& _st);
-    // Fermi distribution function (for T>0)
-    double fermi(double energy) const;
-    // Bose distribution function (T>0)
-    double bose(double energy) const;
-    // term to be summed to calculate x1 (x2 = x - x1)
-    double innerX1(double kx, double ky) const;
-    // used to calculate Re Pi (xx, xy, yy)
-    // TODO
-    PiOutput innerPi(double omega, double kx, double ky, double qx, 
-                     double qy) const;
-    // term to be summed to calculate rhs of associated S-C equation
-    double innerD1(double kx, double ky) const;
-    double innerMu(double kx, double ky) const;
-    // TODO
-    double innerBp(const CritTempState& st, double kx, double ky) const;
-protected:
-    const CritTempState& st;
-};
-
-#endif
+double BaseSpectrum::xi(double kx, double ky) {
+    return epsilon(kx, ky) - st.getMu();
+}

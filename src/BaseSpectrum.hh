@@ -20,37 +20,24 @@
   THE SOFTWARE.
 */
 
-#ifndef __SCSS_CRIT_TEMP_SPECTRUM_H
-#define __SCSS_CRIT_TEMP_SPECTRUM_H
+#ifndef __SCSS_BASE_SPECTRUM_H
+#define __SCSS_BASE_SPECTRUM_H
 
 #include <cmath>
 
-#include "CritTempState.hh"
+#include "BaseState.hh"
 
-struct PiOutput {
-    double xx, xy, yy;
-};
-
-class CritTempSpectrum {
+class BaseSpectrum {
 public:
-    CritTempSpectrum(const CritTempState& _st);
-    // Fermi distribution function (for T>0)
-    double fermi(double energy) const;
-    // Bose distribution function (T>0)
-    double bose(double energy) const;
-    // term to be summed to calculate x1 (x2 = x - x1)
-    double innerX1(double kx, double ky) const;
-    // used to calculate Re Pi (xx, xy, yy)
-    // TODO
-    PiOutput innerPi(double omega, double kx, double ky, double qx, 
-                     double qy) const;
-    // term to be summed to calculate rhs of associated S-C equation
-    double innerD1(double kx, double ky) const;
-    double innerMu(double kx, double ky) const;
-    // TODO
-    double innerBp(const CritTempState& st, double kx, double ky) const;
+    BaseSpectrum(const BaseState& _st);
+    // One-hole spectrum to be used, minimum at 0
+    double epsilon(double kx, double ky);
+    // One-hole spectrum unmodified from theory
+    double epsilonBar(double kx, double ky);
+    // One-hole energy, epsilon - mu
+    double xi(double kx, double ky);
 protected:
-    const CritTempState& st;
+    const BaseState& st;
 };
 
 #endif
