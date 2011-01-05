@@ -1,0 +1,15 @@
+calculationType,pairTemp
+outputLogName,test_pair_out.fd
+errorLogName,test_pair_err
+debugLogName,test_pair_debug
+gridLen,64
+t0,1.0
+tz,0.1
+thp,0.1
+x,0.05
+initD1,0.05
+initMu,-0.3
+initBp,5.0
+tolD1,1e-6
+tolMu,1e-6
+tolBp,1e-6

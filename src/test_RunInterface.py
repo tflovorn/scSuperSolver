@@ -34,3 +34,11 @@ interface.doRun(testConfigs, maxProcesses=4)
 interface.graphData(testConfigs, "x", "d1", "test_d1")
 interface.graphData(testConfigs, "x", "mu", "test_mu")
 interface.graphData(testConfigs, "x", "f0", "test_f0")
+
+pairInterface = RunInterface(path, "test_pair_cfg")
+testConfigs = pairInterface.oneDimRun("test_pair_xrun", "x", 0.04, 0.18, 0.02)
+pairInterface.doRun(testConfigs, maxProcesses=4)
+
+pairInterface.graphData(testConfigs, "x", "d1", "test_pair_d1")
+pairInterface.graphData(testConfigs, "x", "mu", "test_pair_mu")
+pairInterface.graphData(testConfigs, "x", "bp", "test_pair_bp")

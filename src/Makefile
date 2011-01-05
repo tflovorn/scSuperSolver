@@ -8,8 +8,8 @@ clean:
 	\rm -f *.gch *.o *.out *.pyc *.pyo
 
 OBJS = Logger.o ConfigData.o BaseEnvironment.o ZeroTempEnvironment.o \
-BaseState.o ZeroTempState.o ZeroTempSpectrum.o RootFinder.o Controller.o \
-Utility.o
+BaseState.o ZeroTempState.o ZeroTempSpectrum.o PairTempEnvironment.o \
+PairTempState.o PairTempSpectrum.o RootFinder.o Controller.o Utility.o
 
 FLAGS = -Wall -lgsl -lblas -I/usr/local/include/gsl/
 
@@ -79,14 +79,23 @@ BaseEnvironment.o: BaseEnvironment.cc BaseEnvironment.hh
 ZeroTempEnvironment.o: ZeroTempEnvironment.cc ZeroTempEnvironment.hh
 	g++ -c ZeroTempEnvironment.cc
 
+PairTempEnvironment.o: PairTempEnvironment.cc PairTempEnvironment.hh
+	g++ -c PairTempEnvironment.cc
+
 BaseState.o: BaseState.cc BaseState.hh
 	g++ -c BaseState.cc
 
 ZeroTempState.o: ZeroTempState.cc ZeroTempState.hh RootFinder.hh
 	g++ -c ZeroTempState.cc
 
+PairTempState.o: PairTempState.cc PairTempState.hh RootFinder.hh
+	g++ -c PairTempState.cc
+
 ZeroTempSpectrum.o: ZeroTempSpectrum.cc ZeroTempSpectrum.hh ZeroTempState.hh
 	g++ -c ZeroTempSpectrum.cc
+
+PairTempSpectrum.o: PairTempSpectrum.cc PairTempSpectrum.hh PairTempState.hh
+	g++ -c PairTempSpectrum.cc
 
 RootFinder.o: RootFinder.cc RootFinder.hh
 	g++ -c RootFinder.cc $(FLAGS)
@@ -103,8 +112,12 @@ BaseEnvironment.hh: ConfigData.hh Logger.hh
 
 ZeroTempEnvironment.hh: BaseEnvironment.hh
 
+PairTempEnvironment.hh: BaseEnvironment.hh
+
 BaseState.hh: BaseEnvironment.hh
 
 ZeroTempState.hh: BaseState.hh ZeroTempEnvironment.hh ZeroTempSpectrum.hh
 
-Controller.hh: BaseState.hh ZeroTempState.hh
+PairTempState.hh: BaseState.hh PairTempEnvironment.hh PairTempSpectrum.hh
+
+Controller.hh: BaseState.hh ZeroTempState.hh PairTempState.hh

@@ -30,6 +30,8 @@
 #include "BaseEnvironment.hh"
 #include "ZeroTempEnvironment.hh"
 #include "ZeroTempState.hh"
+#include "PairTempEnvironment.hh"
+#include "PairTempState.hh"
 
 class Controller {
 public:
@@ -38,8 +40,8 @@ public:
     static Controller& makeController(const std::string& path,
                                       const std::string& cfgFileName);
     // Build controller from given important bits.
-    Controller(const ConfigData& config, const ZeroTempEnvironment& env, 
-               ZeroTempState& st);
+    Controller(const ConfigData& config, const BaseEnvironment& env, 
+               BaseState& st);
     // Delete config, env (which deletes loggers), and state.
     ~Controller();
     // Do the self-consistent calculation.  Return false if can't converge.

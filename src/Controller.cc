@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2010 Timothy Lovorn
+  Copyright (c) 2010, 2011 Timothy Lovorn
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
 #include "Controller.hh"
 
 Controller::Controller(const ConfigData& config, 
-                       const ZeroTempEnvironment& env, ZeroTempState& st) : 
+                       const BaseEnvironment& env, BaseState& st) : 
     myConfig(config), myEnv(env), myState(st) 
 { }
 
@@ -35,10 +35,18 @@ Controller::~Controller() {
 
 Controller& Controller::makeController(const std::string& path,
                                        const std::string& cfgFileName) {
+    Controller *control;
     ConfigData *cfg = new ConfigData(path, cfgFileName);
-    ZeroTempEnvironment *env = new ZeroTempEnvironment(*cfg);
-    ZeroTempState *st = new ZeroTempState(*env);
-    Controller *control = new Controller(*cfg, *env, *st);
+    std::string type = cfg->getValue<std::string>("calculationType");
+    if (type == "pairTemp") {
+        PairTempEnvironment *env = new PairTempEnvironment(*cfg);
+        PairTempState *st = new PairTempState(*env);
+        control = new Controller(*cfg, *env, *st);
+    } else if (type == "zeroTemp") {
+        ZeroTempEnvironment *env = new ZeroTempEnvironment(*cfg);
+        ZeroTempState *st = new ZeroTempState(*env);
+        control = new Controller(*cfg, *env, *st);
+    }
     return (Controller&)(*control);
 }
 
