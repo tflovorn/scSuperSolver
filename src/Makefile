@@ -8,7 +8,7 @@ clean:
 	\rm -f *.gch *.o *.out *.pyc *.pyo
 
 OBJS = Logger.o ConfigData.o BaseEnvironment.o ZeroTempEnvironment.o \
-BaseState.o ZeroTempState.o Spectrum.o RootFinder.o Controller.o \
+BaseState.o ZeroTempState.o ZeroTempSpectrum.o RootFinder.o Controller.o \
 Utility.o
 
 FLAGS = -Wall -lgsl -lblas -I/usr/local/include/gsl/
@@ -85,8 +85,8 @@ BaseState.o: BaseState.cc BaseState.hh
 ZeroTempState.o: ZeroTempState.cc ZeroTempState.hh RootFinder.hh
 	g++ -c ZeroTempState.cc
 
-Spectrum.o: Spectrum.cc Spectrum.hh ZeroTempState.hh
-	g++ -c Spectrum.cc
+ZeroTempSpectrum.o: ZeroTempSpectrum.cc ZeroTempSpectrum.hh ZeroTempState.hh
+	g++ -c ZeroTempSpectrum.cc
 
 RootFinder.o: RootFinder.cc RootFinder.hh
 	g++ -c RootFinder.cc $(FLAGS)
@@ -105,6 +105,6 @@ ZeroTempEnvironment.hh: BaseEnvironment.hh
 
 BaseState.hh: BaseEnvironment.hh
 
-ZeroTempState.hh: BaseState.hh ZeroTempEnvironment.hh
+ZeroTempState.hh: BaseState.hh ZeroTempEnvironment.hh ZeroTempSpectrum.hh
 
 Controller.hh: BaseState.hh ZeroTempState.hh

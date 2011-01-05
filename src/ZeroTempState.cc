@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2010 Timothy Lovorn
+  Copyright (c) 2010, 2011 Timothy Lovorn
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -53,19 +53,22 @@ bool ZeroTempState::checkF0() const {
 // error calculators
 double ZeroTempState::absErrorD1() const {
     double lhs = d1;
-    double rhs = BZone::average<ZeroTempState>(*this, *this, Spectrum::innerD1);
+    double rhs = BZone::average<ZeroTempState>(*this, *this, 
+                                               ZeroTempSpectrum::innerD1);
     return lhs - rhs;
 }
 
 double ZeroTempState::absErrorMu() const {
     double lhs = env.x;
-    double rhs = BZone::average<ZeroTempState>(*this, *this, Spectrum::innerMu);
+    double rhs = BZone::average<ZeroTempState>(*this, *this,
+                                               ZeroTempSpectrum::innerMu);
     return lhs - rhs;
 }
 
 double ZeroTempState::absErrorF0() const {
     double lhs = 1.0 / (env.t0 + env.tz);
-    double rhs = BZone::average<ZeroTempState>(*this, *this, Spectrum::innerF0);
+    double rhs = BZone::average<ZeroTempState>(*this, *this,
+                                               ZeroTempSpectrum::innerF0);
     return lhs - rhs;
 }
 
@@ -109,7 +112,7 @@ void ZeroTempState::logState() const {
 // variable manipulators
 double ZeroTempState::setEpsilonMin() {
     epsilonMin = BZone::minimum<ZeroTempState>(*this, *this, 
-                                               Spectrum::epsilonBar);
+                                               ZeroTempSpectrum::epsilonBar);
     return epsilonMin;
 }
 

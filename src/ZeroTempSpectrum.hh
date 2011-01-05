@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2010 Timothy Lovorn
+  Copyright (c) 2010, 2011 Timothy Lovorn
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -20,14 +20,14 @@
   THE SOFTWARE.
 */
 
-#ifndef __SCSS_SPECTRUM_H
-#define __SCSS_SPECTRUM_H
+#ifndef __SCSS_ZERO_TEMP_SPECTRUM_H
+#define __SCSS_ZERO_TEMP_SPECTRUM_H
 
 #include <cmath>
 
 #include "ZeroTempState.hh"
 
-class Spectrum {
+class ZeroTempSpectrum {
 public:
     // One-hole spectrum to be used, minimum at 0
     static double epsilon(const ZeroTempState& st, double kx, double ky);
