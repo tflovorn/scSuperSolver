@@ -33,24 +33,27 @@ struct PiOutput {
 
 class CritTempSpectrum {
 public:
-    CritTempSpectrum(const CritTempState& _st);
+    // One-hole spectrum to be used, minimum at 0
+    static double epsilon(const CritTempState& st, double kx, double ky);
+    // One-hole spectrum unmodified from theory
+    static double epsilonBar(const CritTempState& st, double kx, double ky);
+    // One-hole energy, epsilon - mu
+    static double xi(const CritTempState& st, double kx, double ky);
     // Fermi distribution function (for T>0)
-    double fermi(double energy) const;
+    static double fermi(const CritTempState& st, double energy);
     // Bose distribution function (T>0)
-    double bose(double energy) const;
+    static double bose(const CritTempState& st, double energy);
     // term to be summed to calculate x1 (x2 = x - x1)
-    double innerX1(double kx, double ky) const;
+    static double innerX1(const CritTempState& st, double kx, double ky);
     // used to calculate Re Pi (xx, xy, yy)
     // TODO
-    PiOutput innerPi(double omega, double kx, double ky, double qx, 
-                     double qy) const;
+    static PiOutput innerPi(const CritTempState& st, double omega, double kx, 
+                            double ky, double qx, double qy);
     // term to be summed to calculate rhs of associated S-C equation
-    double innerD1(double kx, double ky) const;
-    double innerMu(double kx, double ky) const;
+    static double innerD1(const CritTempState& st, double kx, double ky);
+    static double innerMu(const CritTempState& st, double kx, double ky);
     // TODO
-    double innerBp(const CritTempState& st, double kx, double ky) const;
-protected:
-    const CritTempState& st;
+    static double innerBp(const CritTempState& st, double kx, double ky);
 };
 
 #endif

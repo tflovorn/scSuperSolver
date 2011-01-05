@@ -29,15 +29,18 @@
 
 class PairTempSpectrum {
 public:
-    PairTempSpectrum(const PairTempState& _st);
+    // One-hole spectrum to be used, minimum at 0
+    static double epsilon(const PairTempState& st, double kx, double ky);
+    // One-hole spectrum unmodified from theory
+    static double epsilonBar(const PairTempState& st, double kx, double ky);
+    // One-hole energy, epsilon - mu
+    static double xi(const PairTempState& st, double kx, double ky);
     // Fermi distribution function (for T>0)
-    double fermi(double energy) const;
+    static double fermi(const PairTempState& st, double energy);
     // term to be summed to calculate rhs of associated S-C equation
-    double innerD1(double kx, double ky) const;
-    double innerMu(double kx, double ky) const;
-    double innerBp(double kx, double ky) const;
-protected:
-    const ZeroTempState& st;
+    static double innerD1(const PairTempState& st, double kx, double ky);
+    static double innerMu(const PairTempState& st, double kx, double ky);
+    static double innerBp(const PairTempState& st, double kx, double ky);
 };
 
 #endif

@@ -23,7 +23,7 @@
 #include "BaseState.hh"
 
 BaseState::BaseState(const BaseEnvironment& envIn) : 
-    env(envIn), d1(envIn.initD1), mu(envIn.initMu), spectrum(this)
+    env(envIn), d1(envIn.initD1), mu(envIn.initMu)
 { }
 
 // checkers
@@ -47,10 +47,3 @@ double BaseState::getMu() const {
 double BaseState::getEpsilonMin() const {
     return epsilonMin;
 }
-
-// variable manipulators
-double BaseState::setEpsilonMin() {
-    epsilonMin = BZone::minimum<BaseState>(*this, *this, spectrum.epsilonBar);
-    return epsilonMin;
-}
-

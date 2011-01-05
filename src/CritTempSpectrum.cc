@@ -22,9 +22,6 @@
 
 #include "CritTempSpectrum.hh"
 
-double CritTempSpectrum::CritTempSpectrum(const CritTempState& _st) :
-    BaseSpectrum(_st), st(_st) { }
-
 double CritTempSpectrum::epsilon(const CritTempState& st, double kx, 
                                  double ky) {
     return epsilonBar(st, kx, ky) - st.getEpsilonMin();

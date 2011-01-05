@@ -29,19 +29,22 @@
 
 class ZeroTempSpectrum {
 public:
-    ZeroTempSpectrum(const ZeroTempState& _st);
+    // One-hole spectrum to be used, minimum at 0
+    static double epsilon(const ZeroTempState& st, double kx, double ky);
+    // One-hole spectrum unmodified from theory
+    static double epsilonBar(const ZeroTempState& st, double kx, double ky);
+    // One-hole energy, epsilon - mu
+    static double xi(const ZeroTempState& st, double kx, double ky);
     // Superconducting gap
-    double delta(double kx, double ky) const;
+    static double delta(const ZeroTempState& st, double kx, double ky);
     // Energy of a superconducting pair
-    double pairEnergy(double kx, double ky) const;
+    static double pairEnergy(const ZeroTempState& st, double kx, double ky);
     // Fermi distribution function (for T=0)
-    double fermi(double energy) const;
+    static double fermi(const ZeroTempState& st, double energy);
     // term to be summed to calculate rhs of associated S-C equation
-    double innerD1(double kx, double ky) const;
-    double innerMu(double kx, double ky) const;
-    double innerF0(double kx, double ky) const;
-protected:
-    const ZeroTempState& st;
+    static double innerD1(const ZeroTempState& st, double kx, double ky);
+    static double innerMu(const ZeroTempState& st, double kx, double ky);
+    static double innerF0(const ZeroTempState& st, double kx, double ky);
 };
 
 #endif

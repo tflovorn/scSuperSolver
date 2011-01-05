@@ -23,7 +23,7 @@
 #include "ZeroTempState.hh"
 
 ZeroTempState::ZeroTempState(const ZeroTempEnvironment& envIn) : 
-    BaseState(envIn), env(envIn), f0(envIn.initF0), spectrum(this)
+    BaseState(envIn), env(envIn), f0(envIn.initF0) 
 {   
     setEpsilonMin();
 }
