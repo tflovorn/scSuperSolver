@@ -22,7 +22,7 @@
 
 #include "PairTempEnvironment.hh"
 
-// Grab zero-temp-specific data from cfg.
+// Grab pair-temp-specific data from cfg.
 PairTempEnvironment::PairTempEnvironment(const ConfigData& cfg) :
     BaseEnvironment(cfg),
     initBp(cfg.getValue<double>("initBp")),

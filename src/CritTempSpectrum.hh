@@ -20,27 +20,40 @@
   THE SOFTWARE.
 */
 
-#ifndef __SCSS_PAIR_TEMP_SPECTRUM_H
-#define __SCSS_PAIR_TEMP_SPECTRUM_H
+#ifndef __SCSS_CRIT_TEMP_SPECTRUM_H
+#define __SCSS_CRIT_TEMP_SPECTRUM_H
 
 #include <cmath>
 
-#include "PairTempState.hh"
+#include "CritTempState.hh"
 
-class PairTempSpectrum {
+struct PiOutput {
+    double xx, xy, yy;
+};
+
+class CritTempSpectrum {
 public:
     // One-hole spectrum to be used, minimum at 0
-    static double epsilon(const PairTempState& st, double kx, double ky);
+    static double epsilon(const CritTempState& st, double kx, double ky);
     // One-hole spectrum unmodified from theory
-    static double epsilonBar(const PairTempState& st, double kx, double ky);
+    static double epsilonBar(const CritTempState& st, double kx, double ky);
     // One-hole energy, epsilon - mu
-    static double xi(const PairTempState& st, double kx, double ky);
+    static double xi(const CritTempState& st, double kx, double ky);
     // Fermi distribution function (for T>0)
-    static double fermi(const PairTempState& st, double energy);
+    static double fermi(const CritTempState& st, double energy);
+    // Bose distribution function (T>0)
+    static double bose(const CritTempState& st, double energy);
+    // term to be summed to calculate x1 (x2 = x - x1)
+    static double innerX1(const CritTempState& st, double kx, double ky);
+    // used to calculate Re Pi (xx, xy, yy)
+    // TODO
+    static PiOutput innerPi(const CritTempState& st, double omega, double kx, 
+                            double ky, double qx, double qy);
     // term to be summed to calculate rhs of associated S-C equation
-    static double innerD1(const PairTempState& st, double kx, double ky);
-    static double innerMu(const PairTempState& st, double kx, double ky);
-    static double innerBp(const PairTempState& st, double kx, double ky);
+    static double innerD1(const CritTempState& st, double kx, double ky);
+    static double innerMu(const CritTempState& st, double kx, double ky);
+    // TODO
+    static double innerBp(const CritTempState& st, double kx, double ky);
 };
 
 #endif

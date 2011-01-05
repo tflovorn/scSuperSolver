@@ -24,10 +24,9 @@
 
 ZeroTempState::ZeroTempState(const ZeroTempEnvironment& envIn) : 
     BaseState(envIn), env(envIn), f0(envIn.initF0) 
-{
+{   
     setEpsilonMin();
 }
-
 // driver
 bool ZeroTempState::makeSelfConsistent() {
     do {

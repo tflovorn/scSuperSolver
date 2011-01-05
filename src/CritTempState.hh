@@ -20,17 +20,17 @@
   THE SOFTWARE.
 */
 
-#ifndef __SCSS_PAIR_TEMP_STATE_H
-#define __SCSS_PAIR_TEMP_STATE_H
+#ifndef __SCSS_CRIT_TEMP_STATE_H
+#define __SCSS_CRIT_TEMP_STATE_H
 
 #include "BaseState.hh"
-#include "PairTempEnvironment.hh"
+#include "CritTempEnvironment.hh"
 #include "RootFinder.hh"
 
-class PairTempState : public BaseState {
+class CritTempState : public BaseState {
 public:
     // Constructor needs to examine envIn to set member variables.
-    PairTempState(const PairTempEnvironment& envIn);
+    CritTempState(const CritTempEnvironment& envIn);
     // Drive calculations needed to make this State consistent
     // with the given Environment.  Return false if unable to converge.
     bool makeSelfConsistent();
@@ -77,7 +77,7 @@ protected:
 
 // these are #included down here because they refer to State; should have it
 // declared before including them
-#include "PairTempSpectrum.hh"
+#include "CritTempSpectrum.hh"
 #include "BZone.hh" 
 
 #endif

@@ -20,21 +20,11 @@
   THE SOFTWARE.
 */
 
-#ifndef __SCSS_PAIR_TEMP_ENVIRONMENT_H
-#define __SCSS_PAIR_TEMP_ENVIRONMENT_H
+#include "CritTempEnvironment.hh"
 
-#include "BaseEnvironment.hh"
-#include "ConfigData.hh"
-
-class PairTempEnvironment : public BaseEnvironment {
-public:
-    // Construct a PairTempEnvironment from configuration data.
-    // Use BaseEnvironment constructor to set base data.
-    PairTempEnvironment(const ConfigData& cfg);
-    // Initial conditions.
-    const double initBp;
-    // Tolerances.
-    const double tolBp;
-};
-
-#endif
+// Grab crit-temp-specific data from cfg.
+CritTempEnvironment::CritTempEnvironment(const ConfigData& cfg) :
+    BaseEnvironment(cfg),
+    initBp(cfg.getValue<double>("initBp")),
+    tolBp(cfg.getValue<double>("tolBp"))
+{ }
