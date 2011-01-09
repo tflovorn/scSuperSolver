@@ -26,6 +26,7 @@
 #include <cmath>
 
 #include "CritTempState.hh"
+#include "BZone.hh"
 
 struct PiOutput {
     double xx, xy, yy;
@@ -54,6 +55,17 @@ public:
     static double innerMu(const CritTempState& st, double kx, double ky);
     // TODO
     static double innerBp(const CritTempState& st, double kx, double ky);
+    // BZone call required to calculate these.
+    LambdaOutput getLambda(double omega, double kx, double ky, double kz) const;
+    PiOutput getPi(double omega, double kx, double ky) const;
+    // Requires solving for omega coefficients.  bc = (nu/x2)^(2/3)
+    double getNu() const;
+    // Requires finding the smallest root of lambda minus or plus.
+    OmegaCoeffs getOmegaCoeffs() const;
+    // Use this to check accuracy of OmegaCoeffs.
+    double omegaApprox(const OmegaCoeffs& oc, double kx, double ky, double kz);
+    // Required to find root of lambda.
+    double omegaExact(double kx, double ky, double kz);
 };
 
 #endif

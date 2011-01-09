@@ -27,6 +27,16 @@
 #include "CritTempEnvironment.hh"
 #include "RootFinder.hh"
 
+struct PiOutput; // defined in CritTempSpectrum.hh
+
+struct OmegaCoeffs {
+    double c_planar, c_perp, c_cross;
+};
+
+struct LambdaOutput {
+    double plus, double minus;
+};
+
 class CritTempState : public BaseState {
 public:
     // Constructor needs to examine envIn to set member variables.
@@ -50,6 +60,11 @@ public:
     double relErrorBp() const;
     // Simple getters.
     double getBp() const;
+    // BZone call required to calculate these.
+    double getX1() const;
+    double getX2() const; // x2 = x - x1
+    // Need to know accuracy of omega_k approximation.
+    void logOmegaAccuracy() const;
     // Output what state is now.
     void logState() const;
      // RootFinder needs to be a friend to do its dirty work.
