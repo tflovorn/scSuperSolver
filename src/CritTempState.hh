@@ -27,16 +27,6 @@
 #include "CritTempEnvironment.hh"
 #include "RootFinder.hh"
 
-struct PiOutput; // defined in CritTempSpectrum.hh
-
-struct OmegaCoeffs {
-    double c_planar, c_perp, c_cross;
-};
-
-struct LambdaOutput {
-    double plus, double minus;
-};
-
 class CritTempState : public BaseState {
 public:
     // Constructor needs to examine envIn to set member variables.

@@ -28,8 +28,23 @@
 #include "CritTempState.hh"
 #include "BZone.hh"
 
+struct OmegaCoeffs {
+    double c_planar, c_perp, c_cross;
+};
+
+struct LambdaOutput {
+    double plus, double minus;
+};
+
 struct PiOutput {
     double xx, xy, yy;
+};
+
+struct InnerPiInput {
+    InnerPiInput(const CritTempState& _st, double _omega, 
+                 double _kx, double _ky);
+    double omega, double kx, double ky;
+    const CritTempState& st;
 };
 
 class CritTempSpectrum {
@@ -46,26 +61,25 @@ public:
     static double bose(const CritTempState& st, double energy);
     // term to be summed to calculate x1 (x2 = x - x1)
     static double innerX1(const CritTempState& st, double kx, double ky);
-    // used to calculate Re Pi (xx, xy, yy)
-    // TODO
-    static PiOutput innerPi(const CritTempState& st, double omega, double kx, 
-                            double ky, double qx, double qy);
     // term to be summed to calculate rhs of associated S-C equation
     static double innerD1(const CritTempState& st, double kx, double ky);
     static double innerMu(const CritTempState& st, double kx, double ky);
-    // TODO
-    static double innerBp(const CritTempState& st, double kx, double ky);
+    // term summed to calculate Re Pi (xx, xy, yy)
+    static PiOutput innerPi(const InnerPiInput& ipi, double qx, double qy);
     // BZone call required to calculate these.
-    LambdaOutput getLambda(double omega, double kx, double ky, double kz) const;
-    PiOutput getPi(double omega, double kx, double ky) const;
+    static LambdaOutput getLambda(const CritTempState& st, double omega, 
+                                  double kx, double ky, double kz);
+    static PiOutput getPi(const CritTempState& st, double omega, 
+                          double kx, double ky);
     // Requires solving for omega coefficients.  bc = (nu/x2)^(2/3)
-    double getNu() const;
+    static double getNu(const CritTempState& st);
     // Requires finding the smallest root of lambda minus or plus.
-    OmegaCoeffs getOmegaCoeffs() const;
+    static OmegaCoeffs getOmegaCoeffs(const CritTempState& st);
     // Use this to check accuracy of OmegaCoeffs.
-    double omegaApprox(const OmegaCoeffs& oc, double kx, double ky, double kz);
+    static double omegaApprox(const OmegaCoeffs& oc, double kx, double ky, 
+                              double kz);
     // Required to find root of lambda.
-    double omegaExact(double kx, double ky, double kz);
+    double omegaExact(const CritTempState& st, double kx, double ky, double kz);
 };
 
 #endif
