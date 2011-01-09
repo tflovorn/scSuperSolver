@@ -25,6 +25,7 @@
 
 #include <cmath>
 #include <cfloat>
+#include <vector>
 
 #include "BaseState.hh"
 #include "ZeroTempState.hh"
@@ -40,6 +41,11 @@ public:
     static double minimum(const BaseState& stBase, 
         const SpecializedState& stSpec, 
         double (*innerFunc)(const SpecializedState&, double, double));
+
+    template <class SpecializedState>
+    static std::vector average(const BaseState& stBase, 
+        const SpecializedState& stSpec, 
+        std::vector (*innerFunc)(const SpecializedState&, double, double));
 };
 
 // Would be nice to have a single function handle transforming one BZone point
@@ -76,6 +82,29 @@ double BZone::average(const BaseState& stBase,
     while (ky < M_PI) {
         while (kx < M_PI) {
             sum += innerFunc(stSpec, kx, ky);
+            kx += step;      
+        }
+        ky += step;
+        kx = -M_PI;
+    }
+    return sum / (N * N);
+}
+
+template <class SpecializedState>
+std::vector<double> BZone::vectorAverage(const BaseState& stBase, 
+        const SpecializedState& stSpec, 
+        std::vector<double> (*innerFunc)(const SpecializedState&, 
+                                         double, double)) {
+    double kx = -M_PI, ky = -M_PI, min = DBL_MAX;
+    int N = stBase.env.gridLen;
+    double step = 2 * M_PI / N;
+    std::vector sums;
+    while (ky < M_PI) {
+        while (kx < M_PI) {
+            std::vector newTerms = innerFunc(stSpec, kx, ky);
+            for (it = newTerms.begin() ; it < newTerms.end(); it++ ) {
+                // expanded sums if needed; added newTerms
+            }
             kx += step;      
         }
         ky += step;
