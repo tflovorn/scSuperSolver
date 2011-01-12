@@ -114,34 +114,27 @@ LambdaOutput CritTempSpectrum::getLambda(const CritTempState& st,
         double omega, double kx, double ky, double kz) {
     double ex = 2 * (st.env.t0 * cos(ky) + st.env.tz * cos(kz)),
            ey = 2 * (st.env.t0 * cos(kx) + st.env.tz * cos(kz));
-    double PiXX = getPiXX(st, omega, kx, ky);
-    double PiXY = getPiXY(st, omega, kx, ky);
-    double PiYY = getPiYY(st, omega, kx, ky);
-    double firstTerm = (ex * PiXX + ey * PiYY) / 2 - 1;
-    double secondTerm = sqrt(pow((ex * PiXX - ey * PiYY), 2.0) / 4
-        + ex * ey * pow(PiXY, 2.0));
+    PiOutput Pi = getPi(st, omega, kx, ky);
+    double firstTerm = (ex * Pi.xx + ey * Pi.yy) / 2 - 1;
+    double secondTerm = sqrt(pow((ex * Pi.xx - ey * Pi.yy), 2.0) / 4
+        + ex * ey * pow(Pi.xy, 2.0));
     LambdaOutput out;
     out.plus = firstTerm + secondTerm;
     out.minus = firstTerm - secondTerm;
     return out;
 }
 
-double CritTempSpectrum::getPiXX(const CritTempState& st, double omega,
-                                 double kx, double ky) {
+PiOutput CritTempSpectrum::getPi(const CritTempState& st, double omega,
+                                 double kx, double ky) const {
     InnerPiInput ipi(st, omega, kx, ky);
-    return BZone::average<InnerPiInput>(st, ipi, innerPiXX);
-}
-
-double CritTempSpectrum::getPiXY(const CritTempState& st, double omega,
-                                 double kx, double ky) {
-    InnerPiInput ipi(st, omega, kx, ky);
-    return BZone::average<InnerPiInput>(st, ipi, innerPiXY);
-}
-
-double CritTempSpectrum::getPiYY(const CritTempState& st, double omega,
-                                 double kx, double ky) {
-    InnerPiInput ipi(st, omega, kx, ky);
-    return BZone::average<InnerPiInput>(st, ipi, innerPiYY);
+    double piXX BZone::average<InnerPiInput>(st, ipi, innerPiXX);
+    double piXY BZone::average<InnerPiInput>(st, ipi, innerPiXY);
+    double piYY BZone::average<InnerPiInput>(st, ipi, innerPiYY);
+    PiOutput out;
+    out.xx = piXX;
+    out.xy = piXY;
+    out.yy = piYY;
+    return out;
 }
 
 double CritTempSpectrum::getNu(const CritTempState& st) {

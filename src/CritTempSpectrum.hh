@@ -36,6 +36,10 @@ struct LambdaOutput {
     double plus, double minus;
 };
 
+struct PiOutput {
+    double xx, xy, yy;
+};
+
 struct InnerPiInput {
     InnerPiInput(const CritTempState& _st, double _omega, 
                  double _kx, double _ky);
@@ -72,11 +76,8 @@ public:
                               double kx, double ky, double kz);
     static LambdaOutput getLambda(const CritTempState& st, double omega, 
                                   double kx, double ky, double kz);
-    static double getPiXX(const CritTempState& st, double omega, 
+   static PiOutput getPi(const CritTempState& st, double omega, 
                           double kx, double ky);
-    static double getPiXY(const CritTempState& st, double omega, 
-                          double kx, double ky);
-    static double getPiYY(const CritTempState& st, double omega,                                          double kx, double ky);
     // Requires solving for omega coefficients.  bc = (nu/x2)^(2/3)
     static double getNu(const CritTempState& st);
     // Requires finding the smallest root of lambda minus or plus.
