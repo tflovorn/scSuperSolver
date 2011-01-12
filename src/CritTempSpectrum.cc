@@ -69,46 +69,86 @@ double CritTempSpectrum::innerMu(const CritTempState& st, double kx,
            xi(st, kx, ky);
 }
 
-PiOutput CritTermSpectrum::innerPi(const InnerPiInput& ipi, 
-                                   double qx, double qy) {
+double CritTempSpectrum::innerPiCommon(const InnerPiInput& ipi, 
+                                       double qx, double qy) {
     PiOutput out;
     const CritTempState st = ipi.st;
     double xiPlus = xi(st, qx + ipi.kx / 2, qy + ipi.ky / 2)
     double xiMinus = xi(st, qx - ipi.kx / 2, qy - ipi.ky / 2)
     double common = -(tanh(st.getBc() * xiPlus / 2) + tanh(st.getBc() 
         * xiMinus / 2)) / (ipi.omega - xiPlus - xMinus);
-    out.xx = sin(qx) * sin(qx) * common;
-    out.xy = sin(qx) * sin(qy) * common;
-    out.xx = sin(qy) * sin(qy) * common;
-    return out;
+    return common;
+}
+
+double CritTempSpectrum::innerPiXX(const InnerPiInput& ipi, 
+                                   double qx, double qy) {
+    double common = innerPiCommon(ipi, qx, qy);
+    return sin(qx) * sin(qx) * common;
+}
+
+double CritTempSpectrum::innerPiXY(const InnerPiInput& ipi, 
+                                   double qx, double qy) {
+    double common = innerPiCommon(ipi, qx, qy);
+    return sin(qx) * sin(qy) * common;
+}
+
+double CritTempSpectrum::innerPiYY(const InnerPiInput& ipi, 
+                                   double qx, double qy) {
+    double common = innerPiCommon(ipi, qx, qy);
+    return sin(qy) * sin(qy) * common;
+}
+
+double CritTempSpectrum::lambdaPlus(const CritTempState& st, 
+        double omega, double kx, double ky, double kz) {
+    LambdaOutput out = getLambda(st, omega, kx, ky, kz);
+    return out.plus;
+}
+
+double CritTempSpectrum::lambdaMinus(const CritTempState& st, 
+        double omega, double kx, double ky, double kz) {
+    LambdaOutput out = getLambda(st, omega, kx, ky, kz);
+    return out.minus;
 }
 
 LambdaOutput CritTempSpectrum::getLambda(const CritTempState& st, 
-        double omega, double kx, double ky, double kz) const {
+        double omega, double kx, double ky, double kz) {
     double ex = 2 * (st.env.t0 * cos(ky) + st.env.tz * cos(kz)),
            ey = 2 * (st.env.t0 * cos(kx) + st.env.tz * cos(kz));
-    PiOutput Pi = getPi(st, omega, kx, ky);
-    double firstTerm = (ex * Pi.xx + ey * Pi.yy) / 2 - 1;
-    double secondTerm = sqrt(pow((ex * Pi.xx - ey * Pi.yy), 2.0) / 4
-        + ex * ey * pow(Pi.xy, 2.0));
+    double PiXX = getPiXX(st, omega, kx, ky);
+    double PiXY = getPiXY(st, omega, kx, ky);
+    double PiYY = getPiYY(st, omega, kx, ky);
+    double firstTerm = (ex * PiXX + ey * PiYY) / 2 - 1;
+    double secondTerm = sqrt(pow((ex * PiXX - ey * PiYY), 2.0) / 4
+        + ex * ey * pow(PiXY, 2.0));
     LambdaOutput out;
     out.plus = firstTerm + secondTerm;
     out.minus = firstTerm - secondTerm;
     return out;
 }
 
-PiOutput CritTempSpectrum::getPi(const CritTempState& st, double omega,
-                                 double kx, double ky) const {
+double CritTempSpectrum::getPiXX(const CritTempState& st, double omega,
+                                 double kx, double ky) {
     InnerPiInput ipi(st, omega, kx, ky);
-    double BZone::average<InnerPiInput>(st, ipi, innerPi);
-    
+    return BZone::average<InnerPiInput>(st, ipi, innerPiXX);
 }
 
-double CritTempSpectrum::getNu(const CritTempState& st) const {
+double CritTempSpectrum::getPiXY(const CritTempState& st, double omega,
+                                 double kx, double ky) {
+    InnerPiInput ipi(st, omega, kx, ky);
+    return BZone::average<InnerPiInput>(st, ipi, innerPiXY);
+}
+
+double CritTempSpectrum::getPiYY(const CritTempState& st, double omega,
+                                 double kx, double ky) {
+    InnerPiInput ipi(st, omega, kx, ky);
+    return BZone::average<InnerPiInput>(st, ipi, innerPiYY);
+}
+
+double CritTempSpectrum::getNu(const CritTempState& st) {
 
 }
 
-OmegaCoeffs CritTempSpectrum::getOmegaCoeffs(const CritTempState& st) const {
+OmegaCoeffs CritTempSpectrum::getOmegaCoeffs(const CritTempState& st) {
 
 }
 
