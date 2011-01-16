@@ -26,6 +26,9 @@ InnerPiInput::InnerPiInput(const CritTempState& _st, double _omega,
                            double _kx, double _ky) :
     st(_st), omega(_omega), kx(_kx), ky(_ky) { }
 
+PiOutput::PiOutput(double _xx, double _xy, double _yy) :
+    xx(_xx), xy(_xy), yy(_yy) { }
+
 double CritTempSpectrum::epsilon(const CritTempState& st, double kx, 
                                  double ky) {
     return epsilonBar(st, kx, ky) - st.getEpsilonMin();
@@ -130,15 +133,16 @@ PiOutput CritTempSpectrum::getPi(const CritTempState& st, double omega,
     double piXX BZone::average<InnerPiInput>(st, ipi, innerPiXX);
     double piXY BZone::average<InnerPiInput>(st, ipi, innerPiXY);
     double piYY BZone::average<InnerPiInput>(st, ipi, innerPiYY);
-    PiOutput out;
-    out.xx = piXX;
-    out.xy = piXY;
-    out.yy = piYY;
+    PiOutput out(piXX, piXY, piYY);
     return out;
 }
 
 double CritTempSpectrum::getNu(const CritTempState& st) {
-
+    OmegaCoeffs ocs = getOmegaCoeffs();
+    double integral;
+    double coeffPart = sqrt((ocs.planar + ocs.cross / 2.0) * 
+                            (ocs.planar - ocs.cross / 2.0) * ocs.perp);
+    return integral / (4 * pow(M_PI, 2.0) * coeffPart)
 }
 
 OmegaCoeffs CritTempSpectrum::getOmegaCoeffs(const CritTempState& st) {

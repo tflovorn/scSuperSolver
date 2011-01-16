@@ -29,7 +29,7 @@
 #include "BZone.hh"
 
 struct OmegaCoeffs {
-    double c_planar, c_perp, c_cross;
+    double planar, perp, cross;
 };
 
 struct LambdaOutput {
@@ -37,6 +37,7 @@ struct LambdaOutput {
 };
 
 struct PiOutput {
+    PiOutput(double _xx, double _xy, double _yy);
     double xx, xy, yy;
 };
 
