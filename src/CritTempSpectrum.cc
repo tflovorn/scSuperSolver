@@ -151,8 +151,8 @@ OmegaCoeffs CritTempSpectrum::getOmegaCoeffs(const CritTempState& st) {
 
 double CritTempSpectrum::omegaApprox(const OmegaCoeffs& oc,
                                      double kx, double ky, double kz) {
-    return oc.c_planar * (kx * kx + ky * ky) + oc.c_perp * kz * kz
-         + oc.c_cross * kx * ky;
+    return oc.planar * (kx * kx + ky * ky) + oc.perp * kz * kz
+         + oc.cross * kx * ky;
 }
 
 double CritTempSpectrum::omegaExact(const CritTempState& st, 
