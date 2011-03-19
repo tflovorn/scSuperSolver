@@ -32,9 +32,9 @@ public:
     // Use BaseEnvironment constructor to set base data.
     CritTempEnvironment(const ConfigData& cfg);
     // Initial conditions.
-    const double initBp;
+    const double initBc;
     // Tolerances.
-    const double tolBp;
+    const double tolBc;
 };
 
 #endif

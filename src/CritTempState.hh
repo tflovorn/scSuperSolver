@@ -39,17 +39,17 @@ public:
     bool checkSelfConsistent() const;
     // Return true if the error in the associated S-C equation is within
     // tolerance, false otherwise.
-    bool checkBp() const;
+    bool checkBc() const;
     // Return absolute error in the associated S-C equation.
     double absErrorD1() const;
     double absErrorMu() const;
-    double absErrorBp() const;
+    double absErrorBc() const;
     // Relative error
     double relErrorD1() const;
     double relErrorMu() const;
-    double relErrorBp() const;
+    double relErrorBc() const;
     // Simple getters.
-    double getBp() const;
+    double getBc() const;
     // BZone call required to calculate these.
     double getX1() const;
     double getX2() const; // x2 = x - x1
@@ -63,7 +63,7 @@ public:
     const PairTempEnvironment& env;
 protected:
     // Self-consistent variables.
-    double bp;
+    double bc;
     // Set epsilonMin to the appropriate value.
     // -- Need to call this after changing D1! --
     double setEpsilonMin();
@@ -73,11 +73,11 @@ protected:
     // together to find a pair of values that satisfies both equations.
     bool fixD1();
     bool fixMu();
-    bool fixBp();
+    bool fixBc();
     // Functions to be passed into RootFinder
     static double helperD1(double x, void *params);
     static double helperMu(double x, void *params);
-    static double helperBp(double x, void *params);
+    static double helperBc(double x, void *params);
 };
 
 // these are #included down here because they refer to State; should have it

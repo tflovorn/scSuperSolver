@@ -25,6 +25,6 @@
 // Grab crit-temp-specific data from cfg.
 CritTempEnvironment::CritTempEnvironment(const ConfigData& cfg) :
     BaseEnvironment(cfg),
-    initBp(cfg.getValue<double>("initBp")),
-    tolBp(cfg.getValue<double>("tolBp"))
+    initBc(cfg.getValue<double>("initBc")),
+    tolBc(cfg.getValue<double>("tolBc"))
 { }

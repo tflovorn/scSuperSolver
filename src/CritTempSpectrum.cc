@@ -22,6 +22,10 @@
 
 #include "CritTempSpectrum.hh"
 
+LambdaInput::LambdaInput(const CritTempState& _st, double _kx, double _ky,
+                         double _kz, double _lambdaMinus) :
+    st(_st), kx(_kx), ky(_ky), kz(_kz), lambdaMinus(_lambdaMinus) { }
+
 InnerPiInput::InnerPiInput(const CritTempState& _st, double _omega, 
                            double _kx, double _ky) :
     st(_st), omega(_omega), kx(_kx), ky(_ky) { }
@@ -48,11 +52,11 @@ double CritTempSpectrum::xi(const CritTempState& st, double kx, double ky) {
 }
 
 double CritTempSpectrum::fermi(const CritTempState& st, double energy) {
-    return 1.0 / (exp(st.getBp() * energy) + 1.0);
+    return 1.0 / (exp(st.getBc() * energy) + 1.0);
 }
 
 double CritTempSpectrum::bose(const CritTempState& st, double energy) {
-    return 1.0 / (exp(st.getBp() * energy) - 1.0);
+    return 1.0 / (exp(st.getBc() * energy) - 1.0);
 }
 
 double CritTempSpectrum::innerX1(const CritTempState& st, double kx, 
@@ -68,7 +72,7 @@ double CritTempSpectrum::innerD1(const CritTempState& st, double kx,
 double CritTempSpectrum::innerMu(const CritTempState& st, double kx, 
                                  double ky) {
     const double sin_part = sin(kx) - sin(ky);
-    return sin_part * sin_part * tanh(st.getBp() * xi(st, kx, ky) / 2.0) / 
+    return sin_part * sin_part * tanh(st.getBc() * xi(st, kx, ky) / 2.0) / 
            xi(st, kx, ky);
 }
 
@@ -101,30 +105,23 @@ double CritTempSpectrum::innerPiYY(const InnerPiInput& ipi,
     return sin(qy) * sin(qy) * common;
 }
 
-double CritTempSpectrum::lambdaPlus(const CritTempState& st, 
-        double omega, double kx, double ky, double kz) {
-    LambdaOutput out = getLambda(st, omega, kx, ky, kz);
-    return out.plus;
-}
+double CritTempSpectrum::getLambda(double omega, void *params) {
+    LambdaInput *lin = (LambdaInput*)params;
+    const CritTempState& st = lin->st;
+    double kx = lin->kx, ky = lin->ky, kz = lin->kz;
 
-double CritTempSpectrum::lambdaMinus(const CritTempState& st, 
-        double omega, double kx, double ky, double kz) {
-    LambdaOutput out = getLambda(st, omega, kx, ky, kz);
-    return out.minus;
-}
-
-LambdaOutput CritTempSpectrum::getLambda(const CritTempState& st, 
-        double omega, double kx, double ky, double kz) {
     double ex = 2 * (st.env.t0 * cos(ky) + st.env.tz * cos(kz)),
            ey = 2 * (st.env.t0 * cos(kx) + st.env.tz * cos(kz));
     PiOutput Pi = getPi(st, omega, kx, ky);
     double firstTerm = (ex * Pi.xx + ey * Pi.yy) / 2 - 1;
     double secondTerm = sqrt(pow((ex * Pi.xx - ey * Pi.yy), 2.0) / 4
         + ex * ey * pow(Pi.xy, 2.0));
-    LambdaOutput out;
-    out.plus = firstTerm + secondTerm;
-    out.minus = firstTerm - secondTerm;
-    return out;
+
+    if (lin->lambdaMinus) {
+        return firstTerm - secondTerm;
+    } else {
+        return firstTerm + secondTerm;
+    } 
 }
 
 PiOutput CritTempSpectrum::getPi(const CritTempState& st, double omega,
@@ -146,7 +143,12 @@ double CritTempSpectrum::getNu(const CritTempState& st) {
 }
 
 OmegaCoeffs CritTempSpectrum::getOmegaCoeffs(const CritTempState& st) {
-
+    double small_k = 0.05, sks = small_k * small_k;
+    OmegaCoeffs ocs;
+    ocs.planar = omegaExact(st, small_k, 0.0, 0.0) / sks;
+    ocs.perp = omegaExact(st, 0.0, 0.0, small_k) / sks;
+    ocs.cross = omegaExact(st, small_k, small_k, 0.0) / sks - 2 * ocs.planar;
+    return ocs;
 }
 
 double CritTempSpectrum::omegaApprox(const OmegaCoeffs& oc,
@@ -157,5 +159,13 @@ double CritTempSpectrum::omegaApprox(const OmegaCoeffs& oc,
 
 double CritTempSpectrum::omegaExact(const CritTempState& st, 
                                     double kx, double ky, double kz) {
-
+    LambdaInput lin(st, kx, ky, kz, true);
+    RootFinder rf(&CritTempSpectrum::getLambda, &lin, 0.0, 100.0, 1e-6);
+    const RootData& rootData = rootFinder.findRoot();
+    if (!rootData.converged) {
+        st.env.errorLog.printf("Failed to find root of Lambda at"
+                               " k = (%f, %f, %f)", kx, ky, kz);
+        return -1;
+    }
+    return rootData.root;
 }

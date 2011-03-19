@@ -23,7 +23,7 @@
 #include "CritTempState.hh"
 
 CritTempState::CritTempState(const CritTempEnvironment& envIn) : 
-    BaseState(envIn), env(envIn), bp(envIn.initBp) 
+    BaseState(envIn), env(envIn), bc(envIn.initBc) 
 {   
     setEpsilonMin();
 }
@@ -35,19 +35,19 @@ bool CritTempState::makeSelfConsistent() {
         env.debugLog.printf("got d1 = %e\n", d1);
         fixMu();
         env.debugLog.printf("got mu = %e\n", mu);
-        fixBp();
-        env.debugLog.printf("got bp = %e\n", bp);
+        fixBc();
+        env.debugLog.printf("got bc = %e\n", bc);
     } while (!checkSelfConsistent());
     return checkSelfConsistent();
 }
 
 // checkers
 bool CritTempState::checkSelfConsistent() const {
-    return checkD1() && checkMu() && checkBp();
+    return checkD1() && checkMu() && checkBc();
 }
 
-bool CritTempState::checkBp() const {
-    return fabs(absErrorBp()) < env.tolBp;
+bool CritTempState::checkBc() const {
+    return fabs(absErrorBc()) < env.tolBc;
 }
 
 // error calculators
@@ -65,10 +65,10 @@ double CritTempState::absErrorMu() const {
     return lhs - rhs;
 }
 // TODO
-double CritTempState::absErrorBp() const {
+double CritTempState::absErrorBc() const {
     double lhs = 1.0 / (env.t0 + env.tz);
     double rhs = BZone::average<CritTempState>(*this, *this,
-                                               CritTempSpectrum::innerBp);
+                                               CritTempSpectrum::innerBc);
     return lhs - rhs;
 }
 
@@ -89,13 +89,13 @@ double CritTempState::relErrorMu() const {
     return fabs(absErrorMu()) * (env.t0 + env.tz);
 }
 // TODO
-double CritTempState::relErrorBp() const {
-    return fabs(absErrorBp()) * (env.t0 + env.tz);
+double CritTempState::relErrorBc() const {
+    return fabs(absErrorBc()) * (env.t0 + env.tz);
 }
 
 // getters
-double CritTempState::getBp() const {
-    return bp;
+double CritTempState::getBc() const {
+    return bc;
 }
 
 // logging
@@ -105,7 +105,7 @@ void CritTempState::logState() const {
     env.outputLog.printf("self-consistent,%s\n", sc.c_str());
     env.outputLog.printf("d1,%e\nd1RelError,%e\n", getD1(), relErrorD1());
     env.outputLog.printf("mu,%e\nmuRelError,%e\n", getMu(), relErrorMu());
-    env.outputLog.printf("bp,%e\nbpRelError,%e\n", getBp(), relErrorBp());
+    env.outputLog.printf("bc,%e\nbcRelError,%e\n", getBc(), relErrorBc());
     env.outputLog.printf("<end>,state\n");
 }
 
@@ -132,13 +132,13 @@ double CritTempState::helperMu(double x, void *params) {
     return st->absErrorMu();
 }
 
-double CritTempState::helperBp(double x, void *params) {
+double CritTempState::helperBc(double x, void *params) {
     CritTempState *st = (CritTempState*)params;
-    st->bp = x;
-    st->env.debugLog.printf("trying bp = %e, about to fix mu\n", x);
+    st->bc = x;
+    st->env.debugLog.printf("trying bc = %e, about to fix mu\n", x);
     st->fixMu();
     st->env.debugLog.printf("mu fixed at %e\n", st->mu);
-    return st->absErrorBp();
+    return st->absErrorBc();
 }
 
 bool CritTempState::fixD1() {
@@ -167,14 +167,14 @@ bool CritTempState::fixMu() {
     return true;
 }
 
-bool CritTempState::fixBp() {
-    double old_bp = bp;
-    RootFinder rootFinder(&CritTempState::helperBp, this, bp,
-                          0.0, 1e6, env.tolBp / 10);
+bool CritTempState::fixBc() {
+    double old_bc = bc;
+    RootFinder rootFinder(&CritTempState::helperBc, this, bc,
+                          0.0, 1e6, env.tolBc / 10);
     const RootData& rootData = rootFinder.findRoot();
     if (!rootData.converged) {
-        env.errorLog.printf("Bp failed to converge!\n");
-        bp = old_bp;
+        env.errorLog.printf("Bc failed to converge!\n");
+        bc = old_bc;
         return false;
     }
     return true;

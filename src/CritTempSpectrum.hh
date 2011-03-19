@@ -27,13 +27,18 @@
 
 #include "CritTempState.hh"
 #include "BZone.hh"
+#include "RootFinder.hh"
 
 struct OmegaCoeffs {
     double planar, perp, cross;
 };
 
-struct LambdaOutput {
-    double plus, double minus;
+struct LambdaInput {
+    LambdaInput(const CritTempState& _st, double _kx, double _ky, double _kz,
+                double _lambdaMinus)
+    const CritTempState& st;
+    double kx, ky, kz;
+    bool lambdaMinus;
 };
 
 struct PiOutput {
@@ -71,13 +76,9 @@ public:
     static double innerPiXY(const InnerPiInput& ipi, double qx, double qy);
     static double innerPiYY(const InnerPiInput& ipi, double qx, double qy);
     // BZone call required to calculate these.
-    static double lambdaPlus(const CritTempState& st, double omega, 
-                             double kx, double ky, double kz);
-    static double lambdaMinus(const CritTempState& st, double omega, 
-                              double kx, double ky, double kz);
-    static LambdaOutput getLambda(const CritTempState& st, double omega, 
+    static double getLambda(const CritTempState& st, double omega, 
                                   double kx, double ky, double kz);
-   static PiOutput getPi(const CritTempState& st, double omega, 
+    static PiOutput getPi(const CritTempState& st, double omega, 
                           double kx, double ky);
     // Requires solving for omega coefficients.  bc = (nu/x2)^(2/3)
     static double getNu(const CritTempState& st);
