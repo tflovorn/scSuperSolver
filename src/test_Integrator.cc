@@ -20,27 +20,24 @@
   THE SOFTWARE.
 */
 
-#ifndef __SCSS_INTEGRATOR_HH
-#define __SCSS_INTEGRATOR_HH
-
-#include <gsl/gsl_errno.h>
-#include <gsl/gsl_integration.h>
+#include <iostream>
 
 #include "Logger.hh"
+#include "Integrator.hh"
 
-#define WS_SIZE 10000 // size allocated for gsl workspace
+// should converge to a value of x = 1
+double test_integrator_linear(double x, void *params) {
+    return x;
+}
 
-class Integrator {
-public:
-    Integrator(double (*const integrand)(double, void*), void * const params,
-               double _absTolerance, double _relTolerance);
-    ~Integrator();
-    double doIntegral(double leftBound, double rightBound, 
-                      const Logger& errorLog);
-private:
-    gsl_function myFunction;
-    gsl_integration_workspace *myWorkspace;
-    double absTolerance, relTolerance;
-};
-
-#endif
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        std::cout << "usage: test_Controller.out path" << std::endl;
+    }
+    const std::string& path = argv[1];
+    Logger error(path, "test_error_log");
+    Integrator integrator(&test_integrator_linear, NULL, 1e-6, 1e-6);
+    double integral = integrator.doIntegral(0, 1.0, error);
+    std::cout << integral << std::endl;
+    return 0;
+}

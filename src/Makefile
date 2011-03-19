@@ -2,14 +2,15 @@ all: mainController.out
 
 tests: test_Logger.out test_ConfigData.out test_ZeroTempEnvironment.out \
 test_ZeroTempState.out test_BZone.out test_RootFinder.out test_Controller.out \
-test_Utility.out
+test_Utility.out test_Integrator.out
 
 clean:
 	\rm -f *.gch *.o *.out *.pyc *.pyo
 
 OBJS = Logger.o ConfigData.o BaseEnvironment.o ZeroTempEnvironment.o \
 BaseState.o ZeroTempState.o ZeroTempSpectrum.o PairTempEnvironment.o \
-PairTempState.o PairTempSpectrum.o RootFinder.o Controller.o Utility.o
+PairTempState.o PairTempSpectrum.o RootFinder.o Controller.o Utility.o \
+Integrator.o
 
 FLAGS = -Wall -lgsl -lblas -I/usr/local/include/gsl/
 
@@ -40,6 +41,9 @@ test_Controller.out: test_Controller.o $(OBJS)
 test_Utility.out: test_Utility.o $(OBJS)
 	g++ -o test_Utility.out test_Utility.o $(FLAGS) $(OBJS)
 
+test_Integrator.out: test_Integrator.o $(OBJS)
+	g++ -o test_Integrator.out test_Integrator.o $(FLAGS) $(OBJS)
+
 mainController.o: mainController.cc Controller.hh
 	g++ -c mainController.cc
 
@@ -66,6 +70,9 @@ test_Controller.o: test_Controller.cc Controller.hh
 
 test_Utility.o: test_Utility.cc Utility.hh
 	g++ -c test_Utility.cc
+
+test_Integrator.o: test_Integrator.cc Integrator.hh
+	g++ -c test_Integrator.cc
 
 Logger.o: Logger.cc Logger.hh
 	g++ -c Logger.cc
@@ -105,6 +112,9 @@ Controller.o: Controller.cc Controller.hh
 
 Utility.o: Utility.cc Utility.hh
 	g++ -c Utility.cc
+
+Integrator.o: Integrator.cc Integrator.hh
+	g++ -c Integrator.cc
 
 ConfigData.hh: Logger.hh Utility.hh
 
