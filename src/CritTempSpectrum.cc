@@ -116,6 +116,9 @@ double CritTempSpectrum::getLambda(double omega, void *params) {
     double secondTerm = sqrt(pow((ex * Pi.xx - ey * Pi.yy), 2.0) / 4
         + ex * ey * pow(Pi.xy, 2.0));
 
+    st.env.debugLog.printf("at (kx = %e, ky = %e, kz = %e), omega = %e:\n"
+                           "Lambda first = %e, second = %e\n", kx, ky, kz,
+                           omega, firstTerm, secondTerm);
     if (lin->lambdaMinus) {
         return firstTerm - secondTerm;
     } else {
@@ -168,7 +171,7 @@ double CritTempSpectrum::omegaApprox(const OmegaCoeffs& oc,
 double CritTempSpectrum::omegaExact(const CritTempState& st, 
                                     double kx, double ky, double kz) {
     LambdaInput lin(st, kx, ky, kz, true);
-    RootFinder rf(&CritTempSpectrum::getLambda, &lin, 1.0, 0.0, 100.0, 
+    RootFinder rf(&CritTempSpectrum::getLambda, &lin, 0.05, 0.0, 100.0, 
                   1e-6);
     const RootData& rootData = rf.findRoot();
     if (!rootData.converged) {
