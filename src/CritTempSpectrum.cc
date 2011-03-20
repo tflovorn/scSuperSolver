@@ -78,12 +78,11 @@ double CritTempSpectrum::innerMu(const CritTempState& st, double kx,
 
 double CritTempSpectrum::innerPiCommon(const InnerPiInput& ipi, 
                                        double qx, double qy) {
-    PiOutput out;
     const CritTempState st = ipi.st;
-    double xiPlus = xi(st, qx + ipi.kx / 2, qy + ipi.ky / 2)
-    double xiMinus = xi(st, qx - ipi.kx / 2, qy - ipi.ky / 2)
+    double xiPlus = xi(st, qx + ipi.kx / 2, qy + ipi.ky / 2);
+    double xiMinus = xi(st, qx - ipi.kx / 2, qy - ipi.ky / 2);
     double common = -(tanh(st.getBc() * xiPlus / 2) + tanh(st.getBc() 
-        * xiMinus / 2)) / (ipi.omega - xiPlus - xMinus);
+        * xiMinus / 2)) / (ipi.omega - xiPlus - xiMinus);
     return common;
 }
 
@@ -125,21 +124,30 @@ double CritTempSpectrum::getLambda(double omega, void *params) {
 }
 
 PiOutput CritTempSpectrum::getPi(const CritTempState& st, double omega,
-                                 double kx, double ky) const {
+                                 double kx, double ky) {
     InnerPiInput ipi(st, omega, kx, ky);
-    double piXX BZone::average<InnerPiInput>(st, ipi, innerPiXX);
-    double piXY BZone::average<InnerPiInput>(st, ipi, innerPiXY);
-    double piYY BZone::average<InnerPiInput>(st, ipi, innerPiYY);
+    double piXX = BZone::average<InnerPiInput>(st, ipi, innerPiXX);
+    double piXY = BZone::average<InnerPiInput>(st, ipi, innerPiXY);
+    double piYY = BZone::average<InnerPiInput>(st, ipi, innerPiYY);
     PiOutput out(piXX, piXY, piYY);
     return out;
 }
 
+double CritTempSpectrum::nuFunction(double y, void *params) {
+    return sqrt(y) / (exp(y) - 1);
+}
+
 double CritTempSpectrum::getNu(const CritTempState& st) {
-    OmegaCoeffs ocs = getOmegaCoeffs();
-    double integral;
+    OmegaCoeffs ocs = getOmegaCoeffs(st);
+    Integrator integrator(&nuFunction, NULL, 1e-6, 1e-6);
+    double integral = integrator.doIntegral(0.0, -2 * st.getMu() * st.getBc(),
+                                            st.env.errorLog);
+    st.env.debugLog.printf("integral = %e\n"
+                           "planar = %e cross = %e perp = %e\n", integral,
+                           ocs.planar, ocs.cross, ocs.perp);
     double coeffPart = sqrt((ocs.planar + ocs.cross / 2.0) * 
                             (ocs.planar - ocs.cross / 2.0) * ocs.perp);
-    return integral / (4 * pow(M_PI, 2.0) * coeffPart)
+    return integral / (4 * pow(M_PI, 2.0) * coeffPart);
 }
 
 OmegaCoeffs CritTempSpectrum::getOmegaCoeffs(const CritTempState& st) {
@@ -160,11 +168,12 @@ double CritTempSpectrum::omegaApprox(const OmegaCoeffs& oc,
 double CritTempSpectrum::omegaExact(const CritTempState& st, 
                                     double kx, double ky, double kz) {
     LambdaInput lin(st, kx, ky, kz, true);
-    RootFinder rf(&CritTempSpectrum::getLambda, &lin, 0.0, 100.0, 1e-6);
-    const RootData& rootData = rootFinder.findRoot();
+    RootFinder rf(&CritTempSpectrum::getLambda, &lin, 1.0, 0.0, 100.0, 
+                  1e-6);
+    const RootData& rootData = rf.findRoot();
     if (!rootData.converged) {
         st.env.errorLog.printf("Failed to find root of Lambda at"
-                               " k = (%f, %f, %f)", kx, ky, kz);
+                               " k = (%f, %f, %f)\n", kx, ky, kz);
         return -1;
     }
     return rootData.root;

@@ -32,6 +32,8 @@
 #include "ZeroTempState.hh"
 #include "PairTempEnvironment.hh"
 #include "PairTempState.hh"
+#include "CritTempEnvironment.hh"
+#include "CritTempState.hh"
 
 class Controller {
 public:

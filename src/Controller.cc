@@ -38,7 +38,12 @@ Controller& Controller::makeController(const std::string& path,
     Controller *control;
     ConfigData *cfg = new ConfigData(path, cfgFileName);
     std::string type = cfg->getValue<std::string>("calculationType");
-    if (type == "pairTemp") {
+    if (type == "critTemp") {
+        CritTempEnvironment *env = new CritTempEnvironment(*cfg);
+        CritTempState *st = new CritTempState(*env);
+        control = new Controller(*cfg, *env, *st);
+    }
+    else if (type == "pairTemp") {
         PairTempEnvironment *env = new PairTempEnvironment(*cfg);
         PairTempState *st = new PairTempState(*env);
         control = new Controller(*cfg, *env, *st);

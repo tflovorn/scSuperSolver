@@ -23,6 +23,8 @@
 #ifndef __SCSS_CRIT_TEMP_STATE_H
 #define __SCSS_CRIT_TEMP_STATE_H
 
+#define BC_MAX_ITERS 100
+
 #include "BaseState.hh"
 #include "CritTempEnvironment.hh"
 #include "RootFinder.hh"
@@ -60,7 +62,7 @@ public:
      // RootFinder needs to be a friend to do its dirty work.
     friend class RootFinder;
     // Our Environment, containing all the configuration info we need.
-    const PairTempEnvironment& env;
+    const CritTempEnvironment& env;
 protected:
     // Self-consistent variables.
     double bc;
@@ -77,7 +79,6 @@ protected:
     // Functions to be passed into RootFinder
     static double helperD1(double x, void *params);
     static double helperMu(double x, void *params);
-    static double helperBc(double x, void *params);
 };
 
 // these are #included down here because they refer to State; should have it

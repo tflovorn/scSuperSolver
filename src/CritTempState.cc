@@ -64,11 +64,12 @@ double CritTempState::absErrorMu() const {
                                                CritTempSpectrum::innerMu);
     return lhs - rhs;
 }
-// TODO
+
 double CritTempState::absErrorBc() const {
-    double lhs = 1.0 / (env.t0 + env.tz);
-    double rhs = BZone::average<CritTempState>(*this, *this,
-                                               CritTempSpectrum::innerBc);
+    double nu = CritTempSpectrum::getNu(*this);
+    double rhs = pow(nu / getX2(), 2.0 / 3.0);
+
+    double lhs = bc;
     return lhs - rhs;
 }
 
@@ -88,14 +89,23 @@ double CritTempState::relErrorD1() const {
 double CritTempState::relErrorMu() const {
     return fabs(absErrorMu()) * (env.t0 + env.tz);
 }
-// TODO
+
 double CritTempState::relErrorBc() const {
-    return fabs(absErrorBc()) * (env.t0 + env.tz);
+    return fabs(absErrorBc()) / bc;
 }
 
 // getters
 double CritTempState::getBc() const {
     return bc;
+}
+
+double CritTempState::getX1() const {
+    return BZone::average<CritTempState>(*this, *this,
+                                         CritTempSpectrum::innerX1);
+}
+
+double CritTempState::getX2() const {
+    return env.x - getX1();
 }
 
 // logging
@@ -132,15 +142,6 @@ double CritTempState::helperMu(double x, void *params) {
     return st->absErrorMu();
 }
 
-double CritTempState::helperBc(double x, void *params) {
-    CritTempState *st = (CritTempState*)params;
-    st->bc = x;
-    st->env.debugLog.printf("trying bc = %e, about to fix mu\n", x);
-    st->fixMu();
-    st->env.debugLog.printf("mu fixed at %e\n", st->mu);
-    return st->absErrorBc();
-}
-
 bool CritTempState::fixD1() {
     double old_d1 = d1;
     RootFinder rootFinder(&CritTempState::helperD1, this, d1, 
@@ -168,14 +169,17 @@ bool CritTempState::fixMu() {
 }
 
 bool CritTempState::fixBc() {
-    double old_bc = bc;
-    RootFinder rootFinder(&CritTempState::helperBc, this, bc,
-                          0.0, 1e6, env.tolBc / 10);
-    const RootData& rootData = rootFinder.findRoot();
-    if (!rootData.converged) {
-        env.errorLog.printf("Bc failed to converge!\n");
-        bc = old_bc;
-        return false;
+    double old_bc = bc, last_bc = bc;
+    for (int iterCount = 0; iterCount < BC_MAX_ITERS; iterCount++) {
+        double nu = CritTempSpectrum::getNu(*this);
+        env.debugLog.printf("nu = %e, x2 = %e\n", nu, getX2());
+        bc = pow(nu / getX2(), 2.0 / 3.0);
+        env.debugLog.printf("setting bc to %e\n", bc);
+        if (fabs(bc - last_bc) / bc < env.tolBc) {
+            return true;
+        }
     }
-    return true;
+    env.errorLog.printf("Bc failed to converge!\n");
+    bc = old_bc;
+    return false;
 }

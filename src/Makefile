@@ -10,7 +10,7 @@ clean:
 OBJS = Logger.o ConfigData.o BaseEnvironment.o ZeroTempEnvironment.o \
 BaseState.o ZeroTempState.o ZeroTempSpectrum.o PairTempEnvironment.o \
 PairTempState.o PairTempSpectrum.o RootFinder.o Controller.o Utility.o \
-Integrator.o
+Integrator.o CritTempEnvironment.o CritTempState.o CritTempSpectrum.o
 
 FLAGS = -Wall -lgsl -lblas -I/usr/local/include/gsl/
 
@@ -89,6 +89,9 @@ ZeroTempEnvironment.o: ZeroTempEnvironment.cc ZeroTempEnvironment.hh
 PairTempEnvironment.o: PairTempEnvironment.cc PairTempEnvironment.hh
 	g++ -c PairTempEnvironment.cc
 
+CritTempEnvironment.o: CritTempEnvironment.cc CritTempEnvironment.hh
+	g++ -c CritTempEnvironment.cc
+
 BaseState.o: BaseState.cc BaseState.hh
 	g++ -c BaseState.cc
 
@@ -98,11 +101,17 @@ ZeroTempState.o: ZeroTempState.cc ZeroTempState.hh RootFinder.hh
 PairTempState.o: PairTempState.cc PairTempState.hh RootFinder.hh
 	g++ -c PairTempState.cc
 
+CritTempState.o: CritTempState.cc CritTempState.hh RootFinder.hh
+	g++ -c CritTempState.cc
+
 ZeroTempSpectrum.o: ZeroTempSpectrum.cc ZeroTempSpectrum.hh ZeroTempState.hh
 	g++ -c ZeroTempSpectrum.cc
 
 PairTempSpectrum.o: PairTempSpectrum.cc PairTempSpectrum.hh PairTempState.hh
 	g++ -c PairTempSpectrum.cc
+
+CritTempSpectrum.o: CritTempSpectrum.cc CritTempSpectrum.hh CritTempState.hh
+	g++ -c CritTempSpectrum.cc
 
 RootFinder.o: RootFinder.cc RootFinder.hh
 	g++ -c RootFinder.cc $(FLAGS)
@@ -124,10 +133,14 @@ ZeroTempEnvironment.hh: BaseEnvironment.hh
 
 PairTempEnvironment.hh: BaseEnvironment.hh
 
+CritTempEnvironment.hh: BaseEnvironment.hh
+
 BaseState.hh: BaseEnvironment.hh
 
 ZeroTempState.hh: BaseState.hh ZeroTempEnvironment.hh ZeroTempSpectrum.hh
 
 PairTempState.hh: BaseState.hh PairTempEnvironment.hh PairTempSpectrum.hh
 
-Controller.hh: BaseState.hh ZeroTempState.hh PairTempState.hh
+CritTempState.hh: BaseState.hh CritTempEnvironment.hh CritTempSpectrum.hh
+
+Controller.hh: BaseState.hh ZeroTempState.hh PairTempState.hh CritTempState.hh

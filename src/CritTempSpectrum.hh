@@ -28,6 +28,7 @@
 #include "CritTempState.hh"
 #include "BZone.hh"
 #include "RootFinder.hh"
+#include "Integrator.hh"
 
 struct OmegaCoeffs {
     double planar, perp, cross;
@@ -35,7 +36,7 @@ struct OmegaCoeffs {
 
 struct LambdaInput {
     LambdaInput(const CritTempState& _st, double _kx, double _ky, double _kz,
-                double _lambdaMinus)
+                double _lambdaMinus);
     const CritTempState& st;
     double kx, ky, kz;
     bool lambdaMinus;
@@ -49,7 +50,7 @@ struct PiOutput {
 struct InnerPiInput {
     InnerPiInput(const CritTempState& _st, double _omega, 
                  double _kx, double _ky);
-    double omega, double kx, double ky;
+    double omega, kx, ky;
     const CritTempState& st;
 };
 
@@ -76,11 +77,11 @@ public:
     static double innerPiXY(const InnerPiInput& ipi, double qx, double qy);
     static double innerPiYY(const InnerPiInput& ipi, double qx, double qy);
     // BZone call required to calculate these.
-    static double getLambda(const CritTempState& st, double omega, 
-                                  double kx, double ky, double kz);
+    static double getLambda(double omega, void *params);
     static PiOutput getPi(const CritTempState& st, double omega, 
                           double kx, double ky);
     // Requires solving for omega coefficients.  bc = (nu/x2)^(2/3)
+    static double nuFunction(double y, void *params);
     static double getNu(const CritTempState& st);
     // Requires finding the smallest root of lambda minus or plus.
     static OmegaCoeffs getOmegaCoeffs(const CritTempState& st);
@@ -88,7 +89,8 @@ public:
     static double omegaApprox(const OmegaCoeffs& oc, double kx, double ky, 
                               double kz);
     // Required to find root of lambda.
-    double omegaExact(const CritTempState& st, double kx, double ky, double kz);
+    static double omegaExact(const CritTempState& st, double kx, double ky, 
+                             double kz);
 };
 
 #endif

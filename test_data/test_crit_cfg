@@ -1,0 +1,15 @@
+calculationType,critTemp
+outputLogName,test_crit_out.fd
+errorLogName,test_crit_err
+debugLogName,test_crit_debug
+gridLen,64
+t0,1.0
+tz,0.1
+thp,0.1
+x,0.05
+initD1,0.05
+initMu,-0.3
+initBc,20.0
+tolD1,1e-6
+tolMu,1e-6
+tolBc,1e-6

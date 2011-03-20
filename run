@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python runTest.py test_RunInterface.py
