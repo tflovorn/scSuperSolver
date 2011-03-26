@@ -32,8 +32,19 @@ class Grapher(object):
         self.configPaths.extend(configPaths)
 
     def readOutputs(self):
-        return [FileDict.readReferencedDict(filePath, "outputLogName") for
-                filePath in self.configPaths]
+        return [(filePath, 
+                FileDict.readReferencedDict(filePath, "outputLogName")) 
+                for filePath in self.configPaths]
+
+    def extractVar(self, outputDataList, section, var):
+        varValues = []
+        for (fileName, outputData) in outputDataList:
+            try:
+                varValues.append(outputData.getLatestVar(section, var))
+            except KeyError:
+                print("warning: couldn't read var %s in section %s of file %s"
+                      % (var, section, fileName))
+        return varValues
 
     def simple2D(self, xSection, xVar, ySection, yVar, fig=None, axes=None):
         # if either axes or figure is passed in as None, we ignore both
@@ -42,10 +53,8 @@ class Grapher(object):
             axes = fig.add_subplot(1,1,1)
 
         outputDataList = self.readOutputs()
-        xData = [outputData.getLatestVar(xSection, xVar) 
-                 for outputData in outputDataList]
-        yData = [outputData.getLatestVar(ySection, yVar) 
-                 for outputData in outputDataList]
+        xData = self.extractVar(outputDataList, xSection, xVar)
+        yData = self.extractVar(outputDataList, ySection, yVar)
 
         axes.plot(xData, yData, "k-")
         return fig, axes

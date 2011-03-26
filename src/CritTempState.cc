@@ -172,7 +172,7 @@ bool CritTempState::fixBc() {
     double old_bc = bc, last_bc = bc;
     for (int iterCount = 0; iterCount < BC_MAX_ITERS; iterCount++) {
         fixMu();
-        st->env.debugLog.printf("mu fixed at %e\n", mu);
+        env.debugLog.printf("mu fixed at %e\n", mu);
         double nu = CritTempSpectrum::getNu(*this);
         env.debugLog.printf("nu = %e, x2 = %e\n", nu, getX2());
         bc = pow(nu / getX2(), 2.0 / 3.0);
