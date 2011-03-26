@@ -28,7 +28,7 @@ if len(sys.argv) < 2:
 path = sys.argv[1]
 
 interface = RunInterface(path, "test_cfg")
-testConfigs = interface.oneDimRun("test_xrun", "x", 0.02, 0.161, 0.02)
+testConfigs = interface.oneDimRun("test_xrun", "x", 0.025, 0.161, 0.02)
 interface.doRun(testConfigs, maxProcesses=4)
 
 interface.graphData(testConfigs, "x", "d1", "test_d1")

@@ -21,6 +21,7 @@
 import os
 
 import matplotlib.pyplot as plt
+from numpy import arange
 
 import FileDict
 
@@ -57,11 +58,24 @@ class Grapher(object):
         yData = self.extractVar(outputDataList, ySection, yVar)
 
         axes.plot(xData, yData, "k-")
+        self.setxTicks(axes, xData)
+        self.setyTicks(axes, yData)
         return fig, axes
 
-    def setAxisLabels(self, axes, xLabel, yLabel):
-        axes.set_xlabel(xLabel)
-        axes.set_ylabel(yLabel)
+    def setAxisLabels(self, axes, xLabel, yLabel, fontsize=20):
+        axes.set_xlabel(xLabel, fontsize=fontsize)
+        axes.set_ylabel(yLabel, fontsize=fontsize)
+
+    def setxTicks(self, axes, data, numTicks=5):
+        axes.set_xticks(self.tickRange(data, numTicks))
+
+    def setyTicks(self, axes, data, numTicks=5):
+        axes.set_yticks(self.tickRange(data, numTicks))
+
+    def tickRange(self, data, numTicks=5):
+        data, start, stop = sorted(data), float(data[0]), float(data[-1])
+        step = (stop - start) / (numTicks - 1)
+        return arange(start, stop + step / 100.0, step)
 
     def saveFigure(self, fig, figurePath):
         fig.savefig(figurePath + ".png")
