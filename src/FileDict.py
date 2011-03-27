@@ -18,6 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+from collections import defaultdict
 import os
 
 class FileDict(object):
@@ -63,6 +64,7 @@ class FileDict(object):
     def getGlobal(self, key):
         return self.topDict[None][0][key]
     
+    # with section == None this is the same as getGlobal
     def getLatestVar(self, section, key):
         return self.topDict[section][-1][key]
 
@@ -132,3 +134,10 @@ def readReferencedDict(initialFilePath, nameKey, section=None):
         outputName = config.getLatestVar(section, nameKey)
     outputPath = os.path.join(configDirectory, outputName)
     return FileDict(outputPath)
+
+def groupPathsByValue(configFilePaths, name, section=None):
+    dataList = [FileDict(config) for config in configFilePaths]
+    grouped = defaultdict(list)
+    for path, fd in zip(configFilePaths, dataList):
+        grouped[fd.getLatestVar(section, name)] = path
+    return grouped

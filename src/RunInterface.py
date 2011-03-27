@@ -104,4 +104,3 @@ class RunInterface(object):
                                        label + "_" + str(index) + "_",
                                        varName, minimum, maximum, step))
                 configs = newConfigs
-
