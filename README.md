@@ -1,6 +1,6 @@
 <a href="http://dl.dropbox.com/u/2294525/scss.pdf">rough class heirarchy</a>
 
-Results currently generated for T = 0 (pure MFT superconducting state) and T = Tp (pseudrogap state, pair formation temperature scale)
+Results currently generated for T = 0 (pure MFT superconducting state) and T = Tp (pseudogap state, pair formation temperature scale)
 
 Developed on Ubuntu 10.10 / Mint 10.  Required packages:
     build-essential
