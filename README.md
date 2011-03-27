@@ -1,3 +1,5 @@
+<a href="http://dl.dropbox.com/u/2294525/scss.pdf">rough class heirarchy</a>
+
 Current implementation follows zero-temperature mean field theory results.
 
 Plan on incorporating results at T = Tc (strong hole binding)
