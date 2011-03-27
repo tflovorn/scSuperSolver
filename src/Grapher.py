@@ -29,18 +29,24 @@ import FileDict
 class Grapher(object):
     def __init__(self, configPaths):
         self.configPaths = configPaths
+        self.readOutputs()
+        # graphing parameter defaults
+        self.axis_label_fontsize = 20
+        self.num_ticks = 5
+        self.tick_formatstr = "%.2f"
 
     def addConfigs(self, configPaths):
         self.configPaths.extend(configPaths)
+        self.readOutputs()
 
     def readOutputs(self):
-        return [(filePath, 
-                FileDict.readReferencedDict(filePath, "outputLogName")) 
-                for filePath in self.configPaths]
+        self.outputDataList = [(filePath, 
+            FileDict.readReferencedDict(filePath, "outputLogName")) 
+            for filePath in self.configPaths]
 
-    def extractVar(self, outputDataList, section, var):
+    def extractVar(self, section, var):
         varValues = []
-        for (fileName, outputData) in outputDataList:
+        for (fileName, outputData) in self.outputDataList:
             try:
                 varValues.append(outputData.getLatestVar(section, var))
             except KeyError:
@@ -54,30 +60,29 @@ class Grapher(object):
             fig = plt.figure()
             axes = fig.add_subplot(1,1,1)
 
-        outputDataList = self.readOutputs()
-        xData = self.extractVar(outputDataList, xSection, xVar)
-        yData = self.extractVar(outputDataList, ySection, yVar)
+        xData = self.extractVar(xSection, xVar)
+        yData = self.extractVar(ySection, yVar)
 
         axes.plot(xData, yData, "k-")
         self.setxTicks(axes, xData)
         self.setyTicks(axes, yData)
         return fig, axes
 
-    def setAxisLabels(self, axes, xLabel, yLabel, fontsize=20):
-        axes.set_xlabel(xLabel, fontsize=fontsize)
-        axes.set_ylabel(yLabel, fontsize=fontsize)
+    def setAxisLabels(self, axes, xLabel, yLabel):
+        axes.set_xlabel(xLabel, fontsize=self.axis_label_fontsize)
+        axes.set_ylabel(yLabel, fontsize=self.axis_label_fontsize)
 
-    def setxTicks(self, axes, data, numTicks=5):
-        axes.set_xticks(self.tickRange(data, numTicks))
-        axes.xaxis.set_major_formatter(FormatStrFormatter("%.2f"))
+    def setxTicks(self, axes, data):
+        axes.set_xticks(self.tickRange(data))
+        axes.xaxis.set_major_formatter(FormatStrFormatter(self.tick_formatstr))
 
-    def setyTicks(self, axes, data, numTicks=5):
-        axes.set_yticks(self.tickRange(data, numTicks))
-        axes.yaxis.set_major_formatter(FormatStrFormatter("%.2f"))
+    def setyTicks(self, axes, data):
+        axes.set_yticks(self.tickRange(data))
+        axes.yaxis.set_major_formatter(FormatStrFormatter(self.tick_formatstr))
 
-    def tickRange(self, data, numTicks=5):
+    def tickRange(self, data):
         data, start, stop = sorted(data), float(data[0]), float(data[-1])
-        step = (stop - start) / (numTicks - 1)
+        step = (stop - start) / (self.num_ticks - 1)
         return arange(start, stop + step / 100.0, step)
 
     def saveFigure(self, fig, figurePath):

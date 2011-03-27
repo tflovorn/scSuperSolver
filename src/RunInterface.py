@@ -29,9 +29,8 @@ DEFAULT_MAX_PROCESSES = 2
 niceLabels = {"d1": "$D_{1}$", "mu": "$\mu$", "f0": "$F_{0}$", "x": "$x$"}
 
 class RunInterface(object):
-    def __init__(self, path, baseConfigName):
+    def __init__(self, path):
         self.path = path
-        self.baseConfigName = baseConfigName
 
     def doRun(self, configFiles, maxProcesses=DEFAULT_MAX_PROCESSES):
         """Run a controller for each config in configFiles."""
@@ -52,7 +51,7 @@ class RunInterface(object):
         else:
             return var
 
-    def makeRun(self, runData):
+    def makeRun(self, baseConfig, runData):
         """Make a new run of config files from the base config and runData.
 
         runData is a list of tuples which contain a label and a dict.
@@ -62,7 +61,7 @@ class RunInterface(object):
 
         """
         configNames = []
-        baseConfigFullPath = os.path.join(self.path, self.baseConfigName)
+        baseConfigFullPath = os.path.join(self.path, baseConfig)
         for label, labelData in runData:
             newConfig = FileDict(baseConfigFullPath)
             newConfigFullPath = os.path.join(self.path, label + "_config")
@@ -75,7 +74,7 @@ class RunInterface(object):
             newConfig.writeToFile(newConfigFullPath)
         return configNames
 
-    def oneDimRun(self, label, varName, minimum, maximum, step):
+    def oneDimRun(self, baseConfig, label, varName, minimum, maximum, step):
         """One-dimensional run with varName from [minimum, maximum).
 
         Returns names of config files.
@@ -85,7 +84,24 @@ class RunInterface(object):
         varValue = minimum
         runData = []
         while varValue < maximum:
-            runData.append((label + str(index), {varName : varValue}))
+            runData.append((label + "_" + str(index) + "_", 
+                           {varName : varValue}))
             varValue += step
             index += 1
-        return self.makeRun(runData)
+        return self.makeRun(baseConfig, runData)
+
+    def multiDimRun(self, baseConfig, label, varDataList):
+        configs = []
+        for index, data in enumerate(varDataList):
+            varName, minimum, maximum, step = data
+            if len(configs) == 0:
+                configs = self.oneDimRun(baseConfig, label + "_0_", varName, 
+                                         minimum, maximum, step))
+            else:
+                newConfigs = []
+                for index, some_config in enumerate(configs):
+                    new_configs.extend(self.oneDimRun(some_config, 
+                                       label + "_" + str(index) + "_",
+                                       varName, minimum, maximum, step))
+                configs = newConfigs
+

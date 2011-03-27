@@ -27,8 +27,9 @@ if len(sys.argv) < 2:
     sys.exit(1)
 path = sys.argv[1]
 
-interface = RunInterface(path, "test_cfg")
-testConfigs = interface.oneDimRun("test_xrun", "x", 0.025, 0.161, 0.02)
+interface = RunInterface(path)
+testConfigs = interface.oneDimRun("test_cfg", "test_xrun", 
+                                  "x", 0.025, 0.161, 0.02)
 interface.doRun(testConfigs, maxProcesses=4)
 
 interface.graphData(testConfigs, "x", "d1", "test_d1")
@@ -36,8 +37,9 @@ interface.graphData(testConfigs, "x", "mu", "test_mu")
 interface.graphData(testConfigs, "x", "f0", "test_f0")
 
 """
-pairInterface = RunInterface(path, "test_pair_cfg")
-testConfigs = pairInterface.oneDimRun("test_pair_xrun", "x", 0.04, 0.18, 0.02)
+pairInterface = RunInterface(path)
+testConfigs = pairInterface.oneDimRun("test_pair_cfg", "test_pair_xrun", 
+                                      "x", 0.04, 0.18, 0.02)
 pairInterface.doRun(testConfigs, maxProcesses=4)
 
 pairInterface.graphData(testConfigs, "x", "d1", "test_pair_d1")
@@ -46,8 +48,9 @@ pairInterface.graphData(testConfigs, "x", "bp", "test_pair_bp")
 """
 
 """
-critInterface = RunInterface(path, "test_crit_cfg")
-testConfigs = critInterface.oneDimRun("test_crit_xrun", "x", 0.04, 0.18, 0.02)
+critInterface = RunInterface(path)
+testConfigs = critInterface.oneDimRun("test_crit_cfg", "test_crit_xrun", 
+                                      "x", 0.04, 0.18, 0.02)
 critInterface.doRun(testConfigs, maxProcesses=4)
 
 critInterface.graphData(testConfigs, "x", "d1", "test_crit_d1")
