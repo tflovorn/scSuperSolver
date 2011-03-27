@@ -96,7 +96,7 @@ class RunInterface(object):
             varName, minimum, maximum, step = data
             if len(configs) == 0:
                 configs = self.oneDimRun(baseConfig, label + "_0_", varName, 
-                                         minimum, maximum, step))
+                                         minimum, maximum, step)
             else:
                 newConfigs = []
                 for index, some_config in enumerate(configs):
