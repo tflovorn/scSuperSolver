@@ -21,6 +21,7 @@
 import os
 
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FormatStrFormatter
 from numpy import arange
 
 import FileDict
@@ -68,9 +69,11 @@ class Grapher(object):
 
     def setxTicks(self, axes, data, numTicks=5):
         axes.set_xticks(self.tickRange(data, numTicks))
+        axes.xaxis.set_major_formatter(FormatStrFormatter("%.2f"))
 
     def setyTicks(self, axes, data, numTicks=5):
         axes.set_yticks(self.tickRange(data, numTicks))
+        axes.yaxis.set_major_formatter(FormatStrFormatter("%.2f"))
 
     def tickRange(self, data, numTicks=5):
         data, start, stop = sorted(data), float(data[0]), float(data[-1])
