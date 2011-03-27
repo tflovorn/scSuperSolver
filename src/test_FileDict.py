@@ -1,4 +1,4 @@
-# Copyright (c) 2010 Timothy Lovorn
+# Copyright (c) 2010, 2011 Timothy Lovorn
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -30,3 +30,6 @@ path = sys.argv[1]
 myDict = FileDict.FileDict(os.path.join(path, "test_FileDict.fd"))
 print myDict.topDict
 myDict.writeToFile(os.path.join(path, "test_FileDict_rewrite.fd"))
+
+groupTest = [os.path.join(path, "test_FileDict") + i for i in ("0", "1", "2")]
+print FileDict.groupPathsByValue(groupTest, "x")

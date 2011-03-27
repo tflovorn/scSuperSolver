@@ -70,7 +70,7 @@ class FileDict(object):
 
     def readFromFile(self, filePath):
         """Read data from specified file into topDict."""
-        
+
         fp = open(filePath, 'r')
         lines = fp.readlines()
         fp.close()
@@ -139,5 +139,5 @@ def groupPathsByValue(configFilePaths, name, section=None):
     dataList = [FileDict(config) for config in configFilePaths]
     grouped = defaultdict(list)
     for path, fd in zip(configFilePaths, dataList):
-        grouped[fd.getLatestVar(section, name)] = path
+        grouped[fd.getLatestVar(section, name)].append(path)
     return grouped
