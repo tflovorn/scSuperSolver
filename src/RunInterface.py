@@ -95,12 +95,15 @@ class RunInterface(object):
         for index, data in enumerate(varDataList):
             varName, minimum, maximum, step = data
             if len(configs) == 0:
-                configs = self.oneDimRun(baseConfig, label + "_0_", varName, 
-                                         minimum, maximum, step)
+                label += "_%s_" % varName
+                configs = self.oneDimRun(baseConfig, label, 
+                                         varName, minimum, maximum, step)
             else:
                 newConfigs = []
+                label += "_%s_" % varName
                 for index, some_config in enumerate(configs):
-                    new_configs.extend(self.oneDimRun(some_config, 
+                    newConfigs.extend(self.oneDimRun(some_config, 
                                        label + "_" + str(index) + "_",
                                        varName, minimum, maximum, step))
                 configs = newConfigs
+        return configs

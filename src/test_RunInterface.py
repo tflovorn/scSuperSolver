@@ -28,6 +28,12 @@ if len(sys.argv) < 2:
 path = sys.argv[1]
 
 interface = RunInterface(path)
+testConfigs = interface.multiDimRun("test_cfg", "test_xrun_multi",
+              (("x", 0.04, 0.161, 0.02), ("thp", -0.2, 0.21, 0.1),
+               ("tz", -0.2, 0.21, 0.1)))
+# zero temperature
+"""
+interface = RunInterface(path)
 testConfigs = interface.oneDimRun("test_cfg", "test_xrun", 
                                   "x", 0.025, 0.161, 0.02)
 interface.doRun(testConfigs, maxProcesses=4)
@@ -35,7 +41,9 @@ interface.doRun(testConfigs, maxProcesses=4)
 interface.graphData(testConfigs, "x", "d1", "test_d1")
 interface.graphData(testConfigs, "x", "mu", "test_mu")
 interface.graphData(testConfigs, "x", "f0", "test_f0")
+"""
 
+# pair temperature
 """
 pairInterface = RunInterface(path)
 testConfigs = pairInterface.oneDimRun("test_pair_cfg", "test_pair_xrun", 
@@ -47,6 +55,7 @@ pairInterface.graphData(testConfigs, "x", "mu", "test_pair_mu")
 pairInterface.graphData(testConfigs, "x", "bp", "test_pair_bp")
 """
 
+# critical temperature
 """
 critInterface = RunInterface(path)
 testConfigs = critInterface.oneDimRun("test_crit_cfg", "test_crit_xrun", 
