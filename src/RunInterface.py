@@ -37,9 +37,18 @@ class RunInterface(object):
         queue = ControllerQueue(configFiles, maxProcesses)
         queue.runAll()
 
-    def graphData(self, configFiles, xVar, yVar, outputName):
-        grapher = Grapher(configFiles)
-        fig, axes = grapher.simple2D("config", xVar, "state", yVar)
+    def graphOneSeries(self, configFiles, xVar, yVar, outputName):
+        grapher = Grapher()
+        fig, axes = grapher.simple2D(configFiles, "config", xVar, "state", yVar)
+        grapher.setAxisLabels(axes, self.label(xVar), self.label(yVar))
+        figurePath = os.path.join(self.path, outputName)
+        grapher.saveFigure(fig, figurePath)
+        return fig, axes
+
+    def graphSeriesDict(self, seriesDict, seriesLabel, xVar, yVar, outputName):
+        grapher = Grapher()
+        fig, axes = grapher.plotSeriesDict(seriesDict, seriesLabel, 
+                                           "config", xVar, "state", yVar)
         grapher.setAxisLabels(axes, self.label(xVar), self.label(yVar))
         figurePath = os.path.join(self.path, outputName)
         grapher.saveFigure(fig, figurePath)

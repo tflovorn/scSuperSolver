@@ -1,4 +1,4 @@
-# Copyright (c) 2010 Timothy Lovorn
+# Copyright (c) 2010, 2011 Timothy Lovorn
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -135,7 +135,7 @@ def readReferencedDict(initialFilePath, nameKey, section=None):
     outputPath = os.path.join(configDirectory, outputName)
     return FileDict(outputPath)
 
-def groupPathsByValue(configFilePaths, name, section=None):
+def groupByValue(configFilePaths, name, section=None):
     dataList = [FileDict(config) for config in configFilePaths]
     grouped = defaultdict(list)
     for path, fd in zip(configFilePaths, dataList):

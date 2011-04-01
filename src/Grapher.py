@@ -27,26 +27,20 @@ from numpy import arange
 import FileDict
 
 class Grapher(object):
-    def __init__(self, configPaths):
-        self.configPaths = configPaths
-        self.readOutputs()
+    def __init__(self):
         # graphing parameter defaults
         self.axis_label_fontsize = 20
         self.num_ticks = 5
         self.tick_formatstr = "%.2f"
 
-    def addConfigs(self, configPaths):
-        self.configPaths.extend(configPaths)
-        self.readOutputs()
-
-    def readOutputs(self):
-        self.outputDataList = [(filePath, 
+    def readOutputs(self, configPaths):
+        return [(filePath, 
             FileDict.readReferencedDict(filePath, "outputLogName")) 
-            for filePath in self.configPaths]
+            for filePath in configPaths]
 
-    def extractVar(self, section, var):
+    def extractVar(self, outputDataList, section, var):
         varValues = []
-        for (fileName, outputData) in self.outputDataList:
+        for (fileName, outputData) in outputDataList:
             try:
                 varValues.append(outputData.getLatestVar(section, var))
             except KeyError:
@@ -54,18 +48,39 @@ class Grapher(object):
                       % (var, section, fileName))
         return varValues
 
-    def simple2D(self, xSection, xVar, ySection, yVar, fig=None, axes=None):
+    def plotSeriesDict(self, seriesDict, seriesLabel, xSection, xVar,
+                       ySection, yVar, styles=None):
+        '''Create a plot of multiple series on the same axes in various styles.
+
+        seriesDict's keys correspond to values of seriesLabel; the dict's
+        values are lists of configs part of a single series.
+
+        '''
+        if styles is None:
+            styles = ["k-", "r-", "g-", "b-", "c-", "m-", "y-"]
+        fig, axes = None, None
+        for (value, configs), style in zip(seriesDict.items(), styles):
+            fig, axes = self.simple2D(configs, xSection, xVar, ySection, yVar, 
+                                      fig, axes, style)
+        return fig, axes
+        
+
+    def simple2D(self, configPaths, xSection, xVar, ySection, yVar, fig=None, 
+                 axes=None, style="k-"):
+        '''Create a plot of a single series as 
+
+        '''
+        outputData = self.readOutputs(configPaths)
+        xData = self.extractVar(outputData, xSection, xVar)
+        yData = self.extractVar(outputData, ySection, yVar)
         # if either axes or figure is passed in as None, we ignore both
         if (fig is None) or (axes is None):
             fig = plt.figure()
             axes = fig.add_subplot(1,1,1)
-
-        xData = self.extractVar(xSection, xVar)
-        yData = self.extractVar(ySection, yVar)
-
-        axes.plot(xData, yData, "k-")
+        # lazy solution to ticks: set them on this data set
         self.setxTicks(axes, xData)
         self.setyTicks(axes, yData)
+        axes.plot(xData, yData, style)
         return fig, axes
 
     def setAxisLabels(self, axes, xLabel, yLabel):
