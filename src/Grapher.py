@@ -26,12 +26,21 @@ from numpy import arange
 
 import FileDict
 
+niceLabels = {"d1": "$D_{1}$", "mu": "$\mu$", "f0": "$F_{0}$", "x": "$x$",
+"tz": "$t_z$", "thp": "$t_{h}^{\prime}$"}
+
 class Grapher(object):
     def __init__(self):
         # graphing parameter defaults
         self.axis_label_fontsize = 20
         self.num_ticks = 5
         self.tick_formatstr = "%.2f"
+
+    def label(self, var):
+        if var in niceLabels:
+            return niceLabels[var]
+        else:
+            return var
 
     def readOutputs(self, configPaths):
         return [(filePath, 
@@ -59,14 +68,17 @@ class Grapher(object):
         if styles is None:
             styles = ["k-", "r-", "g-", "b-", "c-", "m-", "y-"]
         fig, axes = None, None
-        for (value, configs), style in zip(seriesDict.items(), styles):
+        keys = sorted(map(float, seriesDict.keys()))
+        for value, style in zip(keys, styles):
+            configs = seriesDict[str(value)]
             fig, axes = self.simple2D(configs, xSection, xVar, ySection, yVar, 
-                                      fig, axes, style)
+                                      fig, axes, style, str(value))
+        axes.legend(loc=0, title=self.label(seriesLabel))
         return fig, axes
         
 
     def simple2D(self, configPaths, xSection, xVar, ySection, yVar, fig=None, 
-                 axes=None, style="k-"):
+                 axes=None, style="k-", label=None):
         '''Create a plot of a single series as 
 
         '''
@@ -80,10 +92,11 @@ class Grapher(object):
         # lazy solution to ticks: set them on this data set
         self.setxTicks(axes, xData)
         self.setyTicks(axes, yData)
-        axes.plot(xData, yData, style)
+        axes.plot(xData, yData, style, label=label)
         return fig, axes
 
     def setAxisLabels(self, axes, xLabel, yLabel):
+        xLabel, yLabel = self.label(xLabel), self.label(yLabel)
         axes.set_xlabel(xLabel, fontsize=self.axis_label_fontsize)
         axes.set_ylabel(yLabel, fontsize=self.axis_label_fontsize)
 
@@ -96,8 +109,10 @@ class Grapher(object):
         axes.yaxis.set_major_formatter(FormatStrFormatter(self.tick_formatstr))
 
     def tickRange(self, data):
-        data, start, stop = sorted(data), float(data[0]), float(data[-1])
-        step = (stop - start) / (self.num_ticks - 1)
+        data = sorted(map(float, data))
+        start, stop = data[0], data[-1]
+        print(start, stop)
+        step = (stop - start) / self.num_ticks
         return arange(start, stop + step / 100.0, step)
 
     def saveFigure(self, fig, figurePath):

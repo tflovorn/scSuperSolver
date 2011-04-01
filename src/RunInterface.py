@@ -26,8 +26,6 @@ from Grapher import Grapher
 
 DEFAULT_MAX_PROCESSES = 2
 
-niceLabels = {"d1": "$D_{1}$", "mu": "$\mu$", "f0": "$F_{0}$", "x": "$x$"}
-
 class RunInterface(object):
     def __init__(self, path):
         self.path = path
@@ -40,7 +38,7 @@ class RunInterface(object):
     def graphOneSeries(self, configFiles, xVar, yVar, outputName):
         grapher = Grapher()
         fig, axes = grapher.simple2D(configFiles, "config", xVar, "state", yVar)
-        grapher.setAxisLabels(axes, self.label(xVar), self.label(yVar))
+        grapher.setAxisLabels(axes, xVar, yVar)
         figurePath = os.path.join(self.path, outputName)
         grapher.saveFigure(fig, figurePath)
         return fig, axes
@@ -49,16 +47,10 @@ class RunInterface(object):
         grapher = Grapher()
         fig, axes = grapher.plotSeriesDict(seriesDict, seriesLabel, 
                                            "config", xVar, "state", yVar)
-        grapher.setAxisLabels(axes, self.label(xVar), self.label(yVar))
+        grapher.setAxisLabels(axes, xVar, yVar)
         figurePath = os.path.join(self.path, outputName)
         grapher.saveFigure(fig, figurePath)
         return fig, axes
-
-    def label(self, var):
-        if var in niceLabels:
-            return niceLabels[var]
-        else:
-            return var
 
     def makeRun(self, baseConfig, runData):
         """Make a new run of config files from the base config and runData.
