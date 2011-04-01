@@ -22,6 +22,7 @@ import os
 
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
+from matplotlib.font_manager import FontProperties
 from numpy import arange
 
 import FileDict
@@ -58,7 +59,7 @@ class Grapher(object):
         return varValues
 
     def plotSeriesDict(self, seriesDict, seriesLabel, xSection, xVar,
-                       ySection, yVar, styles=None):
+                       ySection, yVar, styles=None, legend_title=None):
         '''Create a plot of multiple series on the same axes in various styles.
 
         seriesDict's keys correspond to values of seriesLabel; the dict's
@@ -71,9 +72,11 @@ class Grapher(object):
         keys = sorted(map(float, seriesDict.keys()))
         for value, style in zip(keys, styles):
             configs = seriesDict[str(value)]
+            label = "%s = %s" % (self.label(seriesLabel), value)
             fig, axes = self.simple2D(configs, xSection, xVar, ySection, yVar, 
-                                      fig, axes, style, str(value))
-        axes.legend(loc=0, title=self.label(seriesLabel))
+                                      fig, axes, style, label)
+        fontprop = FontProperties(size='large')
+        axes.legend(loc=0, title=legend_title, prop=fontprop)
         return fig, axes
         
 
@@ -111,7 +114,6 @@ class Grapher(object):
     def tickRange(self, data):
         data = sorted(map(float, data))
         start, stop = data[0], data[-1]
-        print(start, stop)
         step = (stop - start) / self.num_ticks
         return arange(start, stop + step / 100.0, step)
 

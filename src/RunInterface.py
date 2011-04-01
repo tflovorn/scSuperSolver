@@ -43,10 +43,11 @@ class RunInterface(object):
         grapher.saveFigure(fig, figurePath)
         return fig, axes
 
-    def graphSeriesDict(self, seriesDict, seriesLabel, xVar, yVar, outputName):
+    def graphSeriesDict(self, seriesDict, seriesLabel, xVar, yVar, outputName,
+                        legend_title=None):
         grapher = Grapher()
         fig, axes = grapher.plotSeriesDict(seriesDict, seriesLabel, 
-                                           "config", xVar, "state", yVar)
+                    "config", xVar, "state", yVar, legend_title=legend_title)
         grapher.setAxisLabels(axes, xVar, yVar)
         figurePath = os.path.join(self.path, outputName)
         grapher.saveFigure(fig, figurePath)

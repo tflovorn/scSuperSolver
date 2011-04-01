@@ -33,11 +33,12 @@ interface = RunInterface(path)
 #              (("x", 0.04, 0.161, 0.02), ("thp", -0.2, 0.21, 0.1),
 #               ("tz", -0.2, 0.21, 0.1)))
 testConfigs = interface.multiDimRun("test_cfg", "test_xrun_multi",
-              (("x", 0.04, 0.161, 0.02), ("tz", -0.2, 0.21, 0.1)))
+              (("x", 0.04, 0.161, 0.005), ("tz", -0.2, 0.21, 0.1)))
 interface.doRun(testConfigs, maxProcesses=2)
 #thpSeriesConfigs = groupByValue(groupByValue(testConfigs, "tz")["0.1"], "thp")
 tzSeriesConfigs = groupByValue(groupByValue(testConfigs, "thp")["0.1"], "tz")
-interface.graphSeriesDict(tzSeriesConfigs, "tz", "x", "f0", "test_f0_tz_set")
+interface.graphSeriesDict(tzSeriesConfigs, "tz", "x", "f0", "test_f0_tz_set",
+                          legend_title = "$t_{h}^{\prime}$ = 0.1")
 #interface.graphSeriesDict(thpSeriesConfigs, "thp", "x", "f0", "test_f0_thp_set")
 
 # zero temperature
