@@ -68,20 +68,20 @@ class Grapher(object):
         '''
         if styles is None:
             styles = ["k-", "r-", "g-", "b-", "c-", "m-", "y-"]
-        fig, axes = None, None
+        fig, axes, bounds = None, None, None
         keys = sorted(map(float, seriesDict.keys()))
         for value, style in zip(keys, styles):
             configs = seriesDict[str(value)]
             label = "%s = %s" % (self.label(seriesLabel), value)
-            fig, axes = self.simple2D(configs, xSection, xVar, ySection, yVar, 
-                                      fig, axes, style, label)
+            fig, axes, bounds = self.simple2D(configs, xSection, xVar, 
+                ySection, yVar, fig, axes, style, label, bounds)
         fontprop = FontProperties(size='large')
         axes.legend(loc=0, title=legend_title, prop=fontprop)
         return fig, axes
         
 
     def simple2D(self, configPaths, xSection, xVar, ySection, yVar, fig=None, 
-                 axes=None, style="k-", label=None):
+                 axes=None, style="k-", label=None, bounds=None):
         '''Create a plot of a single series as 
 
         '''
@@ -92,30 +92,47 @@ class Grapher(object):
         if (fig is None) or (axes is None):
             fig = plt.figure()
             axes = fig.add_subplot(1,1,1)
-        # lazy solution to ticks: set them on this data set
-        self.setxTicks(axes, xData)
-        self.setyTicks(axes, yData)
+        if bounds is None:
+            bounds = [None, None]
+        bounds = self.setxTicks(axes, xData, bounds)
+        bounds = self.setyTicks(axes, yData, bounds)
         axes.plot(xData, yData, style, label=label)
-        return fig, axes
+        return fig, axes, bounds
 
     def setAxisLabels(self, axes, xLabel, yLabel):
         xLabel, yLabel = self.label(xLabel), self.label(yLabel)
         axes.set_xlabel(xLabel, fontsize=self.axis_label_fontsize)
         axes.set_ylabel(yLabel, fontsize=self.axis_label_fontsize)
 
-    def setxTicks(self, axes, data):
-        axes.set_xticks(self.tickRange(data))
-        axes.xaxis.set_major_formatter(FormatStrFormatter(self.tick_formatstr))
-
-    def setyTicks(self, axes, data):
-        axes.set_yticks(self.tickRange(data))
-        axes.yaxis.set_major_formatter(FormatStrFormatter(self.tick_formatstr))
-
-    def tickRange(self, data):
+    def setxTicks(self, axes, data, bounds):
         data = sorted(map(float, data))
-        start, stop = data[0], data[-1]
-        step = (stop - start) / self.num_ticks
-        return arange(start, stop + step / 100.0, step)
+        if bounds[0] is None:
+            bounds[0] = [data[0], data[-1]]
+        if data[0] < bounds[0][0]:
+            bounds[0][0] = data[0]
+        if data[-1] > bounds[0][1]:
+            bounds[0][1] = data[-1]
+        print("x bounds (%f, %f)" % (bounds[0][0], bounds[0][1]))
+        axes.set_xticks(self.tickRange(bounds[0][0], bounds[0][1]))
+        axes.xaxis.set_major_formatter(FormatStrFormatter(self.tick_formatstr))
+        return bounds
+
+    def setyTicks(self, axes, data, bounds):
+        data = sorted(map(float, data))
+        if bounds[1] is None:
+            bounds[1] = [data[0], data[-1]]
+        if data[0] < bounds[1][0]:
+            bounds[1][0] = data[0]
+        if data[-1] > bounds[1][1]:
+            bounds[1][1] = data[-1]
+        print("y bounds (%f, %f)" % (bounds[1][0], bounds[1][1]))
+        axes.set_yticks(self.tickRange(bounds[1][0], bounds[1][1]))
+        axes.yaxis.set_major_formatter(FormatStrFormatter(self.tick_formatstr))
+        return bounds
+
+    def tickRange(self, start, stop):
+        step = (stop * 0.99 - start) / (self.num_ticks - 1)
+        return arange(start, stop + step / 2.0, step)
 
     def saveFigure(self, fig, figurePath):
         fig.savefig(figurePath + ".png")

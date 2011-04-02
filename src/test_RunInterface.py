@@ -35,11 +35,24 @@ interface = RunInterface(path)
 testConfigs = interface.multiDimRun("test_cfg", "test_xrun_multi",
               (("x", 0.04, 0.161, 0.005), ("tz", -0.2, 0.21, 0.1)))
 interface.doRun(testConfigs, maxProcesses=2)
-#thpSeriesConfigs = groupByValue(groupByValue(testConfigs, "tz")["0.1"], "thp")
 tzSeriesConfigs = groupByValue(groupByValue(testConfigs, "thp")["0.1"], "tz")
 interface.graphSeriesDict(tzSeriesConfigs, "tz", "x", "f0", "test_f0_tz_set",
                           legend_title = "$t_{h}^{\prime}$ = 0.1")
-#interface.graphSeriesDict(thpSeriesConfigs, "thp", "x", "f0", "test_f0_thp_set")
+interface.graphSeriesDict(tzSeriesConfigs, "tz", "x", "mu", "test_mu_tz_set",
+                          legend_title = "$t_{h}^{\prime}$ = 0.1")
+interface.graphSeriesDict(tzSeriesConfigs, "tz", "x", "d1", "test_d1_tz_set",
+                          legend_title = "$t_{h}^{\prime}$ = 0.1")
+
+testConfigs = interface.multiDimRun("test_cfg", "test_xrun_multi",
+              (("x", 0.04, 0.161, 0.005), ("thp", -0.2, 0.21, 0.1)))
+interface.doRun(testConfigs, maxProcesses=2)
+thpSeriesConfigs = groupByValue(groupByValue(testConfigs, "tz")["0.1"], "thp")
+interface.graphSeriesDict(thpSeriesConfigs, "thp", "x", "f0", "test_f0_thp_set",
+                          legend_title = "$t_z$ = 0.1")
+interface.graphSeriesDict(thpSeriesConfigs, "thp", "x", "mu", "test_mu_thp_set",
+                          legend_title = "$t_z$ = 0.1")
+interface.graphSeriesDict(thpSeriesConfigs, "thp", "x", "d1", "test_d1_thp_set",
+                          legend_title = "$t_z$ = 0.1")
 
 # zero temperature
 """
